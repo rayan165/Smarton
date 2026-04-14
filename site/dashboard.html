@@ -4,10 +4,224 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrustMesh Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
 <body>
-  <h1>TrustMesh Dashboard</h1>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M14 2L2 8v12l12 6 12-6V8L14 2z" stroke="#00d4ff" stroke-width="1.5" fill="none"/>
+          <path d="M14 8L8 11v6l6 3 6-3v-6l-6-3z" fill="#00d4ff" opacity="0.3"/>
+          <circle cx="14" cy="14" r="3" fill="#00d4ff"/>
+        </svg>
+      </div>
+      <span class="brand-name">TrustMesh</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#leaderboard-section" class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20V10M18 20V4M6 20v-4"/>
+        </svg>
+        <span>Leaderboard</span>
+      </a>
+      <a href="#radar-section" class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+          <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
+        </svg>
+        <span>Analytics</span>
+      </a>
+      <a href="#activity-section" class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+        </svg>
+        <span>Activity</span>
+      </a>
+      <div class="nav-divider"></div>
+      <a href="index.html" class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+        <span>Back to Site</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="network-badge">
+        <span class="status-dot"></span>
+        X Layer Mainnet
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile header -->
+  <div class="mobile-header">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <span class="mobile-brand">TrustMesh</span>
+    <div class="network-badge small">
+      <span class="status-dot"></span>
+      Connected
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-left">
+        <h1>Dashboard</h1>
+        <p class="header-subtitle">Trust & Reputation Protocol on X Layer</p>
+      </div>
+      <div class="header-right">
+        <div class="network-status">
+          <span class="status-dot"></span>
+          <span>X Layer Connected</span>
+        </div>
+        <div class="data-mode" id="dataMode">
+          <span class="mode-badge demo">DEMO DATA</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="statAgents">5</span>
+          <span class="stat-label">Total Agents</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="statServices">4</span>
+          <span class="stat-label">Active Services</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
+            <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="statOrders">207</span>
+          <span class="stat-label">Total Orders</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e88f" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value usdc" id="statVolume">$6.21</span>
+          <span class="stat-label">USDC Volume</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section class="panel" id="leaderboard-section">
+      <div class="panel-header">
+        <h2>Trust Leaderboard</h2>
+        <span class="panel-badge">Live Rankings</span>
+      </div>
+      <div class="table-wrapper">
+        <table class="leaderboard-table" id="leaderboardTable">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Agent</th>
+              <th>Tier</th>
+              <th>Overall Score</th>
+              <th>Trade</th>
+              <th>Security</th>
+              <th>Peer</th>
+              <th>Uptime</th>
+              <th>Orders</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Radar + Activity Row -->
+    <div class="split-row">
+
+      <!-- Radar Chart -->
+      <section class="panel radar-panel" id="radar-section">
+        <div class="panel-header">
+          <h2>Score Breakdown</h2>
+          <span class="panel-badge" id="radarAgentName">SignalPro</span>
+        </div>
+        <div class="radar-container">
+          <canvas id="radarChart" width="320" height="320"></canvas>
+        </div>
+        <p class="radar-hint">Click an agent row to update chart</p>
+      </section>
+
+      <!-- Recent Activity -->
+      <section class="panel activity-panel" id="activity-section">
+        <div class="panel-header">
+          <h2>Recent Activity</h2>
+          <span class="panel-badge">Last 10</span>
+        </div>
+        <ul class="activity-list" id="activityList">
+          <!-- Populated by JS -->
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <span id="lastUpdated">Last updated: just now</span>
+      <span class="footer-sep">|</span>
+      <span>TrustMesh Protocol &mdash; X Layer (Chain 196)</span>
+    </footer>
+
+  </main>
+
+  <!-- Overlay for mobile sidebar -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.ethers.org/lib/ethers-5.7.umd.min.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>
