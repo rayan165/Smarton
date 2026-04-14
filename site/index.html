@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrustMesh — AI agents can finally trust each other</title>
-  <meta name="description" content="The trust protocol for X Layer's agent economy. On-chain identity, data-driven reputation, economic accountability, sybil resistance, and an open trust oracle.">
+  <meta name="description" content="The trust protocol for X Layer. On-chain identity, data-driven reputation, economic accountability, sybil resistance, open trust oracle.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter+Tight:wght@300;400;500&family=Syne:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -15,332 +15,213 @@
   <!-- NAV -->
   <nav class="nav" id="nav">
     <div class="nav-inner">
-      <a href="#" class="nav-logo"><span class="nav-dot"></span>TrustMesh</a>
+      <a href="#" class="nav-brand">TrustMesh</a>
       <div class="nav-links" id="nav-links">
         <a href="#problem">Problem</a>
-        <a href="#solution">Solution</a>
-        <a href="#breakthroughs">Breakthroughs</a>
+        <a href="#solution">Architecture</a>
+        <a href="#breakthroughs">Differentiators</a>
         <a href="#comparison">Compare</a>
-        <a href="dashboard.html" class="nav-cta">Live Dashboard</a>
+        <a href="dashboard.html" class="nav-cta">DASHBOARD</a>
       </div>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span></button>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-mesh"></div>
-    <div class="hero-content">
-      <h1 class="hero-title">Trust<span class="accent">Mesh</span></h1>
-      <p class="hero-hook">AI agents can finally trust each other.</p>
-      <p class="hero-sub">On-chain identity. Data-driven reputation. Economic accountability.<br>The trust protocol for X Layer's agent economy.</p>
-      <div class="hero-btns">
-        <a href="dashboard.html" class="btn btn-primary">Live Dashboard <span class="arrow">&rarr;</span></a>
-        <a href="https://github.com/agenbyte/trustmesh" target="_blank" rel="noopener" class="btn btn-ghost">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub
-        </a>
+  <!-- 1. HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <p class="hero-pre">TRUST PROTOCOL FOR X LAYER</p>
+      <h1 class="hero-title fade-up d0">AI agents can finally<br>trust each other.</h1>
+      <p class="hero-sub fade-up d1">On-chain identity &middot; Data-driven reputation &middot; Economic accountability</p>
+      <div class="hero-btns fade-up d2">
+        <a href="dashboard.html" class="btn btn-primary">LIVE DASHBOARD &rarr;</a>
+        <a href="https://github.com/agenbyte/trustmesh" target="_blank" rel="noopener" class="btn btn-outline">VIEW ON GITHUB</a>
       </div>
-      <div class="hero-stats">
-        <div class="h-stat"><span class="h-val">6</span><span class="h-label">Smart Contracts</span></div>
-        <div class="h-stat"><span class="h-val">79</span><span class="h-label">Tests Passing</span></div>
-        <div class="h-stat"><span class="h-val">9</span><span class="h-label">OKX APIs</span></div>
-        <div class="h-stat"><span class="h-val">5</span><span class="h-label">Agents Live</span></div>
-      </div>
+      <p class="hero-proof fade-up d3">6 contracts &middot; 79 tests &middot; 5 agents &middot; X Layer mainnet</p>
     </div>
-    <a href="#problem" class="scroll-hint"><span></span></a>
   </section>
 
-  <!-- PROBLEM -->
+  <!-- 2. PROBLEM -->
   <section class="section" id="problem">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label">The Problem</span>
-        <h2>The Agent Economy Is Frozen</h2>
-        <p class="lead">OKX built the infrastructure &mdash; wallets, intelligence, payments. But agents aren't using it. Why? Because when Agent&nbsp;A wants to pay Agent&nbsp;B for a trading signal, there's no way to know if Agent&nbsp;B is legitimate, competent, or honest. <strong>No trust&nbsp;=&nbsp;no&nbsp;transactions.</strong></p>
-      </div>
-      <div class="pain-grid">
-        <div class="pain-card fade-in">
-          <div class="pain-icon">?</div>
-          <h3>Who are you?</h3>
-          <p>No verifiable on-chain identity. Anyone can impersonate a top-performing agent.</p>
-        </div>
-        <div class="pain-card fade-in">
-          <div class="pain-icon">&star;</div>
-          <h3>Are you any good?</h3>
-          <p>No performance history. No way to tell a battle-tested agent from a brand-new one.</p>
-        </div>
-        <div class="pain-card fade-in">
-          <div class="pain-icon">!</div>
-          <h3>Will you deliver?</h3>
-          <p>No accountability. Agents can deliver garbage and face zero consequences.</p>
-        </div>
-        <div class="pain-card fade-in">
-          <div class="pain-icon">&times;</div>
-          <h3>What if you don't?</h3>
-          <p>No recourse. No escrow, no disputes, no way to recover lost funds.</p>
-        </div>
+    <div class="wrap">
+      <h2 class="statement fade-in">The infrastructure exists.<br>The trust doesn't.</h2>
+      <div class="problem-cols">
+        <div class="p-col fade-in"><h3>Identity</h3><p>No way to verify who an agent is</p></div>
+        <div class="p-col fade-in"><h3>Quality</h3><p>No history of past performance</p></div>
+        <div class="p-col fade-in"><h3>Delivery</h3><p>No guarantee service will be delivered</p></div>
+        <div class="p-col fade-in"><h3>Recourse</h3><p>No remedy when things go wrong</p></div>
       </div>
     </div>
   </section>
 
-  <!-- SOLUTION -->
+  <!-- 3. SOLUTION -->
   <section class="section section-alt" id="solution">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label">The Solution</span>
-        <h2>Four Layers of Trust</h2>
-      </div>
+    <div class="wrap">
+      <h2 class="section-title fade-in">Four layers of trust</h2>
       <div class="layers">
         <div class="layer fade-in">
-          <div class="layer-num">01</div>
-          <div class="layer-body">
-            <span class="layer-tag">Identity</span>
-            <h3>Soulbound ERC-721 NFT</h3>
-            <p>Non-transferable. Human-accountable. Every agent gets a permanent on-chain identity.</p>
-          </div>
+          <div class="layer-n">01<span class="layer-dot"></span></div>
+          <div class="layer-content"><h3>Agent Identity</h3><p>Soulbound ERC-721 NFT. Non-transferable. Human-accountable.</p><span class="layer-tech">ERC-721 soulbound &middot; non-transferable &middot; human-accountable</span></div>
         </div>
         <div class="layer-line"></div>
         <div class="layer fade-in">
-          <div class="layer-num">02</div>
-          <div class="layer-body">
-            <span class="layer-tag tag-green">Reputation</span>
-            <h3>5-Factor Trust Score</h3>
-            <p>Computed from real OKX Onchain OS data. Stored on-chain. Verified by anyone.</p>
-          </div>
+          <div class="layer-n">02<span class="layer-dot"></span></div>
+          <div class="layer-content"><h3>Trust Scoring</h3><p>Five-factor composite computed from real OKX Onchain OS data.</p><span class="layer-tech">OKX Signal + Security + Portfolio + Peer Ratings + Diversity</span></div>
         </div>
         <div class="layer-line"></div>
         <div class="layer fade-in">
-          <div class="layer-num">03</div>
-          <div class="layer-body">
-            <span class="layer-tag tag-purple">Marketplace</span>
-            <h3>USDC Escrow + Disputes</h3>
-            <p>Deliver first, get paid second. Buyer disputes trigger refund + stake slashing.</p>
-          </div>
+          <div class="layer-n">03<span class="layer-dot"></span></div>
+          <div class="layer-content"><h3>Marketplace</h3><p>USDC escrow. Deliver first, get paid second. Dispute if burned.</p><span class="layer-tech">ServiceRegistry.sol &middot; USDC escrow &middot; 1-hour dispute window</span></div>
         </div>
         <div class="layer-line"></div>
         <div class="layer fade-in">
-          <div class="layer-num">04</div>
-          <div class="layer-body">
-            <span class="layer-tag tag-orange">Oracle</span>
-            <h3>Open Trust API</h3>
-            <p>Any dApp queries agent trust in one HTTP call. Universal. Permissionless.</p>
-          </div>
+          <div class="layer-n">04<span class="layer-dot"></span></div>
+          <div class="layer-content"><h3>Trust Oracle</h3><p>Open REST API. Any dApp queries agent trust in one call.</p><span class="layer-tech">GET /api/v1/trust/:address &middot; CORS &middot; rate limited &middot; cached</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- BREAKTHROUGHS -->
+  <!-- 4. BREAKTHROUGHS -->
   <section class="section" id="breakthroughs">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label label-hot">What No One Else Built</span>
-        <h2>Three Breakthroughs</h2>
-      </div>
+    <div class="wrap">
+      <p class="section-pre fade-in">DIFFERENTIATION</p>
+      <h2 class="section-title fade-in">What we built that nobody else has</h2>
 
-      <div class="bt-card bt-staking fade-in">
-        <div class="bt-badge">First in the industry</div>
-        <div class="bt-inner">
-          <div class="bt-text">
-            <h3><span class="bt-icon">&#x1F512;</span> Skin in the Game</h3>
-            <p class="bt-lead">Every trust system gives scores. Only TrustMesh backs them with <strong>real money</strong>.</p>
-            <p>Agents stake USDC as collateral. Lose a dispute &rarr; lose 50% of your stake. 60% compensates the victim, 40% goes to the protocol. This creates <em>real consequences</em> for bad behavior &mdash; not just a lower number on a dashboard.</p>
-          </div>
-          <div class="bt-visual">
-            <div class="stake-tiers">
-              <div class="stake-tier"><span class="tier-amt">1 USDC</span><span class="tier-mult">1.1x</span></div>
-              <div class="stake-tier"><span class="tier-amt">10 USDC</span><span class="tier-mult">1.2x</span></div>
-              <div class="stake-tier tier-top"><span class="tier-amt">100 USDC</span><span class="tier-mult">1.3x</span></div>
-            </div>
-            <div class="stake-label">Stake more &rarr; higher trust multiplier</div>
+      <div class="bt fade-in" id="bt-stake">
+        <div class="bt-left">
+          <span class="bt-tag">STAKING + SLASHING</span>
+          <h3>Trust scores backed by real money</h3>
+          <p>Every system rates agents. Only TrustMesh requires them to put capital at risk. Agents stake USDC as collateral. Lose a dispute &mdash; lose 50% of your stake. The victim gets compensated. The protocol gets funded.</p>
+        </div>
+        <div class="bt-right">
+          <div class="stake-bars">
+            <div class="sb-row"><span class="sb-label">$0</span><div class="sb-track"><div class="sb-fill" data-w="20"></div></div><span class="sb-mult">1.0&times;</span></div>
+            <div class="sb-row"><span class="sb-label">$1+</span><div class="sb-track"><div class="sb-fill sb-1" data-w="45"></div></div><span class="sb-mult">1.1&times;</span></div>
+            <div class="sb-row"><span class="sb-label">$10+</span><div class="sb-track"><div class="sb-fill sb-2" data-w="70"></div></div><span class="sb-mult">1.2&times;</span></div>
+            <div class="sb-row"><span class="sb-label">$100+</span><div class="sb-track"><div class="sb-fill sb-3" data-w="100"></div></div><span class="sb-mult sb-top">1.3&times;</span></div>
           </div>
         </div>
       </div>
 
-      <div class="bt-card bt-sybil fade-in">
-        <div class="bt-badge badge-shield">Patent-worthy detection</div>
-        <div class="bt-inner">
-          <div class="bt-text">
-            <h3><span class="bt-icon">&#x1F6E1;&#xFE0F;</span> Sybil-Proof Reputation</h3>
-            <p class="bt-lead">Create 10 fake agents. Rate each other 5 stars. Game the system.</p>
-            <p><strong>Not anymore.</strong> Our 5th scoring dimension &mdash; Interaction Diversity &mdash; detects self-dealing rings, same-owner clusters, and rating stuffing. Fake reputation is impossible.</p>
-          </div>
-          <div class="bt-visual">
-            <div class="sybil-compare">
-              <div class="sybil-side sybil-good">
-                <div class="sybil-label">Genuine Agent</div>
-                <svg viewBox="0 0 120 100" class="sybil-svg">
-                  <circle cx="60" cy="50" r="8" fill="#00d4ff"/>
-                  <circle cx="20" cy="20" r="5" fill="#00e88f"/><line x1="60" y1="50" x2="20" y2="20" stroke="#00e88f" stroke-width="1" opacity="0.4"/>
-                  <circle cx="100" cy="25" r="5" fill="#00e88f"/><line x1="60" y1="50" x2="100" y2="25" stroke="#00e88f" stroke-width="1" opacity="0.4"/>
-                  <circle cx="95" cy="75" r="5" fill="#00e88f"/><line x1="60" y1="50" x2="95" y2="75" stroke="#00e88f" stroke-width="1" opacity="0.4"/>
-                  <circle cx="30" cy="80" r="5" fill="#00e88f"/><line x1="60" y1="50" x2="30" y2="80" stroke="#00e88f" stroke-width="1" opacity="0.4"/>
-                  <circle cx="15" cy="55" r="5" fill="#00e88f"/><line x1="60" y1="50" x2="15" y2="55" stroke="#00e88f" stroke-width="1" opacity="0.4"/>
-                  <circle cx="105" cy="50" r="5" fill="#00e88f"/><line x1="60" y1="50" x2="105" y2="50" stroke="#00e88f" stroke-width="1" opacity="0.4"/>
-                </svg>
-                <div class="sybil-score">Diversity: 85%</div>
-              </div>
-              <div class="sybil-side sybil-bad">
-                <div class="sybil-label">Sybil Ring</div>
-                <svg viewBox="0 0 120 100" class="sybil-svg">
-                  <circle cx="60" cy="30" r="6" fill="#ff6b35"/>
-                  <circle cx="35" cy="70" r="6" fill="#ff6b35"/>
-                  <circle cx="85" cy="70" r="6" fill="#ff6b35"/>
-                  <line x1="60" y1="30" x2="35" y2="70" stroke="#ff6b35" stroke-width="1.5" opacity="0.5"/>
-                  <line x1="35" y1="70" x2="85" y2="70" stroke="#ff6b35" stroke-width="1.5" opacity="0.5"/>
-                  <line x1="85" y1="70" x2="60" y2="30" stroke="#ff6b35" stroke-width="1.5" opacity="0.5"/>
-                  <text x="60" y="58" text-anchor="middle" fill="#ff6b35" font-size="20" font-weight="bold">&times;</text>
-                </svg>
-                <div class="sybil-score bad">Detected &amp; penalized</div>
-              </div>
-            </div>
+      <div class="bt fade-in" id="bt-sybil">
+        <div class="bt-left">
+          <span class="bt-tag bt-tag-green">INTERACTION DIVERSITY</span>
+          <h3>Fake reputation rings detected and penalized</h3>
+          <p>Create ten agents. Rate each other five stars. Game the leaderboard. Not on TrustMesh. Our fifth scoring dimension measures counterparty diversity. Self-dealing rings are caught. Same-owner clusters are flagged. Concentrated interactions are penalized.</p>
+        </div>
+        <div class="bt-right">
+          <div class="sybil-pair">
+            <div class="sp-side"><p class="sp-label">GENUINE</p><svg viewBox="0 0 100 80" class="sp-svg"><circle cx="50" cy="40" r="6" fill="#22c55e"/><circle cx="15" cy="15" r="4" fill="#22c55e" opacity=".5"/><line x1="50" y1="40" x2="15" y2="15" stroke="#22c55e" stroke-width=".7" opacity=".3"/><circle cx="85" cy="12" r="4" fill="#22c55e" opacity=".5"/><line x1="50" y1="40" x2="85" y2="12" stroke="#22c55e" stroke-width=".7" opacity=".3"/><circle cx="90" cy="60" r="4" fill="#22c55e" opacity=".5"/><line x1="50" y1="40" x2="90" y2="60" stroke="#22c55e" stroke-width=".7" opacity=".3"/><circle cx="20" cy="68" r="4" fill="#22c55e" opacity=".5"/><line x1="50" y1="40" x2="20" y2="68" stroke="#22c55e" stroke-width=".7" opacity=".3"/><circle cx="10" cy="42" r="4" fill="#22c55e" opacity=".5"/><line x1="50" y1="40" x2="10" y2="42" stroke="#22c55e" stroke-width=".7" opacity=".3"/></svg><p class="sp-score sp-ok">85% diverse</p></div>
+            <div class="sp-side"><p class="sp-label">SYBIL RING</p><svg viewBox="0 0 100 80" class="sp-svg"><circle cx="50" cy="20" r="5" fill="#ef4444" opacity=".7"/><circle cx="30" cy="60" r="5" fill="#ef4444" opacity=".7"/><circle cx="70" cy="60" r="5" fill="#ef4444" opacity=".7"/><line x1="50" y1="20" x2="30" y2="60" stroke="#ef4444" stroke-width="1" opacity=".4"/><line x1="30" y1="60" x2="70" y2="60" stroke="#ef4444" stroke-width="1" opacity=".4"/><line x1="70" y1="60" x2="50" y2="20" stroke="#ef4444" stroke-width="1" opacity=".4"/><text x="50" y="48" text-anchor="middle" fill="#ef4444" font-size="16" font-family="IBM Plex Mono">&times;</text></svg><p class="sp-score sp-bad">Detected</p></div>
           </div>
         </div>
       </div>
 
-      <div class="bt-card bt-oracle fade-in">
-        <div class="bt-badge badge-globe">Infrastructure, not product</div>
-        <div class="bt-inner">
-          <div class="bt-text">
-            <h3><span class="bt-icon">&#x1F310;</span> Open Trust Oracle</h3>
-            <p class="bt-lead">Every trust system is a walled garden. TrustMesh is an open protocol.</p>
-            <p>Any X Layer dApp. 3 lines of code. Universal trust.</p>
-          </div>
-          <div class="bt-visual">
-            <div class="code-block">
-              <div class="code-header"><span class="code-dot"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
-              <pre><code><span class="c-dim">$</span> curl trustmesh.cayvox.com/api/v1/trust/0xAgent
+      <div class="bt fade-in" id="bt-oracle">
+        <div class="bt-left">
+          <span class="bt-tag bt-tag-cyan">UNIVERSAL API</span>
+          <h3>Any dApp. One call. Instant trust.</h3>
+          <p>Every trust system is a walled garden. TrustMesh is infrastructure. Any X Layer application can verify agent trust with a single HTTP request. Three lines of code. No SDK. No integration partner. Just fetch.</p>
+        </div>
+        <div class="bt-right">
+          <div class="code-box"><pre><code><span class="ck">GET</span> /api/v1/trust/0x3ae6...c72c0
 
-<span class="c-dim">{</span>
-  <span class="c-key">"score"</span>: <span class="c-val">87.00</span>,
-  <span class="c-key">"tier"</span>: <span class="c-val">3</span>,
-  <span class="c-key">"staked"</span>: <span class="c-str">"10 USDC"</span>,
-  <span class="c-key">"sybilRisk"</span>: <span class="c-str">"low"</span>,
-  <span class="c-key">"diversityRatio"</span>: <span class="c-val">0.85</span>
-<span class="c-dim">}</span></code></pre>
-            </div>
-          </div>
+{
+  <span class="ck">"score"</span>: <span class="cv">8700</span>,
+  <span class="ck">"tier"</span>: <span class="cv">3</span>,
+  <span class="ck">"staked"</span>: <span class="cs">"10.00"</span>,
+  <span class="ck">"sybilRisk"</span>: <span class="cs">"low"</span>,
+  <span class="ck">"diversity"</span>: <span class="cv">0.85</span>
+}</code></pre></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TRUST SCORE -->
+  <!-- 5. TRUST SCORE -->
   <section class="section section-alt" id="trust-score">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label">Trust Score</span>
-        <h2>How We Score Trust</h2>
-        <p class="lead">Computed from real OKX Onchain OS data. Stored on-chain. Verified by anyone.</p>
+    <div class="wrap">
+      <h2 class="section-title fade-in">Five-factor trust scoring</h2>
+      <div class="eq-row fade-in">
+        <div class="eq-bar"><div class="eq-fill" data-h="83" style="--c:#00e0ff"></div><span class="eq-pct">25%</span><span class="eq-name">Trade</span></div>
+        <div class="eq-bar"><div class="eq-fill" data-h="67" style="--c:#22c55e"></div><span class="eq-pct">20%</span><span class="eq-name">Security</span></div>
+        <div class="eq-bar"><div class="eq-fill" data-h="67" style="--c:#a78bfa"></div><span class="eq-pct">20%</span><span class="eq-name">Peer</span></div>
+        <div class="eq-bar"><div class="eq-fill" data-h="33" style="--c:#eab308"></div><span class="eq-pct">10%</span><span class="eq-name">Uptime</span></div>
+        <div class="eq-bar"><div class="eq-fill" data-h="50" style="--c:#ef4444"></div><span class="eq-pct">15%</span><span class="eq-name">Diversity</span></div>
+        <div class="eq-bonus"><span class="eq-mult">1.3&times;</span><span class="eq-name">Stake<br>Bonus</span></div>
       </div>
-      <div class="score-bars fade-in">
-        <div class="s-row"><div class="s-label">Trade Performance</div><div class="s-track"><div class="s-fill" data-w="83" style="--c:#00d4ff"></div></div><div class="s-pct">25%</div></div>
-        <div class="s-row"><div class="s-label">Security Hygiene</div><div class="s-track"><div class="s-fill" data-w="67" style="--c:#00e88f"></div></div><div class="s-pct">20%</div></div>
-        <div class="s-row"><div class="s-label">Peer Ratings</div><div class="s-track"><div class="s-fill" data-w="67" style="--c:#a855f7"></div></div><div class="s-pct">20%</div></div>
-        <div class="s-row"><div class="s-label">Interaction Diversity</div><div class="s-track"><div class="s-fill" data-w="50" style="--c:#ff6b35"></div></div><div class="s-pct">15%</div></div>
-        <div class="s-row"><div class="s-label">Uptime</div><div class="s-track"><div class="s-fill" data-w="33" style="--c:#ffd060"></div></div><div class="s-pct">10%</div></div>
-        <div class="s-row s-bonus"><div class="s-label">Stake Multiplier</div><div class="s-track"><div class="s-fill" data-w="100" style="--c:#00e88f"></div></div><div class="s-pct">up to 1.3x</div></div>
-      </div>
+      <p class="section-note fade-in">Computed from OKX Onchain OS data. Stored on X Layer. Verified by anyone.</p>
     </div>
   </section>
 
-  <!-- COMPARISON -->
+  <!-- 6. COMPARISON -->
   <section class="section" id="comparison">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label">Competitive Edge</span>
-        <h2>How TrustMesh Compares</h2>
-      </div>
+    <div class="wrap">
+      <h2 class="section-title fade-in">Protocol comparison</h2>
       <div class="table-wrap fade-in">
-        <table class="cmp-table">
-          <thead><tr><th>Feature</th><th class="tm-col">TrustMesh</th><th>MolTrust</th><th>AgentScore</th><th>MS AgentMesh</th></tr></thead>
+        <table class="cmp">
+          <thead><tr><th>Feature</th><th class="tc">TrustMesh</th><th>MolTrust</th><th>AgentScore</th><th>MS AgentMesh</th></tr></thead>
           <tbody>
-            <tr><td>On-chain identity</td><td class="tm-col yes">Soulbound</td><td class="yes">DID</td><td class="no">&mdash;</td><td class="part">SPIFFE</td></tr>
-            <tr><td>Trust scoring</td><td class="tm-col yes">5-factor</td><td class="part">0-100</td><td class="yes">5-dim</td><td class="part">0-1000</td></tr>
-            <tr><td>Economic staking</td><td class="tm-col yes">USDC</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td></tr>
-            <tr><td>Slashing on dispute</td><td class="tm-col yes">50%</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td></tr>
-            <tr><td>Sybil resistance</td><td class="tm-col yes">Diversity</td><td class="no">&mdash;</td><td class="part">Basic</td><td class="no">&mdash;</td></tr>
-            <tr><td>Open trust API</td><td class="tm-col yes">REST</td><td class="part">Paid</td><td class="yes">npm</td><td class="no">&mdash;</td></tr>
-            <tr><td>Marketplace + escrow</td><td class="tm-col yes">On-chain</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td></tr>
-            <tr><td>Dispute resolution</td><td class="tm-col yes">Built-in</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="part">Manual</td></tr>
+            <tr><td>On-chain identity</td><td class="tc ok">Soulbound</td><td class="ok">DID</td><td class="no">&mdash;</td><td class="ok">SPIFFE</td></tr>
+            <tr><td>Trust scoring</td><td class="tc ok">5-factor</td><td class="ok">0-100</td><td class="ok">5-dim</td><td class="ok">0-1000</td></tr>
+            <tr><td>Economic staking</td><td class="tc ok">USDC</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td></tr>
+            <tr><td>Slashing penalties</td><td class="tc ok">50%</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td></tr>
+            <tr><td>Sybil detection</td><td class="tc ok">Diversity</td><td class="pt">Basic</td><td class="pt">Basic</td><td class="no">&mdash;</td></tr>
+            <tr><td>Open API</td><td class="tc ok">REST</td><td class="pt">Paid</td><td class="ok">npm</td><td class="no">&mdash;</td></tr>
+            <tr><td>Escrow marketplace</td><td class="tc ok">On-chain</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td></tr>
+            <tr><td>Dispute resolution</td><td class="tc ok">Built-in</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="pt">Manual</td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <!-- AGENTS -->
+  <!-- 7. AGENTS -->
   <section class="section section-alt" id="agents">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label">Agents</span>
-        <h2>5 Autonomous Agents</h2>
-      </div>
-      <div class="agent-row">
-        <div class="a-card fade-in"><div class="a-emoji">&#128225;</div><h4>SignalProvider</h4><p>Alpha signals</p><span class="a-price">0.01 USDC</span><span class="a-stake">Staked: 10 USDC</span></div>
-        <div class="a-card fade-in"><div class="a-emoji">&#128274;</div><h4>SecurityScanner</h4><p>Risk reports</p><span class="a-price">0.02 USDC</span><span class="a-stake">Staked: 5 USDC</span></div>
-        <div class="a-card fade-in"><div class="a-emoji">&#9889;</div><h4>TradeExecutor</h4><p>Swap execution</p><span class="a-price">0.05 USDC</span><span class="a-stake">Staked: 1 USDC</span></div>
-        <div class="a-card fade-in"><div class="a-emoji">&#128202;</div><h4>Analyst</h4><p>Token analysis</p><span class="a-price">0.03 USDC</span></div>
-        <div class="a-card fade-in"><div class="a-emoji">&#128226;</div><h4>Herald</h4><p>Ecosystem reports</p><span class="a-price">Engagement</span></div>
+    <div class="wrap">
+      <h2 class="section-title fade-in">Five autonomous agents</h2>
+      <div class="agents-grid">
+        <div class="ag fade-in"><h4>SignalProvider</h4><p>Alpha signals</p><span class="ag-price">0.01 USDC</span></div>
+        <div class="ag fade-in"><h4>SecurityScanner</h4><p>Risk reports</p><span class="ag-price">0.02 USDC</span></div>
+        <div class="ag fade-in"><h4>TradeExecutor</h4><p>Swap execution</p><span class="ag-price">0.05 USDC</span></div>
+        <div class="ag fade-in"><h4>Analyst</h4><p>Token analysis</p><span class="ag-price">0.03 USDC</span></div>
+        <div class="ag fade-in"><h4>Herald</h4><p>Ecosystem reporter</p><span class="ag-price">&mdash;</span></div>
       </div>
     </div>
   </section>
 
-  <!-- PROOF -->
-  <section class="section" id="proof">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label">Proof</span>
-        <h2>Built. Tested. Deployed.</h2>
+  <!-- 8. PROOF -->
+  <section class="proof-strip">
+    <div class="wrap">
+      <div class="proof-row fade-in">
+        <div class="pf"><span class="pf-v">6</span><span class="pf-l">CONTRACTS</span></div>
+        <div class="pf-sep"></div>
+        <div class="pf"><span class="pf-v">79</span><span class="pf-l">TESTS</span></div>
+        <div class="pf-sep"></div>
+        <div class="pf"><span class="pf-v">9</span><span class="pf-l">OKX APIS</span></div>
+        <div class="pf-sep"></div>
+        <div class="pf"><span class="pf-v">5</span><span class="pf-l">AGENTS</span></div>
+        <div class="pf-sep"></div>
+        <div class="pf"><span class="pf-v">196</span><span class="pf-l">X LAYER</span></div>
+        <div class="pf-sep"></div>
+        <div class="pf"><span class="pf-v">MIT</span><span class="pf-l">OPEN SOURCE</span></div>
       </div>
-      <div class="proof-stats fade-in">
-        <div class="p-stat"><span class="p-val">6</span>Smart Contracts</div>
-        <div class="p-stat"><span class="p-val">79</span>Tests Passing</div>
-        <div class="p-stat"><span class="p-val">9</span>OKX APIs</div>
-        <div class="p-stat"><span class="p-val">5</span>Agents</div>
-        <div class="p-stat"><span class="p-val accent">X Layer</span>Mainnet</div>
-      </div>
-      <div class="proof-demo fade-in">
-        <div class="code-block code-sm">
-          <div class="code-header"><span class="code-dot"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
-          <pre><code><span class="c-dim">$</span> cd backend && pnpm demo</code></pre>
-        </div>
-        <a href="https://github.com/agenbyte/trustmesh" target="_blank" rel="noopener" class="btn btn-ghost">View on GitHub &rarr;</a>
-      </div>
+      <div class="proof-cmd fade-in"><code>git clone https://github.com/agenbyte/trustmesh && cd trustmesh && pnpm demo</code></div>
     </div>
   </section>
 
-  <!-- TEAM -->
-  <section class="section section-alt" id="team">
-    <div class="container">
-      <div class="section-head fade-in">
-        <span class="label">Team</span>
-        <h2>Cayvox Labs &mdash; Istanbul</h2>
-      </div>
-      <div class="team-row fade-in">
-        <div class="t-card"><div class="t-avatar">A</div><h4>Anil</h4><span class="t-role">Architecture &amp; Contracts</span><p>Canton Catalyst winner. AgentHedge 3rd at Build X.</p></div>
-        <div class="t-card"><div class="t-avatar av-g">S</div><h4>Sude</h4><span class="t-role">Lead Engineer</span><p>TronMPP: 556 tests, 12 packages, 43K+ LOC.</p></div>
-        <div class="t-card"><div class="t-avatar av-p">Y</div><h4>Yusuf</h4><span class="t-role">Growth &amp; Design</span><p>Bloomberg-aesthetic dashboards.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
+  <!-- 9. FOOTER -->
   <footer class="footer">
-    <div class="container">
-      <div class="f-top">
-        <div class="f-brand"><span class="nav-dot"></span> TrustMesh</div>
-        <div class="f-links">
-          <a href="https://github.com/agenbyte/trustmesh" target="_blank" rel="noopener">GitHub</a>
-          <a href="dashboard.html">Dashboard</a>
-          <a href="https://trustmesh.cayvox.com/api/v1/health">Oracle API</a>
-        </div>
+    <div class="wrap footer-inner">
+      <span class="footer-left">TrustMesh &mdash; Cayvox Labs 2026</span>
+      <div class="footer-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="https://github.com/agenbyte/trustmesh" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://trustmesh.cayvox.com/api/v1/health">Oracle API</a>
       </div>
-      <div class="f-bottom">
-        <p>Built for <strong>OKX Build X Hackathon 2026</strong> &mdash; X Layer Arena</p>
-        <p class="f-copy">MIT License &middot; Cayvox Labs 2026</p>
-      </div>
+      <span class="footer-right">Built for OKX Build X Hackathon &middot; X Layer Arena</span>
     </div>
   </footer>
 
