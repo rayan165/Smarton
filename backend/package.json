@@ -1,0 +1,28 @@
+{
+  "name": "trustmesh-backend",
+  "version": "0.1.0",
+  "description": "TrustMesh — Agent Trust Protocol Backend",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit",
+    "start": "npx tsx scripts/start.ts",
+    "demo": "DEMO_MODE=true npx tsx scripts/start.ts",
+    "seed": "npx tsx scripts/seed-agents.ts"
+  },
+  "keywords": [],
+  "author": "Cayvox Labs",
+  "license": "MIT",
+  "dependencies": {
+    "viem": "^2.47.17"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.4"
+  }
+}
