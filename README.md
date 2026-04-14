@@ -144,13 +144,16 @@ pnpm start
 | Module | Tests | Framework |
 |--------|-------|-----------|
 | AgentRegistry | 8 | Foundry |
-| TrustScorer | 10 | Foundry |
-| ServiceRegistry | 12 | Foundry |
+| TrustScorer | 11 | Foundry |
+| TrustGate | 4 | Foundry |
+| ServiceRegistry | 13 | Foundry |
 | Integration (contracts) | 1 | Foundry |
+| Identity | 3 | Vitest |
 | Scoring Engine | 12 | Vitest |
-| Marketplace + Agents | 11 | Vitest |
+| Marketplace | 5 | Vitest |
+| Agents | 5 | Vitest |
 | Integration (backend) | 3 | Vitest |
-| **Total** | **~57** | |
+| **Total** | **65** | |
 
 ## Technology Stack
 
