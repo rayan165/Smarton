@@ -589,6 +589,168 @@ img {
   box-shadow: 0 0 12px var(--accent-glow-strong);
 }
 
+/* ---- Breakthroughs Section ---- */
+.breakthroughs {
+  background:
+    linear-gradient(180deg, var(--bg) 0%, rgba(17, 17, 24, 0.5) 50%, var(--bg) 100%);
+}
+
+.breakthrough-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.breakthrough-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid;
+  border-image: linear-gradient(180deg, var(--accent), var(--green)) 1;
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.breakthrough-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35), 0 0 60px var(--accent-glow);
+}
+
+.breakthrough-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.breakthrough-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.breakthrough-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.breakthrough-stat {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+}
+
+.breakthrough-code {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+
+.breakthrough-code code {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+/* ---- Comparison Section ---- */
+.comparison-table-wrapper {
+  overflow-x: auto;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.comparison-table thead {
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.comparison-table th {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 16px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.comparison-table th:first-child {
+  text-align: left;
+  color: var(--text);
+}
+
+.comparison-table th.highlight-col {
+  color: var(--accent);
+  background: rgba(0, 212, 255, 0.08);
+}
+
+.comparison-table td {
+  padding: 14px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.comparison-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.comparison-table td.highlight-col {
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.comparison-table tbody tr:hover {
+  background: var(--bg-card-hover);
+}
+
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.check {
+  color: var(--green);
+  font-size: 1rem;
+}
+
+.cross {
+  color: #ef4444;
+  font-size: 1rem;
+}
+
+.partial {
+  color: var(--orange);
+  font-size: 1rem;
+}
+
 /* ---- Trust Score Section ---- */
 .trust-score {
   background:
@@ -675,6 +837,15 @@ img {
   font-size: 0.85rem;
   color: var(--text-muted);
   line-height: 1.5;
+}
+
+.score-card-bonus {
+  border: 1px solid rgba(0, 232, 143, 0.25);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(0, 232, 143, 0.04) 100%);
+}
+
+.score-card-bonus .score-weight {
+  color: var(--green);
 }
 
 /* ---- Agents Section ---- */
@@ -982,6 +1153,21 @@ img {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
+
+  .breakthrough-grid {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .comparison-table {
+    font-size: 0.8rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 12px 14px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1054,6 +1240,17 @@ img {
   .integrations-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+  }
+
+  .breakthrough-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 10px 10px;
+    font-size: 0.75rem;
   }
 
   .team-grid {

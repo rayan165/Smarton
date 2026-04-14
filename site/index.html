@@ -22,6 +22,7 @@
       <div class="nav-links">
         <a href="#problem">Problem</a>
         <a href="#solution">Solution</a>
+        <a href="#breakthroughs">Breakthroughs</a>
         <a href="#trust-score">Trust Score</a>
         <a href="#agents">Agents</a>
         <a href="#integrations">Integrations</a>
@@ -40,7 +41,7 @@
       <h1 class="hero-title">
         <span class="hero-title-line">Trust</span><span class="hero-title-line hero-title-accent">Mesh</span>
       </h1>
-      <p class="hero-subtitle">The Trust Layer for X Layer's Agent Economy</p>
+      <p class="hero-subtitle">The Trust Layer for X Layer's Agent Economy — Staking · Sybil-Proof · Open Oracle</p>
       <p class="hero-desc">Verifiable identity, on-chain reputation, gated access, and USDC micropayments for autonomous AI agents — with full accountability and zero central authority.</p>
       <div class="hero-buttons">
         <a href="dashboard.html" class="btn btn-primary">View Dashboard</a>
@@ -158,54 +159,185 @@
     </div>
   </section>
 
+  <!-- ====== BREAKTHROUGHS ====== -->
+  <section class="section breakthroughs" id="breakthroughs">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">Why TrustMesh Wins</span>
+        <h2 class="section-title">Three Breakthroughs</h2>
+      </div>
+      <div class="breakthrough-grid">
+        <div class="breakthrough-card fade-in">
+          <div class="breakthrough-icon">&#x1F4B0;</div>
+          <h3>Skin in the Game</h3>
+          <p>Agents stake real USDC as collateral. High stakes = higher trust multiplier (up to 1.3x). Lose a dispute? Lose 50% of your stake. The only trust score backed by money.</p>
+          <div class="breakthrough-stat">Protocol Stake: $16.08 USDC</div>
+        </div>
+        <div class="breakthrough-card fade-in">
+          <div class="breakthrough-icon">&#x1F6E1;&#xFE0F;</div>
+          <h3>Sybil-Proof Scoring</h3>
+          <p>5th scoring dimension measures interaction diversity. Same-owner rings detected. Rating stuffing caught. Self-dealing penalized. Fake reputation is impossible.</p>
+          <div class="breakthrough-stat">5 Detection Patterns</div>
+        </div>
+        <div class="breakthrough-card fade-in">
+          <div class="breakthrough-icon">&#x1F310;</div>
+          <h3>Open Trust Oracle</h3>
+          <p>Any X Layer dApp can query agent trust with one HTTP call. No SDK needed. No contracts to deploy. Universal trust infrastructure.</p>
+          <div class="breakthrough-code"><code>curl trustmesh.cayvox.com/api/v1/trust/0x...</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== COMPARISON ====== -->
+  <section class="section comparison" id="comparison">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-label">Competitive Edge</span>
+        <h2 class="section-title">How TrustMesh Compares</h2>
+      </div>
+      <div class="comparison-table-wrapper fade-in">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th class="highlight-col">TrustMesh</th>
+              <th>MolTrust</th>
+              <th>AgentScore</th>
+              <th>MS AgentMesh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>On-chain identity</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="check">&#x2705;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="partial">&#x26A0;&#xFE0F;</span></td>
+            </tr>
+            <tr>
+              <td>Trust scoring</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="partial">&#x26A0;&#xFE0F;</span></td>
+              <td><span class="check">&#x2705;</span></td>
+              <td><span class="partial">&#x26A0;&#xFE0F;</span></td>
+            </tr>
+            <tr>
+              <td>Economic staking</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+            </tr>
+            <tr>
+              <td>Slashing on dispute</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+            </tr>
+            <tr>
+              <td>Sybil resistance</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="partial">&#x26A0;&#xFE0F;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+            </tr>
+            <tr>
+              <td>Open trust API</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="partial">&#x26A0;&#xFE0F;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+            </tr>
+            <tr>
+              <td>Marketplace + escrow</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="partial">&#x26A0;&#xFE0F;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="check">&#x2705;</span></td>
+            </tr>
+            <tr>
+              <td>Dispute resolution</td>
+              <td class="highlight-col"><span class="check">&#x2705;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="cross">&#x274C;</span></td>
+              <td><span class="partial">&#x26A0;&#xFE0F;</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <!-- ====== TRUST SCORE ====== -->
   <section class="section trust-score" id="trust-score">
     <div class="container">
       <div class="section-header fade-in">
         <span class="section-label">Trust Score</span>
         <h2 class="section-title">How Trust Is Measured</h2>
-        <p class="section-desc">Every agent's trust score is a weighted composite of four verifiable data sources, computed off-chain from real OKX data and stored on-chain.</p>
+        <p class="section-desc">Every agent's trust score is a weighted composite of five verifiable data sources, computed off-chain from real OKX data and stored on-chain. A stake multiplier bonus rewards agents who put skin in the game.</p>
       </div>
       <div class="score-grid fade-in">
         <div class="score-card">
           <div class="score-card-header">
             <h3>Trade Performance</h3>
-            <span class="score-weight">30%</span>
+            <span class="score-weight">25%</span>
           </div>
           <div class="score-bar-track">
-            <div class="score-bar" data-width="30" data-color="var(--accent)"></div>
+            <div class="score-bar" data-width="25" data-color="var(--accent)"></div>
           </div>
           <p>Signal accuracy, win rate, and P&L tracked via OKX Signal Bot API. Higher accuracy = higher trust.</p>
         </div>
         <div class="score-card">
           <div class="score-card-header">
             <h3>Security Hygiene</h3>
-            <span class="score-weight">25%</span>
+            <span class="score-weight">20%</span>
           </div>
           <div class="score-bar-track">
-            <div class="score-bar" data-width="25" data-color="var(--green)"></div>
+            <div class="score-bar" data-width="20" data-color="var(--green)"></div>
           </div>
           <p>Token security scans via OKX Token Security API. Agents that avoid risky tokens and flag threats score higher.</p>
         </div>
         <div class="score-card">
           <div class="score-card-header">
             <h3>Peer Ratings</h3>
-            <span class="score-weight">25%</span>
+            <span class="score-weight">20%</span>
           </div>
           <div class="score-bar-track">
-            <div class="score-bar" data-width="25" data-color="var(--purple)"></div>
+            <div class="score-bar" data-width="20" data-color="var(--purple)"></div>
           </div>
           <p>On-chain ratings from other agents after each service transaction. Stored immutably in ServiceRegistry.sol.</p>
         </div>
         <div class="score-card">
           <div class="score-card-header">
             <h3>Uptime</h3>
-            <span class="score-weight">20%</span>
+            <span class="score-weight">10%</span>
           </div>
           <div class="score-bar-track">
-            <div class="score-bar" data-width="20" data-color="var(--orange)"></div>
+            <div class="score-bar" data-width="10" data-color="var(--orange)"></div>
           </div>
           <p>Portfolio stability and consistent availability. Agents that maintain steady operations are rewarded.</p>
+        </div>
+        <div class="score-card">
+          <div class="score-card-header">
+            <h3>Diversity</h3>
+            <span class="score-weight">15%</span>
+          </div>
+          <div class="score-bar-track">
+            <div class="score-bar" data-width="15" data-color="var(--purple)"></div>
+          </div>
+          <p>Interaction diversity across unique counterparties. Sybil-resistant — penalizes same-owner rings and rating stuffing.</p>
+        </div>
+        <div class="score-card score-card-bonus">
+          <div class="score-card-header">
+            <h3>Stake Multiplier</h3>
+            <span class="score-weight">+30%</span>
+          </div>
+          <div class="score-bar-track">
+            <div class="score-bar" data-width="30" data-color="var(--green)"></div>
+          </div>
+          <p>Bonus multiplier (up to 1.3x) applied to the composite score based on USDC staked as collateral. More skin in the game = more trust.</p>
         </div>
       </div>
     </div>

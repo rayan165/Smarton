@@ -2,6 +2,8 @@
 
 **The Trust & Reputation Protocol for AI Agents on X Layer**
 
+**Staking . Sybil-Proof . Open Oracle**
+
 > The agent economy needs a trust layer. We built it.
 
 ---
@@ -20,16 +22,56 @@ When Agent A wants to pay Agent B via x402 for a trading signal:
 
 No reputation. No accountability. No recourse. Rational agents don't transact with strangers. The economy stays frozen.
 
-## The Solution
+## The Solution — Three Breakthroughs
 
-TrustMesh is the trust infrastructure layer for X Layer's agent economy. On-chain identity, data-driven reputation, trust-gated marketplace, USDC escrow settlement.
+TrustMesh is the trust infrastructure layer for X Layer's agent economy. On-chain identity, data-driven reputation, trust-gated marketplace, USDC escrow settlement — plus three capabilities no other protocol offers.
 
+### :lock: Economic Accountability (Staking + Slashing)
+
+Every other trust protocol stops at reputation scores. TrustMesh goes further: agents **stake USDC as collateral** to back their reputation with real money.
+
+- Agents deposit USDC into the TrustMeshStaking contract, earning up to a **1.3x trust score multiplier**
+- Lose a dispute = lose **50% of your stake** (60% paid to the victim, 40% to the protocol treasury)
+- Higher stake = higher trust multiplier = access to premium services and buyers
+- Unstaking has a 24-hour cooldown to prevent stake-and-run attacks
+
+> "MolTrust rates agents. AgentScore aggregates reputation. TrustMesh makes agents put their money where their score is."
+
+### :shield: Sybil Resistance (Interaction Diversity Scoring)
+
+Most reputation systems are trivially gameable: create 10 sock-puppet agents, trade with yourself, inflate your score. TrustMesh adds a **5th scoring dimension** that detects and penalizes this behavior.
+
+- **Interaction Diversity Score** measures the number of unique counterparties, repeat-interaction ratio, and cluster analysis
+- Detects self-dealing rings, same-owner clusters, and rating stuffing patterns
+- Agents with low diversity get score penalties regardless of other factors
+- Score composition: **Trade 25% . Security 20% . Peer 20% . Uptime 10% . Diversity 15% . Stake Bonus up to 1.3x**
+
+### :globe_with_meridians: Open Trust Oracle (Universal API)
+
+TrustMesh exposes every agent's trust data through a simple REST API — any dApp on X Layer can query trust scores without importing contracts or running a node.
+
+```bash
+curl https://trustmesh.cayvox.com/api/v1/trust/0xAgentAddress
+
+# Response:
+{
+  "agent": "0xAgentAddress",
+  "score": 78.50,
+  "tier": "Proven",
+  "factors": { "trade": 82, "security": 90, "peer": 71, "uptime": 65, "diversity": 74 },
+  "stakeMultiplier": 1.15,
+  "finalScore": 90.28,
+  "updatedAt": "2026-04-14T12:00:00Z"
+}
 ```
-Register → Build Trust → Sell Services → Earn Reputation → Tier Up
-    │            │              │               │            │
- ERC-721     OKX Data      USDC Escrow     Peer Ratings   Access
- Identity    Scoring       Marketplace     Weighted by     Premium
- Soulbound   4 Factors    Trust-Gated     Rater Trust     Services
+
+**Any X Layer dApp, one HTTP call.** No ABI, no RPC, no contract reads.
+
+```js
+// 3-line integration
+const res = await fetch("https://trustmesh.cayvox.com/api/v1/trust/" + agentAddr);
+const { finalScore, tier } = await res.json();
+if (finalScore < 60) throw new Error("Agent below trust threshold");
 ```
 
 ## Architecture
@@ -42,12 +84,14 @@ Composite reputation score (0–100.00) computed from real OKX Onchain OS data:
 
 | Factor | Weight | Source |
 |--------|--------|--------|
-| Trade Performance | 30% | OKX Signal API — win rate, P&L |
-| Security Hygiene | 25% | OKX Security API — safe vs risky token ratio |
-| Peer Ratings | 25% | On-chain ratings weighted by rater's trust |
-| Uptime & Consistency | 20% | OKX Portfolio API — balance stability |
+| Trade Performance | 25% | OKX Signal API — win rate, P&L |
+| Security Hygiene | 20% | OKX Security API — safe vs risky token ratio |
+| Peer Ratings | 20% | On-chain ratings weighted by rater's trust |
+| Uptime & Consistency | 10% | OKX Portfolio API — balance stability |
+| Interaction Diversity | 15% | Unique counterparties, cluster analysis |
+| **Stake Multiplier** | **up to 1.3x** | **USDC staked in TrustMeshStaking** |
 
-Scores computed off-chain (TypeScript), stored on-chain (Solidity). On-chain verifiability without oracle complexity.
+Scores computed off-chain (TypeScript), stored on-chain (Solidity). Stake multiplier applied after base score. On-chain verifiability without oracle complexity.
 
 ### Layer 3: Trust-Gated Marketplace (ServiceRegistry)
 Agent-to-agent service exchange with full on-chain escrow:
@@ -70,6 +114,7 @@ All deployed on **X Layer Mainnet** (chainId 196).
 | TrustScorer | `TBD` | Trust score storage + automatic tier promotion |
 | TrustGate | `TBD` | Access control — any protocol can import |
 | ServiceRegistry | `TBD` | Marketplace + USDC escrow + ratings + disputes |
+| TrustMeshStaking | `TBD` | USDC staking + slashing + multipliers |
 | TrustMeshTreasury | `TBD` | Protocol fees + rating incentive distribution |
 
 ## OKX Onchain OS Integration
@@ -147,13 +192,15 @@ pnpm start
 | TrustScorer | 11 | Foundry |
 | TrustGate | 4 | Foundry |
 | ServiceRegistry | 13 | Foundry |
+| TrustMeshStaking | 8 | Foundry |
 | Integration (contracts) | 1 | Foundry |
 | Identity | 3 | Vitest |
 | Scoring Engine | 12 | Vitest |
 | Marketplace | 5 | Vitest |
 | Agents | 5 | Vitest |
+| Sybil + Oracle | 6 | Vitest |
 | Integration (backend) | 3 | Vitest |
-| **Total** | **65** | |
+| **Total** | **79** | **45 contract + 34 backend** |
 
 ## Technology Stack
 
@@ -184,6 +231,39 @@ OKX Infrastructure          TrustMesh              Agent Economy
 
 Without TrustMesh: agents have wallets, intelligence, and payment rails — but no reason to trust each other.
 With TrustMesh: verifiable identity, data-driven reputation, and accountable marketplace.
+
+## Trust Oracle API
+
+Any dApp on X Layer can query agent trust data via REST. No contract imports, no RPC setup, no ABI decoding.
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/trust/:address` | GET | Full trust profile (score, tier, factors, stake) |
+| `/api/v1/trust/:address/score` | GET | Numeric score + tier only |
+| `/api/v1/trust/:address/history` | GET | Score history over time |
+| `/api/v1/trust/leaderboard` | GET | Top agents by trust score |
+| `/api/v1/trust/verify/:address/:minScore` | GET | Boolean pass/fail check |
+
+**3-line integration for any X Layer dApp:**
+
+```js
+const res = await fetch("https://trustmesh.cayvox.com/api/v1/trust/" + agentAddr);
+const { finalScore, tier } = await res.json();
+if (finalScore < 60) throw new Error("Agent below trust threshold");
+```
+
+## How TrustMesh Compares
+
+| Feature | TrustMesh | MolTrust | AgentScore | MS AgentMesh |
+|---------|-----------|----------|------------|--------------|
+| On-chain identity | Yes (ERC-721 soulbound) | Yes | No | No |
+| Trust scoring | Yes (5 factors + OKX data) | Yes (single metric) | Yes (aggregation) | No |
+| Economic staking | **Yes (USDC collateral)** | No | No | No |
+| Slashing on disputes | **Yes (50% stake loss)** | No | No | No |
+| Sybil resistance | **Yes (diversity scoring)** | No | No | No |
+| Open trust API | **Yes (REST oracle)** | No | No | No |
+| Marketplace + escrow | Yes (USDC escrow) | No | No | No |
+| Dispute resolution | Yes (on-chain) | No | No | No |
 
 ## Team
 

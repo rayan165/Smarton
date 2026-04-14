@@ -43,6 +43,12 @@ const DEMO_AGENTS = [
     rating: 4.6,
     color: '#00d4ff',
     initials: 'SP',
+    staked: 10.00,
+    multiplier: '1.2x',
+    stakingStatus: 'Active',
+    diversity: 85,
+    riskLevel: 'low',
+    patterns: [],
   },
   {
     id: 2,
@@ -58,6 +64,12 @@ const DEMO_AGENTS = [
     rating: 4.2,
     color: '#00e88f',
     initials: 'SB',
+    staked: 5.00,
+    multiplier: '1.1x',
+    stakingStatus: 'Active',
+    diversity: 72,
+    riskLevel: 'low',
+    patterns: [],
   },
   {
     id: 3,
@@ -73,6 +85,12 @@ const DEMO_AGENTS = [
     rating: 3.8,
     color: '#aa66ff',
     initials: 'TE',
+    staked: 1.00,
+    multiplier: '1.1x',
+    stakingStatus: 'Active',
+    diversity: 60,
+    riskLevel: 'low',
+    patterns: [],
   },
   {
     id: 4,
@@ -88,6 +106,12 @@ const DEMO_AGENTS = [
     rating: 3.2,
     color: '#ff8844',
     initials: 'AX',
+    staked: 0,
+    multiplier: '1.0x',
+    stakingStatus: 'None',
+    diversity: 40,
+    riskLevel: 'medium',
+    patterns: ['CONCENTRATED_COUNTERPARTY'],
   },
   {
     id: 5,
@@ -103,6 +127,12 @@ const DEMO_AGENTS = [
     rating: null,
     color: '#ffd060',
     initials: 'HR',
+    staked: 0,
+    multiplier: '1.0x',
+    stakingStatus: 'None',
+    diversity: null,
+    riskLevel: 'low',
+    patterns: [],
   },
 ];
 
@@ -111,6 +141,7 @@ const DEMO_STATS = {
   activeServices: 4,
   totalOrders: 207,
   usdcVolume: '$6.21',
+  totalStaked: '$16.08',
 };
 
 const DEMO_ACTIVITIES = [
@@ -147,6 +178,8 @@ document.addEventListener('DOMContentLoaded', function () {
   renderActivity(DEMO_ACTIVITIES);
   renderRadar(DEMO_AGENTS[0]);
   updateStats(DEMO_STATS);
+  renderStaking(DEMO_AGENTS);
+  renderSybil(DEMO_AGENTS);
   tryLiveConnection();
   startRefreshTimer();
 });
@@ -201,6 +234,10 @@ function renderLeaderboard(agents) {
       '<td class="sub-score">' + agent.security + '</td>' +
       '<td class="sub-score">' + agent.peer + '</td>' +
       '<td class="sub-score">' + agent.uptime + '</td>' +
+      '<td class="sub-score">' + (agent.staked ? '$' + agent.staked.toFixed(2) : '\u2014') + '</td>' +
+      '<td class="sub-score">' + (agent.multiplier || '1.0x') + '</td>' +
+      '<td class="sub-score">' + (agent.diversity !== null ? agent.diversity + '%' : '\u2014') + '</td>' +
+      '<td><span class="risk-badge ' + (agent.riskLevel || 'low') + '">' + (agent.riskLevel || 'low').toUpperCase() + '</span></td>' +
       '<td class="orders-cell">' + agent.orders + '</td>' +
       '<td class="rating-cell">' + ratingStr + '</td>';
 
@@ -368,6 +405,77 @@ function updateStats(stats) {
   document.getElementById('statServices').textContent = stats.activeServices;
   document.getElementById('statOrders').textContent = stats.totalOrders;
   document.getElementById('statVolume').textContent = stats.usdcVolume;
+  if (stats.totalStaked) {
+    document.getElementById('statStaked').textContent = stats.totalStaked;
+  }
+}
+
+// --- Staking Table ---
+function renderStaking(agents) {
+  var stakingBody = document.getElementById('stakingBody');
+  if (!stakingBody) return;
+  stakingBody.innerHTML = '';
+
+  agents.forEach(function (agent) {
+    var row = document.createElement('tr');
+    var statusClass = agent.stakingStatus === 'Active' ? 'tier-3' : 'tier-1';
+    row.innerHTML =
+      '<td>' +
+        '<div class="agent-cell">' +
+          '<div class="agent-avatar" style="background:' + agent.color + '">' + agent.initials + '</div>' +
+          '<span class="agent-name">' + agent.name + '</span>' +
+        '</div>' +
+      '</td>' +
+      '<td class="sub-score">' + (agent.staked ? '$' + agent.staked.toFixed(2) : '\u2014') + '</td>' +
+      '<td class="sub-score">' + (agent.multiplier || '1.0x') + '</td>' +
+      '<td><span class="tier-badge ' + statusClass + '">' + (agent.stakingStatus || 'None') + '</span></td>';
+    stakingBody.appendChild(row);
+  });
+}
+
+// --- Sybil Monitor ---
+function renderSybil(agents) {
+  var sybilGrid = document.getElementById('sybilGrid');
+  if (!sybilGrid) return;
+  sybilGrid.innerHTML = '';
+
+  agents.forEach(function (agent) {
+    var card = document.createElement('div');
+    card.className = 'sybil-card';
+
+    var diversityValue = agent.diversity !== null ? agent.diversity : 0;
+    var diversityLabel = agent.diversity !== null ? agent.diversity + '%' : 'N/A';
+    var barColor;
+    if (diversityValue >= 60) barColor = '#00e88f';
+    else if (diversityValue >= 30) barColor = '#ffd060';
+    else barColor = '#ff4466';
+
+    var patternsHtml = '';
+    if (agent.patterns && agent.patterns.length > 0) {
+      patternsHtml = '<div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">' +
+        agent.patterns.map(function (p) {
+          return '<span style="background:rgba(255,68,102,0.12);color:var(--red);padding:2px 6px;border-radius:3px;margin-right:4px;font-size:10px">' + p + '</span>';
+        }).join('') +
+        '</div>';
+    }
+
+    card.innerHTML =
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">' +
+        '<div class="agent-avatar" style="background:' + agent.color + ';width:28px;height:28px;font-size:11px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">' + agent.initials + '</div>' +
+        '<span class="agent-name">' + agent.name + '</span>' +
+        '<span class="risk-badge ' + (agent.riskLevel || 'low') + '" style="margin-left:auto">' + (agent.riskLevel || 'low').toUpperCase() + '</span>' +
+      '</div>' +
+      '<div class="sybil-bar-bg">' +
+        '<div class="sybil-bar-fill" style="width:' + diversityValue + '%;background:' + barColor + '"></div>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px">' +
+        '<span style="color:var(--text-secondary)">Diversity</span>' +
+        '<span style="color:var(--text-primary);font-family:\'Space Mono\',monospace;font-weight:600">' + diversityLabel + '</span>' +
+      '</div>' +
+      patternsHtml;
+
+    sybilGrid.appendChild(card);
+  });
 }
 
 // --- Live Contract Connection ---

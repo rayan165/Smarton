@@ -4,6 +4,8 @@
 
 TrustMesh is the trust and reputation protocol for AI agents on X Layer. It enables agents to verify identity, build on-chain reputation through verifiable performance data, gate service access by trust tier, and exchange services via USDC micropayments — all with full accountability and zero central authority.
 
+**Three Differentiators**: (1) Economic Accountability — agents stake USDC, disputes trigger slashing; (2) Sybil Resistance — 5th scoring dimension detects fake reputation rings; (3) Open Trust Oracle — REST API for any X Layer dApp to query trust.
+
 **Hackathon**: OKX Build X Hackathon — X Layer Arena
 **Deadline**: April 15, 2026 23:59 UTC
 **Prize Targets**: 1st Prize (2,000 USDT) + Most Active Agent (500 USDT) + Most Popular (500 USDT)
@@ -27,16 +29,19 @@ trustmesh/
 │   │   ├── TrustGate.sol          # Access control modifiers
 │   │   ├── ServiceRegistry.sol    # Marketplace listings + escrow + ratings
 │   │   ├── TrustMeshTreasury.sol  # Protocol fees + incentives
+│   │   ├── TrustMeshStaking.sol   # USDC staking + slashing + multipliers
 │   │   └── interfaces/
 │   │       ├── IAgentRegistry.sol
 │   │       ├── ITrustScorer.sol
 │   │       ├── ITrustGate.sol
-│   │       └── IServiceRegistry.sol
+│   │       ├── IServiceRegistry.sol
+│   │       └── ITrustMeshStaking.sol
 │   ├── test/
 │   │   ├── AgentRegistry.t.sol
 │   │   ├── TrustScorer.t.sol
 │   │   ├── TrustGate.t.sol
 │   │   ├── ServiceRegistry.t.sol
+│   │   ├── TrustMeshStaking.t.sol
 │   │   └── Integration.t.sol
 │   └── script/
 │       └── Deploy.s.sol
@@ -53,7 +58,7 @@ trustmesh/
 │   │   ├── config.ts              # Configuration loader + validation
 │   │   ├── utils/
 │   │   │   ├── okx-client.ts      # OKX Onchain OS API client (HMAC auth, rate limit, cache)
-│   │   │   ├── contract-client.ts # Viem contract interactions (all 5 contracts)
+│   │   │   ├── contract-client.ts # Viem contract interactions (all 6 contracts)
 │   │   │   └── logger.ts          # Structured logging
 │   │   ├── identity/
 │   │   │   ├── agent-registrar.ts # Register agents on-chain
@@ -64,8 +69,11 @@ trustmesh/
 │   │   │   ├── security-hygiene.ts   # OKX Security API scoring
 │   │   │   ├── peer-ratings.ts       # On-chain rating aggregation
 │   │   │   ├── uptime-tracker.ts     # Portfolio stability scoring
-│   │   │   ├── composite-scorer.ts   # Weighted composite calculation
+│   │   │   ├── composite-scorer.ts   # Weighted composite calculation (5 factors + stake)
+│   │   │   ├── sybil-detector.ts    # Interaction diversity + sybil ring detection
 │   │   │   └── index.ts
+│   │   ├── api/
+│   │   │   └── trust-oracle.ts      # REST API — open trust oracle for any dApp
 │   │   ├── marketplace/
 │   │   │   ├── service-lister.ts     # List/delist services
 │   │   │   ├── escrow-manager.ts     # USDC escrow deposit/release
@@ -166,6 +174,7 @@ TRUST_SCORER_ADDRESS=
 TRUST_GATE_ADDRESS=
 SERVICE_REGISTRY_ADDRESS=
 TREASURY_ADDRESS=
+STAKING_ADDRESS=
 
 # Deployer wallet
 DEPLOYER_PRIVATE_KEY=
@@ -179,6 +188,7 @@ USDC_ADDRESS=0x74b7f16337b8972027f6196a17a631ac6de26d22
 # Misc
 LOG_LEVEL=info
 DEMO_MODE=false
+ORACLE_PORT=3000
 ```
 
 ## X Layer Details
@@ -248,4 +258,14 @@ pnpm seed           # Register agents + generate initial txns on mainnet
 
 5. **Agentic Wallet**: The project's onchain identity is the OKX Agentic Wallet at `0x3ae6dd9075bc44b6e5ca1981fab4cb0edf3c72c0`. Individual agents use the deployer wallet for contract interactions (simplicity for hackathon).
 
-6. **Priority order**: Contracts → Backend (scoring + marketplace + agents) → Demo mode → Mainnet deployment → Site/Dashboard. If time is short, site is the first thing to cut.
+6. **Staking + Slashing**: TrustMeshStaking.sol holds USDC collateral. Agents stake to get trust multiplier (1.0x-1.3x). On dispute refund, ServiceRegistry calls staking.slashAgent() — 50% slashed, 60/40 split buyer/treasury. 24h unstake cooldown, 7-day post-slash lock.
+
+7. **Sybil Resistance**: The 5th scoring dimension — Interaction Diversity (15% weight) — analyzes counterparty uniqueness. Detects concentrated counterparties, same-owner rings, rating stuffing. Computed in sybil-detector.ts.
+
+8. **Trust Oracle API**: HTTP server (Node built-in, no Express) on port 3000. Any X Layer dApp can query agent trust via REST: /api/v1/trust/:address. CORS enabled, rate limited, cached responses.
+
+9. **Scoring weights**: Trade 25%, Security 20%, Peer 20%, Uptime 10%, Diversity 15%. Stake multiplier applied as post-processing bonus (up to 1.3x).
+
+10. **Deployment order**: AgentRegistry → TrustScorer → TrustGate → TrustMeshTreasury → ServiceRegistry → TrustMeshStaking → wire all contracts.
+
+11. **Priority order**: Contracts → Backend (scoring + marketplace + agents) → Demo mode → Mainnet deployment → Site/Dashboard. If time is short, site is the first thing to cut.
