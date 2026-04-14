@@ -6,277 +6,139 @@
   <title>TrustMesh Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M14 2L2 8v12l12 6 12-6V8L14 2z" stroke="#00d4ff" stroke-width="1.5" fill="none"/>
-          <path d="M14 8L8 11v6l6 3 6-3v-6l-6-3z" fill="#00d4ff" opacity="0.3"/>
-          <circle cx="14" cy="14" r="3" fill="#00d4ff"/>
-        </svg>
-      </div>
-      <span class="brand-name">TrustMesh</span>
-    </div>
-
-    <nav class="sidebar-nav">
-      <a href="#" class="nav-item active">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-        </svg>
-        <span>Dashboard</span>
-      </a>
-      <a href="#leaderboard-section" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 20V10M18 20V4M6 20v-4"/>
-        </svg>
-        <span>Leaderboard</span>
-      </a>
-      <a href="#radar-section" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-          <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
-        </svg>
-        <span>Analytics</span>
-      </a>
-      <a href="#activity-section" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
-        </svg>
-        <span>Activity</span>
-      </a>
-      <a href="#staking-section" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/>
-        </svg>
-        <span>Staking</span>
-      </a>
-      <a href="#sybil-section" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-        <span>Sybil Monitor</span>
-      </a>
-      <div class="nav-divider"></div>
-      <a href="index.html" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M15 18l-6-6 6-6"/>
-        </svg>
-        <span>Back to Site</span>
-      </a>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a href="index.html" class="topbar-brand"><span class="brand-dot"></span>TrustMesh</a>
+    <nav class="topbar-tabs">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="staking">Staking</button>
+      <button class="tab" data-tab="sybil">Sybil</button>
     </nav>
-
-    <div class="sidebar-footer">
-      <div class="network-badge">
-        <span class="status-dot"></span>
-        X Layer Mainnet
-      </div>
+    <div class="topbar-right">
+      <span class="net-status"><span class="pulse-dot"></span>X Layer Mainnet</span>
+      <span class="mode-tag" id="modeTag">DEMO</span>
+      <span class="last-update" id="lastUpdate">0s ago</span>
     </div>
-  </aside>
+  </header>
 
-  <!-- Mobile header -->
-  <div class="mobile-header">
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
-    <span class="mobile-brand">TrustMesh</span>
-    <div class="network-badge small">
-      <span class="status-dot"></span>
-      Connected
-    </div>
-  </div>
+  <main class="main">
 
-  <!-- Main Content -->
-  <main class="main-content">
-
-    <!-- Header -->
-    <header class="page-header">
-      <div class="header-left">
-        <h1>Dashboard</h1>
-        <p class="header-subtitle">Trust & Reputation Protocol on X Layer</p>
-      </div>
-      <div class="header-right">
-        <div class="network-status">
-          <span class="status-dot"></span>
-          <span>X Layer Connected</span>
-        </div>
-        <div class="data-mode" id="dataMode">
-          <span class="mode-badge demo">DEMO DATA</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- Stats Bar -->
-    <section class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
-          </svg>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value" id="statAgents">5</span>
-          <span class="stat-label">Total Agents</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
-            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/>
-          </svg>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value" id="statServices">4</span>
-          <span class="stat-label">Active Services</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
-            <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/>
-          </svg>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value" id="statOrders">207</span>
-          <span class="stat-label">Total Orders</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e88f" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/>
-          </svg>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value usdc" id="statVolume">$6.21</span>
-          <span class="stat-label">USDC Volume</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon staking-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#aa66ff" stroke-width="2">
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-          </svg>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value staked" id="statStaked">$16.08</span>
-          <span class="stat-label">Total Staked</span>
-        </div>
-      </div>
+    <!-- Stats Strip -->
+    <section class="stats-strip">
+      <div class="stat"><span class="stat-label">Agents</span><span class="stat-val" id="sAgents">5</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span class="stat-label">Services</span><span class="stat-val" id="sServices">4</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span class="stat-label">Orders</span><span class="stat-val" id="sOrders">207</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span class="stat-label">Volume</span><span class="stat-val" id="sVolume">$6.21</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span class="stat-label">Staked</span><span class="stat-val stake-color" id="sStaked">$16.08</span></div>
     </section>
 
-    <!-- Leaderboard -->
-    <section class="panel" id="leaderboard-section">
-      <div class="panel-header">
-        <h2>Trust Leaderboard</h2>
-        <span class="panel-badge">Live Rankings</span>
+    <!-- Dashboard Tab -->
+    <div class="tab-content active" id="panel-dashboard">
+
+      <!-- Grid: Leaderboard + Radar -->
+      <div class="grid-row grid-60-40">
+        <section class="panel" id="leaderboard-section">
+          <div class="panel-head"><h2>Trust Leaderboard</h2></div>
+          <div class="table-scroll">
+            <table class="data-table" id="leaderboardTable">
+              <thead>
+                <tr>
+                  <th class="col-rank">#</th>
+                  <th class="col-agent">Agent</th>
+                  <th>Tier</th>
+                  <th>Score</th>
+                  <th>Trade</th>
+                  <th>Sec</th>
+                  <th>Peer</th>
+                  <th>Up</th>
+                  <th>Div</th>
+                  <th>Staked</th>
+                  <th>Mult</th>
+                  <th>Sybil</th>
+                  <th>Orders</th>
+                </tr>
+              </thead>
+              <tbody id="lbBody"></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="panel" id="radar-section">
+          <div class="panel-head"><h2>Score Breakdown</h2><span class="panel-sub" id="radarName">SignalPro</span></div>
+          <div class="radar-wrap"><canvas id="radarCanvas" width="280" height="280"></canvas></div>
+          <div class="radar-overall"><span id="radarScore">87.00</span><span class="radar-label">overall</span></div>
+        </section>
       </div>
-      <div class="table-wrapper">
-        <table class="leaderboard-table" id="leaderboardTable">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Agent</th>
-              <th>Tier</th>
-              <th>Overall Score</th>
-              <th>Trade</th>
-              <th>Security</th>
-              <th>Peer</th>
-              <th>Uptime</th>
-              <th>Staked</th>
-              <th>Mult.</th>
-              <th>Diversity</th>
-              <th>Sybil Risk</th>
-              <th>Orders</th>
-              <th>Rating</th>
-            </tr>
-          </thead>
-          <tbody id="leaderboardBody">
-            <!-- Populated by JS -->
-          </tbody>
-        </table>
+
+      <!-- Grid: Staking + Activity -->
+      <div class="grid-row grid-60-40">
+        <section class="panel" id="staking-overview">
+          <div class="panel-head"><h2>Staking Overview</h2></div>
+          <div class="table-scroll">
+            <table class="data-table" id="stakeTable">
+              <thead>
+                <tr><th class="col-agent">Agent</th><th>Staked</th><th>Mult</th><th>Boost</th><th>Status</th></tr>
+              </thead>
+              <tbody id="stakeBody"></tbody>
+              <tfoot id="stakeFoot"></tfoot>
+            </table>
+          </div>
+          <div class="stake-bars" id="stakeBars"></div>
+        </section>
+        <section class="panel" id="activity-section">
+          <div class="panel-head"><h2>Recent Activity</h2></div>
+          <div class="activity-feed" id="activityFeed"></div>
+        </section>
       </div>
-    </section>
 
-    <!-- Radar + Activity Row -->
-    <div class="split-row">
-
-      <!-- Radar Chart -->
-      <section class="panel radar-panel" id="radar-section">
-        <div class="panel-header">
-          <h2>Score Breakdown</h2>
-          <span class="panel-badge" id="radarAgentName">SignalPro</span>
-        </div>
-        <div class="radar-container">
-          <canvas id="radarChart" width="320" height="320"></canvas>
-        </div>
-        <p class="radar-hint">Click an agent row to update chart</p>
-      </section>
-
-      <!-- Recent Activity -->
-      <section class="panel activity-panel" id="activity-section">
-        <div class="panel-header">
-          <h2>Recent Activity</h2>
-          <span class="panel-badge">Last 10</span>
-        </div>
-        <ul class="activity-list" id="activityList">
-          <!-- Populated by JS -->
-        </ul>
+      <!-- Sybil Monitor -->
+      <section class="panel" id="sybil-section">
+        <div class="panel-head"><h2>Sybil Monitor</h2><span class="panel-sub">Interaction Diversity Analysis</span></div>
+        <div class="sybil-row" id="sybilRow"></div>
       </section>
 
     </div>
 
-    <!-- Staking Panel -->
-    <section class="panel" id="staking-section">
-      <div class="panel-header">
-        <h2>Agent Staking</h2>
-        <span class="panel-badge">Economic Security</span>
+    <!-- Staking Tab -->
+    <div class="tab-content" id="panel-staking">
+      <div class="grid-row grid-full">
+        <section class="panel">
+          <div class="panel-head"><h2>Staking Details</h2></div>
+          <div class="table-scroll">
+            <table class="data-table" id="stakeDetailTable">
+              <thead><tr><th class="col-agent">Agent</th><th>Staked USDC</th><th>Multiplier</th><th>Score Boost</th><th>Staked Since</th><th>Status</th></tr></thead>
+              <tbody id="stakeDetailBody"></tbody>
+            </table>
+          </div>
+        </section>
       </div>
-      <div class="table-wrapper">
-        <table class="leaderboard-table" id="stakingTable">
-          <thead>
-            <tr>
-              <th>Agent</th>
-              <th>Staked USDC</th>
-              <th>Multiplier</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="stakingBody"></tbody>
-        </table>
-      </div>
-    </section>
+    </div>
 
-    <!-- Sybil Monitor -->
-    <section class="panel" id="sybil-section">
-      <div class="panel-header">
-        <h2>Sybil Monitor</h2>
-        <span class="panel-badge">Interaction Diversity</span>
+    <!-- Sybil Tab -->
+    <div class="tab-content" id="panel-sybil">
+      <div class="grid-row grid-full">
+        <section class="panel">
+          <div class="panel-head"><h2>Sybil Risk Analysis</h2></div>
+          <div class="sybil-row" id="sybilDetailRow"></div>
+        </section>
       </div>
-      <div class="sybil-grid" id="sybilGrid"></div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="dashboard-footer">
-      <span id="lastUpdated">Last updated: just now</span>
-      <span class="footer-sep">|</span>
-      <span>TrustMesh Protocol &mdash; X Layer (Chain 196)</span>
-    </footer>
+    </div>
 
   </main>
 
-  <!-- Overlay for mobile sidebar -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <footer class="dash-footer">
+    <span>TrustMesh Protocol</span>
+    <span>X Layer (196)</span>
+    <a href="index.html">Back to Site</a>
+  </footer>
 
   <script src="https://cdn.ethers.org/lib/ethers-5.7.umd.min.js"></script>
   <script src="js/dashboard.js"></script>

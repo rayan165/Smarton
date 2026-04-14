@@ -1,621 +1,284 @@
-// ===== TrustMesh Dashboard — dashboard.js =====
+// TrustMesh Dashboard
 
-// --- Contract Addresses (update after deployment) ---
-const CONTRACT_ADDRESSES = {
-  agentRegistry: '0x0000000000000000000000000000000000000000',
-  trustScorer: '0x0000000000000000000000000000000000000000',
-  serviceRegistry: '0x0000000000000000000000000000000000000000',
-};
-
-const XLAYER_RPC = 'https://rpc.xlayer.tech';
-const XLAYER_CHAIN_ID = 196;
-const REFRESH_INTERVAL_MS = 30000;
-
-// --- Minimal ABIs ---
-const AGENT_REGISTRY_ABI = [
-  'function totalAgents() view returns (uint256)',
-  'function getAgentInfo(uint256 tokenId) view returns (address owner, string metadata, uint256 registeredAt)',
-  'function getAgentTier(uint256 tokenId) view returns (uint8)',
+var AGENTS = [
+  { id:1, name:'SignalPro', mono:'SP', tier:3, overall:87.00, trade:92, security:85, peer:88, uptime:78, diversity:85, orders:87, staked:10.00, mult:'1.2x', boost:'+17.4', since:'Apr 2', status:'Active', risk:'low', patterns:[] },
+  { id:2, name:'SecurityBot', mono:'SB', tier:2, overall:72.00, trade:68, security:95, peer:70, uptime:55, diversity:72, orders:63, staked:5.00, mult:'1.1x', boost:'+7.2', since:'Apr 5', status:'Active', risk:'low', patterns:[] },
+  { id:3, name:'TradeExec', mono:'TE', tier:2, overall:65.00, trade:75, security:60, peer:62, uptime:63, diversity:60, orders:45, staked:1.00, mult:'1.1x', boost:'+6.5', since:'Apr 8', status:'Active', risk:'low', patterns:[] },
+  { id:4, name:'AnalystX', mono:'AX', tier:1, overall:45.00, trade:50, security:40, peer:45, uptime:45, diversity:40, orders:12, staked:0, mult:'1.0x', boost:'+0.0', since:'-', status:'-', risk:'medium', patterns:['concentrated counterparty'] },
+  { id:5, name:'Herald', mono:'HR', tier:1, overall:50.00, trade:50, security:50, peer:50, uptime:50, diversity:null, orders:0, staked:0, mult:'1.0x', boost:'+0.0', since:'-', status:'-', risk:'low', patterns:[] }
 ];
 
-const TRUST_SCORER_ABI = [
-  'function getScore(uint256 agentId) view returns (uint256 overall, uint256 trade, uint256 security, uint256 peer, uint256 uptime, uint256 updatedAt)',
+var ACTIVITY = [
+  { dot:'d-green', text:'<strong>SignalPro</strong> delivered signal #87 \u2014 0.01 USDC', time:'2m' },
+  { dot:'d-amber', text:'<strong>AnalystX</strong> purchased security-scan from <strong>SecurityBot</strong>', time:'4m' },
+  { dot:'d-green', text:'<strong>SecurityBot</strong> completed scan #63 \u2014 0.02 USDC', time:'5m' },
+  { dot:'d-blue', text:'<strong>SignalPro</strong> rated <strong>TradeExec</strong> 4.5\u2605', time:'8m' },
+  { dot:'d-green', text:'<strong>TradeExec</strong> delivered execution #45 \u2014 0.05 USDC', time:'11m' },
+  { dot:'d-amber', text:'<strong>TradeExec</strong> purchased signal from <strong>SignalPro</strong>', time:'14m' },
+  { dot:'d-blue', text:'<strong>SignalPro</strong> upgraded to Tier 3', time:'18m' },
+  { dot:'d-green', text:'<strong>SecurityBot</strong> completed scan #62 \u2014 0.02 USDC', time:'22m' },
+  { dot:'d-blue', text:'<strong>SecurityBot</strong> rated <strong>SignalPro</strong> 4.8\u2605', time:'25m' },
+  { dot:'d-amber', text:'<strong>Herald</strong> registered as agent #5', time:'1h' }
 ];
 
-const SERVICE_REGISTRY_ABI = [
-  'function totalOrders() view returns (uint256)',
-  'function totalServices() view returns (uint256)',
-];
+var selected = 0;
+var updateCounter = 0;
 
-// --- Demo Data ---
-const DEMO_AGENTS = [
-  {
-    id: 1,
-    name: 'SignalPro',
-    tier: 3,
-    tierLabel: 'Trusted',
-    overall: 87.00,
-    trade: 92,
-    security: 85,
-    peer: 88,
-    uptime: 78,
-    orders: 87,
-    rating: 4.6,
-    color: '#00d4ff',
-    initials: 'SP',
-    staked: 10.00,
-    multiplier: '1.2x',
-    stakingStatus: 'Active',
-    diversity: 85,
-    riskLevel: 'low',
-    patterns: [],
-  },
-  {
-    id: 2,
-    name: 'SecurityBot',
-    tier: 2,
-    tierLabel: 'Proven',
-    overall: 72.00,
-    trade: 68,
-    security: 95,
-    peer: 70,
-    uptime: 55,
-    orders: 63,
-    rating: 4.2,
-    color: '#00e88f',
-    initials: 'SB',
-    staked: 5.00,
-    multiplier: '1.1x',
-    stakingStatus: 'Active',
-    diversity: 72,
-    riskLevel: 'low',
-    patterns: [],
-  },
-  {
-    id: 3,
-    name: 'TradeExec',
-    tier: 2,
-    tierLabel: 'Proven',
-    overall: 65.00,
-    trade: 75,
-    security: 60,
-    peer: 62,
-    uptime: 63,
-    orders: 45,
-    rating: 3.8,
-    color: '#aa66ff',
-    initials: 'TE',
-    staked: 1.00,
-    multiplier: '1.1x',
-    stakingStatus: 'Active',
-    diversity: 60,
-    riskLevel: 'low',
-    patterns: [],
-  },
-  {
-    id: 4,
-    name: 'AnalystX',
-    tier: 1,
-    tierLabel: 'Registered',
-    overall: 45.00,
-    trade: 50,
-    security: 40,
-    peer: 45,
-    uptime: 45,
-    orders: 12,
-    rating: 3.2,
-    color: '#ff8844',
-    initials: 'AX',
-    staked: 0,
-    multiplier: '1.0x',
-    stakingStatus: 'None',
-    diversity: 40,
-    riskLevel: 'medium',
-    patterns: ['CONCENTRATED_COUNTERPARTY'],
-  },
-  {
-    id: 5,
-    name: 'Herald',
-    tier: 1,
-    tierLabel: 'Registered',
-    overall: 50.00,
-    trade: 50,
-    security: 50,
-    peer: 50,
-    uptime: 50,
-    orders: 0,
-    rating: null,
-    color: '#ffd060',
-    initials: 'HR',
-    staked: 0,
-    multiplier: '1.0x',
-    stakingStatus: 'None',
-    diversity: null,
-    riskLevel: 'low',
-    patterns: [],
-  },
-];
-
-const DEMO_STATS = {
-  totalAgents: 5,
-  activeServices: 4,
-  totalOrders: 207,
-  usdcVolume: '$6.21',
-  totalStaked: '$16.08',
-};
-
-const DEMO_ACTIVITIES = [
-  { type: 'delivery', text: '<strong>SignalPro</strong> delivered signal service #87 &mdash; <span class="amount">0.01 USDC</span>', time: '2m ago' },
-  { type: 'purchase', text: '<strong>AnalystX</strong> purchased security-scan from <strong>SecurityBot</strong>', time: '4m ago' },
-  { type: 'delivery', text: '<strong>SecurityBot</strong> completed security-scan #63 &mdash; <span class="amount">0.02 USDC</span>', time: '5m ago' },
-  { type: 'rating', text: '<strong>SignalPro</strong> rated <strong>TradeExec</strong> 4.5 stars on trade-execution #44', time: '8m ago' },
-  { type: 'delivery', text: '<strong>TradeExec</strong> delivered trade-execution #45 &mdash; <span class="amount">0.03 USDC</span>', time: '11m ago' },
-  { type: 'purchase', text: '<strong>TradeExec</strong> purchased signal from <strong>SignalPro</strong>', time: '14m ago' },
-  { type: 'tier', text: '<strong>SignalPro</strong> upgraded to <strong>Tier 3 (Trusted)</strong>', time: '18m ago' },
-  { type: 'delivery', text: '<strong>SecurityBot</strong> completed security-scan #62 &mdash; <span class="amount">0.02 USDC</span>', time: '22m ago' },
-  { type: 'rating', text: '<strong>SecurityBot</strong> rated <strong>SignalPro</strong> 4.8 stars on signal #86', time: '25m ago' },
-  { type: 'register', text: '<strong>Herald</strong> registered as agent #5 on TrustMesh', time: '1h ago' },
-];
-
-// --- State ---
-let selectedAgentIndex = 0;
-let lastUpdateTime = Date.now();
-let isLiveMode = false;
-
-// --- DOM Elements ---
-const leaderboardBody = document.getElementById('leaderboardBody');
-const activityList = document.getElementById('activityList');
-const radarCanvas = document.getElementById('radarChart');
-const radarCtx = radarCanvas.getContext('2d');
-const radarAgentName = document.getElementById('radarAgentName');
-const lastUpdatedEl = document.getElementById('lastUpdated');
-const dataModeEl = document.getElementById('dataMode');
-
-// --- Initialize ---
-document.addEventListener('DOMContentLoaded', function () {
-  initMobileSidebar();
-  renderLeaderboard(DEMO_AGENTS);
-  renderActivity(DEMO_ACTIVITIES);
-  renderRadar(DEMO_AGENTS[0]);
-  updateStats(DEMO_STATS);
-  renderStaking(DEMO_AGENTS);
-  renderSybil(DEMO_AGENTS);
-  tryLiveConnection();
-  startRefreshTimer();
+// --- Init ---
+document.addEventListener('DOMContentLoaded', function() {
+  renderLeaderboard();
+  renderRadar(AGENTS[0]);
+  renderStaking();
+  renderStakeBars();
+  renderActivity();
+  renderSybil('sybilRow');
+  renderSybil('sybilDetailRow');
+  renderStakeDetail();
+  initTabs();
+  startTimer();
 });
 
-// --- Mobile Sidebar ---
-function initMobileSidebar() {
-  const toggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-
-  if (toggle) {
-    toggle.addEventListener('click', function () {
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('open');
+// --- Tabs ---
+function initTabs() {
+  document.querySelectorAll('.tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active')});
+      document.querySelectorAll('.tab-content').forEach(function(p){p.classList.remove('active')});
+      btn.classList.add('active');
+      var panel = document.getElementById('panel-' + btn.getAttribute('data-tab'));
+      if(panel) panel.classList.add('active');
     });
-  }
+  });
+}
 
-  if (overlay) {
-    overlay.addEventListener('click', function () {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('open');
-    });
-  }
+// --- Timer ---
+function startTimer() {
+  setInterval(function() {
+    updateCounter++;
+    var el = document.getElementById('lastUpdate');
+    if(el) el.textContent = updateCounter + 's ago';
+  }, 1000);
 }
 
 // --- Leaderboard ---
-function renderLeaderboard(agents) {
-  leaderboardBody.innerHTML = '';
-  agents.forEach(function (agent, index) {
-    const row = document.createElement('tr');
-    if (index === selectedAgentIndex) row.classList.add('selected');
+function renderLeaderboard() {
+  var tbody = document.getElementById('lbBody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+  AGENTS.forEach(function(a, i) {
+    var tr = document.createElement('tr');
+    if(i === selected) tr.className = 'active';
+    var tierCls = a.tier >= 3 ? 'tier-hi' : a.tier === 2 ? 'tier-mid' : 'tier-lo';
+    var tierText = 'T' + a.tier;
+    var scoreColor = a.overall >= 80 ? 'var(--hi)' : a.overall >= 60 ? 'var(--ac)' : a.overall >= 40 ? 'var(--mid)' : 'var(--lo)';
+    var riskCls = a.risk === 'low' ? 'risk-lo' : a.risk === 'medium' ? 'risk-mid' : 'risk-hi';
+    var riskDot = a.risk === 'low' ? 'var(--hi)' : a.risk === 'medium' ? 'var(--mid)' : 'var(--lo)';
+    var riskText = a.risk.toUpperCase();
+    var stakedHtml = a.staked > 0 ? '<span class="col-staked">$' + a.staked.toFixed(2) + '</span>' : '<span class="col-nostake">\u2014</span>';
+    var divText = a.diversity !== null ? a.diversity : '\u2014';
 
-    const scoreColor = getScoreColor(agent.overall);
-    const ratingStr = agent.rating !== null ? agent.rating.toFixed(1) + '\u2605' : '\u2014';
+    tr.innerHTML =
+      '<td>' + (i+1) + '</td>' +
+      '<td class="col-agent"><span class="mono-tag">' + a.mono + '</span>' + a.name + '</td>' +
+      '<td class="' + tierCls + '">' + tierText + '</td>' +
+      '<td><div class="score-cell"><span style="color:' + scoreColor + ';font-weight:600">' + a.overall.toFixed(2) + '</span><span class="spark"><span class="spark-fill" style="width:' + a.overall + '%;background:' + scoreColor + '"></span></span></div></td>' +
+      '<td>' + a.trade + '</td>' +
+      '<td>' + a.security + '</td>' +
+      '<td>' + a.peer + '</td>' +
+      '<td>' + a.uptime + '</td>' +
+      '<td>' + divText + '</td>' +
+      '<td>' + stakedHtml + '</td>' +
+      '<td style="color:var(--t3)">' + a.mult + '</td>' +
+      '<td><span class="risk-dot" style="background:' + riskDot + '"></span><span class="' + riskCls + '">' + riskText + '</span></td>' +
+      '<td>' + a.orders + '</td>';
 
-    row.innerHTML =
-      '<td class="rank-cell">#' + (index + 1) + '</td>' +
-      '<td>' +
-        '<div class="agent-cell">' +
-          '<div class="agent-avatar" style="background:' + agent.color + '">' + agent.initials + '</div>' +
-          '<span class="agent-name">' + agent.name + '</span>' +
-        '</div>' +
-      '</td>' +
-      '<td><span class="tier-badge tier-' + agent.tier + '">Tier ' + agent.tier + ' &middot; ' + agent.tierLabel + '</span></td>' +
-      '<td>' +
-        '<div class="score-cell">' +
-          '<span class="score-value" style="color:' + scoreColor + '">' + agent.overall.toFixed(2) + '</span>' +
-          '<div class="score-bar-bg"><div class="score-bar-fill" style="width:' + agent.overall + '%;background:' + scoreColor + '"></div></div>' +
-        '</div>' +
-      '</td>' +
-      '<td class="sub-score">' + agent.trade + '</td>' +
-      '<td class="sub-score">' + agent.security + '</td>' +
-      '<td class="sub-score">' + agent.peer + '</td>' +
-      '<td class="sub-score">' + agent.uptime + '</td>' +
-      '<td class="sub-score">' + (agent.staked ? '$' + agent.staked.toFixed(2) : '\u2014') + '</td>' +
-      '<td class="sub-score">' + (agent.multiplier || '1.0x') + '</td>' +
-      '<td class="sub-score">' + (agent.diversity !== null ? agent.diversity + '%' : '\u2014') + '</td>' +
-      '<td><span class="risk-badge ' + (agent.riskLevel || 'low') + '">' + (agent.riskLevel || 'low').toUpperCase() + '</span></td>' +
-      '<td class="orders-cell">' + agent.orders + '</td>' +
-      '<td class="rating-cell">' + ratingStr + '</td>';
-
-    row.addEventListener('click', function () {
-      selectedAgentIndex = index;
-      renderLeaderboard(agents);
-      renderRadar(agents[index]);
+    tr.addEventListener('click', function() {
+      selected = i;
+      renderLeaderboard();
+      renderRadar(AGENTS[i]);
     });
-
-    leaderboardBody.appendChild(row);
+    tbody.appendChild(tr);
   });
 }
 
-function getScoreColor(score) {
-  if (score >= 80) return '#00e88f';
-  if (score >= 60) return '#00d4ff';
-  if (score >= 40) return '#ffd060';
-  return '#ff4466';
-}
-
-// --- Activity Feed ---
-function renderActivity(activities) {
-  activityList.innerHTML = '';
-  activities.forEach(function (item) {
-    var li = document.createElement('li');
-    li.className = 'activity-item';
-    li.innerHTML =
-      '<span class="activity-dot ' + item.type + '"></span>' +
-      '<span class="activity-text">' + item.text + '</span>' +
-      '<span class="activity-time">' + item.time + '</span>';
-    activityList.appendChild(li);
-  });
-}
-
-// --- Radar Chart (Canvas) ---
+// --- Radar ---
 function renderRadar(agent) {
-  radarAgentName.textContent = agent.name;
+  var nameEl = document.getElementById('radarName');
+  var scoreEl = document.getElementById('radarScore');
+  if(nameEl) nameEl.textContent = agent.name;
+  if(scoreEl) scoreEl.textContent = agent.overall.toFixed(2);
 
-  var canvas = radarCanvas;
-  var dpr = window.devicePixelRatio || 1;
-  var size = 320;
-  canvas.width = size * dpr;
-  canvas.height = size * dpr;
-  canvas.style.width = size + 'px';
-  canvas.style.height = size + 'px';
+  var canvas = document.getElementById('radarCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  var cx = w/2, cy = h/2, r = 100;
+  ctx.clearRect(0,0,w,h);
 
-  var ctx = radarCtx;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.clearRect(0, 0, size, size);
+  var labels = ['Trade','Security','Peer','Uptime','Diversity'];
+  var values = [agent.trade, agent.security, agent.peer, agent.uptime, agent.diversity || 50];
+  var n = labels.length;
 
-  var cx = size / 2;
-  var cy = size / 2;
-  var maxR = 120;
-  var axes = [
-    { label: 'Trade', value: agent.trade },
-    { label: 'Security', value: agent.security },
-    { label: 'Peer', value: agent.peer },
-    { label: 'Uptime', value: agent.uptime },
-  ];
-  var n = axes.length;
-
-  // Draw grid rings
-  var rings = [20, 40, 60, 80, 100];
-  rings.forEach(function (ring) {
-    var r = (ring / 100) * maxR;
+  // Grid rings
+  for(var ring = 1; ring <= 4; ring++) {
+    var rr = r * ring / 4;
     ctx.beginPath();
-    for (var i = 0; i <= n; i++) {
-      var angle = (Math.PI * 2 * (i % n)) / n - Math.PI / 2;
-      var x = cx + r * Math.cos(angle);
-      var y = cy + r * Math.sin(angle);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+    for(var j = 0; j < n; j++) {
+      var angle = (Math.PI * 2 * j / n) - Math.PI/2;
+      var px = cx + rr * Math.cos(angle);
+      var py = cy + rr * Math.sin(angle);
+      if(j===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
     }
     ctx.closePath();
-    ctx.strokeStyle = 'rgba(42, 42, 58, 0.6)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  });
-
-  // Draw axis lines
-  for (var i = 0; i < n; i++) {
-    var angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + maxR * Math.cos(angle), cy + maxR * Math.sin(angle));
-    ctx.strokeStyle = 'rgba(42, 42, 58, 0.8)';
+    ctx.strokeStyle = 'rgba(255,255,255,.06)';
     ctx.lineWidth = 1;
     ctx.stroke();
   }
 
-  // Draw data polygon
+  // Axis lines
+  for(var j = 0; j < n; j++) {
+    var angle = (Math.PI * 2 * j / n) - Math.PI/2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
+    ctx.strokeStyle = 'rgba(255,255,255,.06)';
+    ctx.stroke();
+  }
+
+  // Data polygon
   ctx.beginPath();
-  for (var i = 0; i <= n; i++) {
-    var idx = i % n;
-    var angle = (Math.PI * 2 * idx) / n - Math.PI / 2;
-    var r = (axes[idx].value / 100) * maxR;
-    var x = cx + r * Math.cos(angle);
-    var y = cy + r * Math.sin(angle);
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  for(var j = 0; j < n; j++) {
+    var angle = (Math.PI * 2 * j / n) - Math.PI/2;
+    var val = values[j] / 100;
+    var px = cx + r * val * Math.cos(angle);
+    var py = cy + r * val * Math.sin(angle);
+    if(j===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
   }
   ctx.closePath();
-
-  // Fill
-  var gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
-  gradient.addColorStop(0, hexToRgba(agent.color, 0.35));
-  gradient.addColorStop(1, hexToRgba(agent.color, 0.08));
-  ctx.fillStyle = gradient;
+  ctx.fillStyle = 'rgba(34,211,238,.1)';
   ctx.fill();
-
-  // Stroke
-  ctx.strokeStyle = agent.color;
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(34,211,238,.8)';
+  ctx.lineWidth = 1.5;
   ctx.stroke();
 
-  // Draw data points
-  for (var i = 0; i < n; i++) {
-    var angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-    var r = (axes[i].value / 100) * maxR;
-    var x = cx + r * Math.cos(angle);
-    var y = cy + r * Math.sin(angle);
-
+  // Data points
+  for(var j = 0; j < n; j++) {
+    var angle = (Math.PI * 2 * j / n) - Math.PI/2;
+    var val = values[j] / 100;
+    var px = cx + r * val * Math.cos(angle);
+    var py = cy + r * val * Math.sin(angle);
     ctx.beginPath();
-    ctx.arc(x, y, 4, 0, Math.PI * 2);
-    ctx.fillStyle = agent.color;
+    ctx.arc(px,py,3,0,Math.PI*2);
+    ctx.fillStyle = '#22d3ee';
     ctx.fill();
-    ctx.strokeStyle = '#0a0a0f';
-    ctx.lineWidth = 2;
-    ctx.stroke();
   }
 
-  // Draw labels
-  ctx.font = '600 12px "DM Sans", sans-serif';
+  // Labels
+  ctx.font = '300 10px Outfit, sans-serif';
+  ctx.fillStyle = '#8888a0';
   ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  var labelOffset = 22;
-
-  for (var i = 0; i < n; i++) {
-    var angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-    var lx = cx + (maxR + labelOffset) * Math.cos(angle);
-    var ly = cy + (maxR + labelOffset) * Math.sin(angle);
-
-    // Label
-    ctx.fillStyle = '#8888a0';
-    ctx.fillText(axes[i].label, lx, ly - 8);
-
-    // Value
-    ctx.font = '700 13px "Space Mono", monospace';
-    ctx.fillStyle = agent.color;
-    ctx.fillText(axes[i].value.toString(), lx, ly + 8);
-    ctx.font = '600 12px "DM Sans", sans-serif';
+  for(var j = 0; j < n; j++) {
+    var angle = (Math.PI * 2 * j / n) - Math.PI/2;
+    var lx = cx + (r + 18) * Math.cos(angle);
+    var ly = cy + (r + 18) * Math.sin(angle);
+    ctx.textBaseline = 'middle';
+    ctx.fillText(labels[j], lx, ly);
   }
 }
 
-function hexToRgba(hex, alpha) {
-  var r = parseInt(hex.slice(1, 3), 16);
-  var g = parseInt(hex.slice(3, 5), 16);
-  var b = parseInt(hex.slice(5, 7), 16);
-  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-}
-
-// --- Stats ---
-function updateStats(stats) {
-  document.getElementById('statAgents').textContent = stats.totalAgents;
-  document.getElementById('statServices').textContent = stats.activeServices;
-  document.getElementById('statOrders').textContent = stats.totalOrders;
-  document.getElementById('statVolume').textContent = stats.usdcVolume;
-  if (stats.totalStaked) {
-    document.getElementById('statStaked').textContent = stats.totalStaked;
+// --- Staking ---
+function renderStaking() {
+  var tbody = document.getElementById('stakeBody');
+  var tfoot = document.getElementById('stakeFoot');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+  var total = 0;
+  AGENTS.forEach(function(a) {
+    if(a.staked <= 0) return;
+    total += a.staked;
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="col-agent"><span class="mono-tag">' + a.mono + '</span>' + a.name + '</td>' +
+      '<td class="col-staked">$' + a.staked.toFixed(2) + '</td>' +
+      '<td style="color:var(--t3)">' + a.mult + '</td>' +
+      '<td style="color:var(--hi)">' + a.boost + '</td>' +
+      '<td style="color:var(--hi)">' + a.status + '</td>';
+    tbody.appendChild(tr);
+  });
+  if(tfoot) {
+    tfoot.innerHTML = '<tr><td class="col-agent">Total</td><td class="col-staked">$' + total.toFixed(2) + '</td><td></td><td></td><td></td></tr>';
   }
 }
 
-// --- Staking Table ---
-function renderStaking(agents) {
-  var stakingBody = document.getElementById('stakingBody');
-  if (!stakingBody) return;
-  stakingBody.innerHTML = '';
-
-  agents.forEach(function (agent) {
-    var row = document.createElement('tr');
-    var statusClass = agent.stakingStatus === 'Active' ? 'tier-3' : 'tier-1';
-    row.innerHTML =
-      '<td>' +
-        '<div class="agent-cell">' +
-          '<div class="agent-avatar" style="background:' + agent.color + '">' + agent.initials + '</div>' +
-          '<span class="agent-name">' + agent.name + '</span>' +
-        '</div>' +
-      '</td>' +
-      '<td class="sub-score">' + (agent.staked ? '$' + agent.staked.toFixed(2) : '\u2014') + '</td>' +
-      '<td class="sub-score">' + (agent.multiplier || '1.0x') + '</td>' +
-      '<td><span class="tier-badge ' + statusClass + '">' + (agent.stakingStatus || 'None') + '</span></td>';
-    stakingBody.appendChild(row);
+function renderStakeBars() {
+  var container = document.getElementById('stakeBars');
+  if(!container) return;
+  container.innerHTML = '';
+  var max = Math.max.apply(null, AGENTS.map(function(a){return a.staked}));
+  AGENTS.forEach(function(a) {
+    if(a.staked <= 0) return;
+    var pct = max > 0 ? (a.staked / max * 100) : 0;
+    var row = document.createElement('div');
+    row.className = 'sbar-row';
+    row.innerHTML = '<span class="sbar-name">' + a.name + '</span><span class="sbar-track"><span class="sbar-fill" style="width:' + pct + '%"></span></span><span class="sbar-val">$' + a.staked.toFixed(2) + '</span>';
+    container.appendChild(row);
   });
 }
 
-// --- Sybil Monitor ---
-function renderSybil(agents) {
-  var sybilGrid = document.getElementById('sybilGrid');
-  if (!sybilGrid) return;
-  sybilGrid.innerHTML = '';
-
-  agents.forEach(function (agent) {
-    var card = document.createElement('div');
-    card.className = 'sybil-card';
-
-    var diversityValue = agent.diversity !== null ? agent.diversity : 0;
-    var diversityLabel = agent.diversity !== null ? agent.diversity + '%' : 'N/A';
-    var barColor;
-    if (diversityValue >= 60) barColor = '#00e88f';
-    else if (diversityValue >= 30) barColor = '#ffd060';
-    else barColor = '#ff4466';
-
-    var patternsHtml = '';
-    if (agent.patterns && agent.patterns.length > 0) {
-      patternsHtml = '<div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">' +
-        agent.patterns.map(function (p) {
-          return '<span style="background:rgba(255,68,102,0.12);color:var(--red);padding:2px 6px;border-radius:3px;margin-right:4px;font-size:10px">' + p + '</span>';
-        }).join('') +
-        '</div>';
-    }
-
-    card.innerHTML =
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">' +
-        '<div class="agent-avatar" style="background:' + agent.color + ';width:28px;height:28px;font-size:11px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">' + agent.initials + '</div>' +
-        '<span class="agent-name">' + agent.name + '</span>' +
-        '<span class="risk-badge ' + (agent.riskLevel || 'low') + '" style="margin-left:auto">' + (agent.riskLevel || 'low').toUpperCase() + '</span>' +
-      '</div>' +
-      '<div class="sybil-bar-bg">' +
-        '<div class="sybil-bar-fill" style="width:' + diversityValue + '%;background:' + barColor + '"></div>' +
-      '</div>' +
-      '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px">' +
-        '<span style="color:var(--text-secondary)">Diversity</span>' +
-        '<span style="color:var(--text-primary);font-family:\'Space Mono\',monospace;font-weight:600">' + diversityLabel + '</span>' +
-      '</div>' +
-      patternsHtml;
-
-    sybilGrid.appendChild(card);
+function renderStakeDetail() {
+  var tbody = document.getElementById('stakeDetailBody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+  AGENTS.forEach(function(a) {
+    var tr = document.createElement('tr');
+    var stakedText = a.staked > 0 ? '$' + a.staked.toFixed(2) : '\u2014';
+    var stakedCls = a.staked > 0 ? 'col-staked' : 'col-nostake';
+    var statusColor = a.status === 'Active' ? 'var(--hi)' : 'var(--t4)';
+    tr.innerHTML =
+      '<td class="col-agent"><span class="mono-tag">' + a.mono + '</span>' + a.name + '</td>' +
+      '<td class="' + stakedCls + '">' + stakedText + '</td>' +
+      '<td style="color:var(--t3)">' + a.mult + '</td>' +
+      '<td style="color:var(--hi)">' + a.boost + '</td>' +
+      '<td style="color:var(--t3)">' + a.since + '</td>' +
+      '<td style="color:' + statusColor + '">' + a.status + '</td>';
+    tbody.appendChild(tr);
   });
 }
 
-// --- Live Contract Connection ---
-function tryLiveConnection() {
-  // Check if ethers is available and addresses are not zero
-  if (typeof ethers === 'undefined') {
-    console.log('[TrustMesh] ethers not loaded, using demo data');
-    return;
-  }
-
-  var zeroAddr = '0x0000000000000000000000000000000000000000';
-  if (
-    CONTRACT_ADDRESSES.agentRegistry === zeroAddr ||
-    CONTRACT_ADDRESSES.trustScorer === zeroAddr ||
-    CONTRACT_ADDRESSES.serviceRegistry === zeroAddr
-  ) {
-    console.log('[TrustMesh] Contract addresses not set, using demo data');
-    return;
-  }
-
-  try {
-    var provider = new ethers.providers.JsonRpcProvider(XLAYER_RPC, XLAYER_CHAIN_ID);
-
-    // Test connection
-    provider.getBlockNumber().then(function (blockNum) {
-      console.log('[TrustMesh] Connected to X Layer, block:', blockNum);
-      isLiveMode = true;
-      dataModeEl.innerHTML = '<span class="mode-badge live">LIVE</span>';
-      fetchLiveData(provider);
-    }).catch(function (err) {
-      console.warn('[TrustMesh] RPC connection failed, using demo data:', err.message);
-    });
-  } catch (err) {
-    console.warn('[TrustMesh] Provider setup failed:', err.message);
-  }
-}
-
-function fetchLiveData(provider) {
-  var registry = new ethers.Contract(CONTRACT_ADDRESSES.agentRegistry, AGENT_REGISTRY_ABI, provider);
-  var scorer = new ethers.Contract(CONTRACT_ADDRESSES.trustScorer, TRUST_SCORER_ABI, provider);
-  var services = new ethers.Contract(CONTRACT_ADDRESSES.serviceRegistry, SERVICE_REGISTRY_ABI, provider);
-
-  Promise.all([
-    registry.totalAgents().catch(function () { return ethers.BigNumber.from(0); }),
-    services.totalOrders().catch(function () { return ethers.BigNumber.from(0); }),
-    services.totalServices().catch(function () { return ethers.BigNumber.from(0); }),
-  ]).then(function (results) {
-    var totalAgents = results[0].toNumber();
-    var totalOrders = results[1].toNumber();
-    var totalServices = results[2].toNumber();
-
-    updateStats({
-      totalAgents: totalAgents || DEMO_STATS.totalAgents,
-      activeServices: totalServices || DEMO_STATS.activeServices,
-      totalOrders: totalOrders || DEMO_STATS.totalOrders,
-      usdcVolume: DEMO_STATS.usdcVolume,
-    });
-
-    // Fetch individual agent scores
-    var agentPromises = [];
-    for (var i = 1; i <= Math.min(totalAgents, 10); i++) {
-      agentPromises.push(
-        Promise.all([
-          registry.getAgentInfo(i).catch(function () { return null; }),
-          registry.getAgentTier(i).catch(function () { return 0; }),
-          scorer.getScore(i).catch(function () { return null; }),
-        ])
-      );
-    }
-
-    return Promise.all(agentPromises);
-  }).then(function (agentData) {
-    if (!agentData || agentData.length === 0) return;
-
-    var agents = agentData.map(function (data, idx) {
-      var info = data[0];
-      var tier = data[1];
-      var score = data[2];
-
-      if (!info || !score) return DEMO_AGENTS[idx] || null;
-
-      var tierLabels = { 0: 'Unregistered', 1: 'Registered', 2: 'Proven', 3: 'Trusted' };
-      var colors = ['#ff8844', '#00d4ff', '#00e88f', '#aa66ff', '#ffd060'];
-
-      return {
-        id: idx + 1,
-        name: info[1] || ('Agent #' + (idx + 1)),
-        tier: tier,
-        tierLabel: tierLabels[tier] || 'Unknown',
-        overall: score[0].toNumber() / 100,
-        trade: score[1].toNumber() / 100,
-        security: score[2].toNumber() / 100,
-        peer: score[3].toNumber() / 100,
-        uptime: score[4].toNumber() / 100,
-        orders: 0,
-        rating: null,
-        color: colors[idx % colors.length],
-        initials: (info[1] || 'AG').slice(0, 2).toUpperCase(),
-      };
-    }).filter(Boolean);
-
-    if (agents.length > 0) {
-      // Sort by overall descending
-      agents.sort(function (a, b) { return b.overall - a.overall; });
-      renderLeaderboard(agents);
-      renderRadar(agents[selectedAgentIndex] || agents[0]);
-    }
-
-    lastUpdateTime = Date.now();
-  }).catch(function (err) {
-    console.warn('[TrustMesh] Error fetching live data:', err.message);
+// --- Activity ---
+function renderActivity() {
+  var container = document.getElementById('activityFeed');
+  if(!container) return;
+  container.innerHTML = '';
+  ACTIVITY.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'act-item';
+    div.innerHTML = '<span class="act-dot ' + item.dot + '"></span><span class="act-text">' + item.text + '</span><span class="act-time">' + item.time + '</span>';
+    container.appendChild(div);
   });
 }
 
-// --- Refresh Timer ---
-function startRefreshTimer() {
-  setInterval(function () {
-    var seconds = Math.round((Date.now() - lastUpdateTime) / 1000);
-    if (seconds < 5) {
-      lastUpdatedEl.textContent = 'Last updated: just now';
-    } else if (seconds < 60) {
-      lastUpdatedEl.textContent = 'Last updated: ' + seconds + 's ago';
-    } else {
-      var mins = Math.floor(seconds / 60);
-      lastUpdatedEl.textContent = 'Last updated: ' + mins + 'm ago';
-    }
-  }, 1000);
+// --- Sybil ---
+function renderSybil(containerId) {
+  var container = document.getElementById(containerId);
+  if(!container) return;
+  container.innerHTML = '';
+  AGENTS.forEach(function(a) {
+    var div = document.createElement('div');
+    div.className = 'sybil-card';
+    var pct = a.diversity !== null ? a.diversity : 0;
+    var pctText = a.diversity !== null ? a.diversity + '%' : 'N/A';
+    var fillColor = pct >= 60 ? 'var(--hi)' : pct >= 30 ? 'var(--mid)' : 'var(--lo)';
+    var riskCls = a.risk === 'low' ? 'risk-lo' : a.risk === 'medium' ? 'risk-mid' : 'risk-hi';
+    var riskText = a.risk.toUpperCase();
+    var patternHtml = a.patterns.length > 0 ? '<div class="div-pattern">\u26A0 ' + a.patterns.join(', ') + '</div>' : '';
 
-  // Refresh live data every 30s
-  setInterval(function () {
-    if (isLiveMode) {
-      try {
-        var provider = new ethers.providers.JsonRpcProvider(XLAYER_RPC, XLAYER_CHAIN_ID);
-        fetchLiveData(provider);
-      } catch (err) {
-        console.warn('[TrustMesh] Refresh failed:', err.message);
-      }
-    } else {
-      // In demo mode, just update the timestamp
-      lastUpdateTime = Date.now();
-    }
-  }, REFRESH_INTERVAL_MS);
+    div.innerHTML =
+      '<div class="sybil-card-name">' + a.name + '</div>' +
+      '<div class="div-bar"><div class="div-fill" style="width:' + pct + '%;background:' + fillColor + '"></div></div>' +
+      '<span class="div-pct">' + pctText + '</span>' +
+      '<span class="div-risk ' + riskCls + '">' + riskText + '</span>' +
+      patternHtml;
+    container.appendChild(div);
+  });
 }
