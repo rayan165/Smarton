@@ -60,6 +60,16 @@ const TREASURY_ABI = [
   { type: 'function', name: 'getBalance', inputs: [], outputs: [{ name: '', type: 'uint256' }], stateMutability: 'view' },
 ] as const;
 
+const STAKING_ABI = [
+  { type: 'function', name: 'stake', inputs: [{ name: 'amount', type: 'uint256' }], outputs: [], stateMutability: 'nonpayable' },
+  { type: 'function', name: 'unstake', inputs: [{ name: 'amount', type: 'uint256' }], outputs: [], stateMutability: 'nonpayable' },
+  { type: 'function', name: 'getStake', inputs: [{ name: 'agentId', type: 'uint256' }], outputs: [{ name: '', type: 'uint256' }], stateMutability: 'view' },
+  { type: 'function', name: 'getStakeMultiplier', inputs: [{ name: 'agentId', type: 'uint256' }], outputs: [{ name: '', type: 'uint16' }], stateMutability: 'view' },
+  { type: 'function', name: 'getStakeInfo', inputs: [{ name: 'agentId', type: 'uint256' }], outputs: [{ name: 'stakedAmount', type: 'uint256' }, { name: 'multiplier', type: 'uint16' }, { name: 'stakedAt', type: 'uint64' }, { name: 'lastSlashedAt', type: 'uint64' }], stateMutability: 'view' },
+  { type: 'function', name: 'totalStaked', inputs: [], outputs: [{ name: '', type: 'uint256' }], stateMutability: 'view' },
+  { type: 'function', name: 'isStaked', inputs: [{ name: 'agentId', type: 'uint256' }], outputs: [{ name: '', type: 'bool' }], stateMutability: 'view' },
+] as const;
+
 export interface ContractClient {
   // Agent Registry
   registerAgent: (agentURI: string) => Promise<TxResult>;
@@ -92,6 +102,12 @@ export interface ContractClient {
   balanceOfUSDC: (account: Address) => Promise<bigint>;
   // Treasury
   getTreasuryBalance: () => Promise<bigint>;
+  // Staking
+  stakeUSDC: (amount: bigint) => Promise<TxResult>;
+  unstakeUSDC: (amount: bigint) => Promise<TxResult>;
+  getStakeInfo: (agentId: bigint) => Promise<{ stakedAmount: bigint; multiplier: number; stakedAt: bigint; lastSlashedAt: bigint }>;
+  getTotalStaked: () => Promise<bigint>;
+  isStaked: (agentId: bigint) => Promise<boolean>;
 }
 
 export function createContractClient(
@@ -179,5 +195,11 @@ export function createContractClient(
     balanceOfUSDC: (account) => readContract(xlayer.usdcAddress, ERC20_ABI, 'balanceOf', [account]) as Promise<bigint>,
     // Treasury
     getTreasuryBalance: () => readContract(contracts.treasury, TREASURY_ABI, 'getBalance') as Promise<bigint>,
+    // Staking
+    stakeUSDC: (amount) => writeContract(contracts.staking, STAKING_ABI, 'stake', [amount]),
+    unstakeUSDC: (amount) => writeContract(contracts.staking, STAKING_ABI, 'unstake', [amount]),
+    getStakeInfo: (agentId) => readContract(contracts.staking, STAKING_ABI, 'getStakeInfo', [agentId]) as never,
+    getTotalStaked: () => readContract(contracts.staking, STAKING_ABI, 'totalStaked') as Promise<bigint>,
+    isStaked: (agentId) => readContract(contracts.staking, STAKING_ABI, 'isStaked', [agentId]) as Promise<boolean>,
   };
 }

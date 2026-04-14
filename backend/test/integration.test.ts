@@ -35,6 +35,9 @@ function mockCC(): ContractClient {
     totalServices: vi.fn().mockResolvedValue(4n), totalOrders: vi.fn().mockResolvedValue(10n),
     approveUSDC: vi.fn().mockResolvedValue(tx), balanceOfUSDC: vi.fn().mockResolvedValue(0n),
     getTreasuryBalance: vi.fn().mockResolvedValue(0n),
+    stakeUSDC: vi.fn().mockResolvedValue(tx), unstakeUSDC: vi.fn().mockResolvedValue(tx),
+    getStakeInfo: vi.fn().mockResolvedValue({ stakedAmount: 0n, multiplier: 10000, stakedAt: 0n, lastSlashedAt: 0n }),
+    getTotalStaked: vi.fn().mockResolvedValue(0n), isStaked: vi.fn().mockResolvedValue(false),
   };
 }
 

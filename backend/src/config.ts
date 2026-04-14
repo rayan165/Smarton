@@ -67,6 +67,7 @@ export function createConfig(overrides?: Partial<TrustMeshConfig>): TrustMeshCon
       trustGate: (process.env.TRUST_GATE_ADDRESS as `0x${string}`) ?? ZERO_ADDRESS,
       serviceRegistry: (process.env.SERVICE_REGISTRY_ADDRESS as `0x${string}`) ?? ZERO_ADDRESS,
       treasury: (process.env.TREASURY_ADDRESS as `0x${string}`) ?? ZERO_ADDRESS,
+      staking: (process.env.STAKING_ADDRESS as `0x${string}`) ?? ZERO_ADDRESS,
       ...overrides?.contracts,
     },
     scoring: {

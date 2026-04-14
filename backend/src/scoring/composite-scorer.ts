@@ -9,14 +9,19 @@ import { createLogger } from '../utils/logger.js';
 
 const log = createLogger('composite-scorer');
 
-export function computeCompositeScore(components: ScoreComponents, weights: ScoringWeights): number {
-  const result =
+export function computeCompositeScore(
+  components: ScoreComponents,
+  weights: ScoringWeights,
+  stakeMultiplier: number = 10000,
+): number {
+  const rawScore =
     (components.tradePerformance * weights.tradePerformance +
       components.securityHygiene * weights.securityHygiene +
       components.peerRating * weights.peerRating +
       components.uptime * weights.uptime) /
     10000;
-  return Math.max(0, Math.min(10000, Math.round(result)));
+  const boostedScore = Math.round((rawScore * stakeMultiplier) / 10000);
+  return Math.max(0, Math.min(10000, boostedScore));
 }
 
 export function determineTier(score: number, interactions: number, config: ScoringConfig): AgentTier {

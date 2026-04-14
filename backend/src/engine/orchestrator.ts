@@ -31,7 +31,7 @@ export function createOrchestrator(configOverrides?: Partial<TrustMeshConfig>): 
 
   const emptyStats: MarketplaceStats = {
     totalServices: 0, activeServices: 0, totalOrders: 0, completedOrders: 0,
-    totalVolumeUSDC: 0n, averageRating: 0, activeAgents: agents.length,
+    totalVolumeUSDC: 0n, averageRating: 0, activeAgents: agents.length, totalStaked: 0n,
   };
 
   return {
@@ -74,6 +74,7 @@ export function createOrchestrator(configOverrides?: Partial<TrustMeshConfig>): 
           lastCycle: Date.now(),
           ordersCompleted: 0,
           totalRevenue: 0n,
+          stakedAmount: 0n,
         })),
         marketplace: emptyStats,
       };

@@ -91,5 +91,10 @@ export function createMockContractClient(): ContractClient {
     async approveUSDC() { await randomDelay(); return fakeTx(); },
     async balanceOfUSDC() { await randomDelay(); return 1_000_000_000n; },
     async getTreasuryBalance() { await randomDelay(); return 50_000_000n; },
+    async stakeUSDC() { await randomDelay(); return fakeTx(); },
+    async unstakeUSDC() { await randomDelay(); return fakeTx(); },
+    async getStakeInfo() { await randomDelay(); return { stakedAmount: 10_000_000n, multiplier: 12000, stakedAt: 0n, lastSlashedAt: 0n }; },
+    async getTotalStaked() { await randomDelay(); return 16_000_000n; },
+    async isStaked() { await randomDelay(); return true; },
   };
 }

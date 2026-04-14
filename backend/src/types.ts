@@ -29,6 +29,7 @@ export interface ContractAddresses {
   readonly trustGate: `0x${string}`;
   readonly serviceRegistry: `0x${string}`;
   readonly treasury: `0x${string}`;
+  readonly staking: `0x${string}`;
 }
 
 export interface ScoringConfig {
@@ -70,11 +71,20 @@ export interface AgentInfo {
   readonly agentURI: string;
 }
 
+export interface StakeInfo {
+  readonly agentId: bigint;
+  readonly stakedAmount: bigint;
+  readonly multiplier: number;
+  readonly stakedAt: number;
+  readonly lastSlashedAt: number;
+}
+
 export interface AgentProfile {
   readonly info: AgentInfo;
   readonly trustScore: TrustScore;
   readonly services: readonly ServiceListing[];
   readonly stats: AgentStats;
+  readonly stakeInfo: StakeInfo | null;
 }
 
 export interface AgentStats {
@@ -200,6 +210,7 @@ export interface MarketplaceStats {
   readonly totalVolumeUSDC: bigint;
   readonly averageRating: number;
   readonly activeAgents: number;
+  readonly totalStaked: bigint;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -267,6 +278,7 @@ export interface AgentStatus {
   readonly lastCycle: number;
   readonly ordersCompleted: number;
   readonly totalRevenue: bigint;
+  readonly stakedAmount: bigint;
 }
 
 export interface CycleResult {

@@ -29,6 +29,11 @@ function createMockContractClient(overrides: Partial<ContractClient> = {}): Cont
     approveUSDC: vi.fn().mockResolvedValue({ hash: '0xabc', blockNumber: 1n, gasUsed: 21000n, status: 'success' }),
     balanceOfUSDC: vi.fn().mockResolvedValue(0n),
     getTreasuryBalance: vi.fn().mockResolvedValue(0n),
+    stakeUSDC: vi.fn().mockResolvedValue({ hash: '0xabc', blockNumber: 1n, gasUsed: 21000n, status: 'success' }),
+    unstakeUSDC: vi.fn().mockResolvedValue({ hash: '0xabc', blockNumber: 1n, gasUsed: 21000n, status: 'success' }),
+    getStakeInfo: vi.fn().mockResolvedValue({ stakedAmount: 0n, multiplier: 10000, stakedAt: 0n, lastSlashedAt: 0n }),
+    getTotalStaked: vi.fn().mockResolvedValue(0n),
+    isStaked: vi.fn().mockResolvedValue(false),
     ...overrides,
   };
 }

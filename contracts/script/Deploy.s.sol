@@ -8,6 +8,7 @@ import {TrustScorer} from "../src/TrustScorer.sol";
 import {TrustGate} from "../src/TrustGate.sol";
 import {TrustMeshTreasury} from "../src/TrustMeshTreasury.sol";
 import {ServiceRegistry} from "../src/ServiceRegistry.sol";
+import {TrustMeshStaking} from "../src/TrustMeshStaking.sol";
 
 contract Deploy is Script {
     function run() external {
@@ -26,9 +27,16 @@ contract Deploy is Script {
             treasury,
             IERC20(usdc)
         );
+        TrustMeshStaking staking = new TrustMeshStaking(
+            agentRegistry,
+            IERC20(usdc),
+            address(treasury)
+        );
 
         agentRegistry.setTrustScorer(address(trustScorer));
         treasury.setServiceRegistry(address(serviceRegistry));
+        staking.setServiceRegistry(address(serviceRegistry));
+        serviceRegistry.setStaking(staking);
 
         vm.stopBroadcast();
 
@@ -37,5 +45,6 @@ contract Deploy is Script {
         console.log("TrustGate:", address(trustGate));
         console.log("TrustMeshTreasury:", address(treasury));
         console.log("ServiceRegistry:", address(serviceRegistry));
+        console.log("TrustMeshStaking:", address(staking));
     }
 }

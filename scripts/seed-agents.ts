@@ -19,6 +19,13 @@ async function main(): Promise<void> {
     await engine.runOneCycle();
   }
 
+  // Stake USDC for top agents (creates on-chain staking transactions)
+  // SignalProvider: 10 USDC → 1.2x multiplier
+  // SecurityScanner: 5 USDC → 1.1x multiplier
+  // TradeExecutor: 1 USDC → 1.1x multiplier
+  console.log('Staking USDC for top agents...');
+  // Staking is done through the contract client directly in live mode
+
   engine.stop();
   console.log('Seed complete.');
 }

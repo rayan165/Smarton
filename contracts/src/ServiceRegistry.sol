@@ -8,6 +8,7 @@ import {IAgentRegistry} from "./interfaces/IAgentRegistry.sol";
 import {ITrustGate} from "./interfaces/ITrustGate.sol";
 import {TrustMeshTreasury} from "./TrustMeshTreasury.sol";
 import {IServiceRegistry, ServiceListing, ServiceOrder, ServiceStatus} from "./interfaces/IServiceRegistry.sol";
+import {ITrustMeshStaking} from "./interfaces/ITrustMeshStaking.sol";
 
 contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
     uint256 public constant PROTOCOL_FEE_BPS = 200;
@@ -17,6 +18,8 @@ contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
     ITrustGate public immutable trustGate;
     TrustMeshTreasury public immutable treasury;
     IERC20 public immutable usdc;
+
+    ITrustMeshStaking public staking;
 
     uint256 private _nextServiceId = 1;
     uint256 private _nextOrderId = 1;
@@ -35,6 +38,10 @@ contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
         trustGate = _trustGate;
         treasury = _treasury;
         usdc = _usdc;
+    }
+
+    function setStaking(ITrustMeshStaking _staking) external onlyOwner {
+        staking = _staking;
     }
 
     function listService(
@@ -160,6 +167,10 @@ contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
         if (refund) {
             usdc.transfer(order.buyerWallet, order.amount);
             order.status = ServiceStatus.Refunded;
+            // Slash seller's stake if staking is configured and seller has stake
+            if (address(staking) != address(0) && staking.isStaked(order.sellerAgentId)) {
+                staking.slashAgent(order.sellerAgentId, order.buyerWallet, "dispute_refund");
+            }
         } else {
             uint256 fee = (order.amount * PROTOCOL_FEE_BPS) / 10000;
             uint256 sellerPayout = order.amount - fee;

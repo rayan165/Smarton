@@ -52,6 +52,11 @@ function mockContractClient(overrides: Partial<ContractClient> = {}): ContractCl
     approveUSDC: vi.fn(),
     balanceOfUSDC: vi.fn().mockResolvedValue(0n),
     getTreasuryBalance: vi.fn().mockResolvedValue(0n),
+    stakeUSDC: vi.fn(),
+    unstakeUSDC: vi.fn(),
+    getStakeInfo: vi.fn().mockResolvedValue({ stakedAmount: 0n, multiplier: 10000, stakedAt: 0n, lastSlashedAt: 0n }),
+    getTotalStaked: vi.fn().mockResolvedValue(0n),
+    isStaked: vi.fn().mockResolvedValue(false),
     ...overrides,
   } as ContractClient;
 }
