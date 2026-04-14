@@ -5,20 +5,38 @@ import { computeTradePerformance } from './trade-performance.js';
 import { computeSecurityHygiene } from './security-hygiene.js';
 import { computePeerRating } from './peer-ratings.js';
 import { computeUptime } from './uptime-tracker.js';
+import { analyzeSybilRisk } from './sybil-detector.js';
 import { createLogger } from '../utils/logger.js';
 
 const log = createLogger('composite-scorer');
+
+export interface ExtendedScoringWeights extends ScoringWeights {
+  readonly diversity: number;
+}
+
+export const EXTENDED_DEFAULT_WEIGHTS: ExtendedScoringWeights = {
+  tradePerformance: 2500,
+  securityHygiene: 2000,
+  peerRating: 2000,
+  uptime: 1000,
+  diversity: 1500,
+};
 
 export function computeCompositeScore(
   components: ScoreComponents,
   weights: ScoringWeights,
   stakeMultiplier: number = 10000,
 ): number {
+  const extWeights = weights as ExtendedScoringWeights;
+  const diversityWeight = extWeights.diversity ?? 0;
+  const diversityValue = components.diversity ?? 5000;
+
   const rawScore =
     (components.tradePerformance * weights.tradePerformance +
       components.securityHygiene * weights.securityHygiene +
       components.peerRating * weights.peerRating +
-      components.uptime * weights.uptime) /
+      components.uptime * weights.uptime +
+      diversityValue * diversityWeight) /
     10000;
   const boostedScore = Math.round((rawScore * stakeMultiplier) / 10000);
   return Math.max(0, Math.min(10000, boostedScore));
@@ -40,11 +58,12 @@ export async function runScoringCycle(
 ): Promise<TrustScore> {
   const chainId = 196;
 
-  const [trade, security, peer, uptime] = await Promise.all([
+  const [trade, security, peer, uptime, sybil] = await Promise.all([
     computeTradePerformance(okxClient, agentWallet, chainId),
     computeSecurityHygiene(okxClient, agentWallet, chainId, recentTokens),
     computePeerRating(contractClient, agentId),
     computeUptime(okxClient, agentWallet, chainId),
+    analyzeSybilRisk(contractClient, agentId),
   ]);
 
   const components: ScoreComponents = {
@@ -52,6 +71,7 @@ export async function runScoringCycle(
     securityHygiene: security.score,
     peerRating: peer.score,
     uptime: uptime.score,
+    diversity: sybil.diversityScore,
   };
 
   const overall = computeCompositeScore(components, config.weights);
@@ -63,6 +83,7 @@ export async function runScoringCycle(
     security: security.score,
     peer: peer.score,
     uptime: uptime.score,
+    diversity: sybil.diversityScore,
   });
 
   try {

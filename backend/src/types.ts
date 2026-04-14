@@ -46,6 +46,7 @@ export interface ScoringWeights {
   readonly securityHygiene: number;
   readonly peerRating: number;
   readonly uptime: number;
+  readonly diversity: number;
 }
 
 export interface MarketplaceConfig {
@@ -115,6 +116,17 @@ export interface ScoreComponents {
   readonly securityHygiene: number;
   readonly peerRating: number;
   readonly uptime: number;
+  readonly diversity: number;
+}
+
+export interface SybilAnalysis {
+  readonly agentId: bigint;
+  readonly uniqueCounterparties: number;
+  readonly totalInteractions: number;
+  readonly diversityRatio: number;
+  readonly selfDealingDetected: boolean;
+  readonly suspiciousPatterns: readonly string[];
+  readonly diversityScore: number;
 }
 
 export interface TradePerformanceData {
@@ -211,6 +223,39 @@ export interface MarketplaceStats {
   readonly averageRating: number;
   readonly activeAgents: number;
   readonly totalStaked: bigint;
+}
+
+export interface TrustOracleResponse {
+  readonly address: `0x${string}`;
+  readonly agentId: bigint;
+  readonly registered: boolean;
+  readonly tier: AgentTier;
+  readonly trustScore: {
+    readonly overall: number;
+    readonly tradePerformance: number;
+    readonly securityHygiene: number;
+    readonly peerRating: number;
+    readonly uptime: number;
+    readonly diversity: number;
+  };
+  readonly staking: {
+    readonly stakedAmount: bigint;
+    readonly multiplier: number;
+    readonly isStaked: boolean;
+  };
+  readonly sybilRisk: {
+    readonly diversityRatio: number;
+    readonly selfDealingDetected: boolean;
+    readonly suspiciousPatterns: readonly string[];
+    readonly riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  };
+  readonly stats: {
+    readonly totalOrders: number;
+    readonly completedOrders: number;
+    readonly averageRating: number;
+    readonly uniqueCounterparties: number;
+  };
+  readonly queriedAt: string;
 }
 
 // ═══════════════════════════════════════════════════════════════

@@ -38,3 +38,4 @@ export { computeTradePerformance } from './trade-performance.js';
 export { computeSecurityHygiene } from './security-hygiene.js';
 export { computePeerRating } from './peer-ratings.js';
 export { computeUptime } from './uptime-tracker.js';
+export { analyzeSybilRisk } from './sybil-detector.js';

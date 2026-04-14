@@ -6,6 +6,7 @@ import { createMarketplace } from '../marketplace/index.js';
 import { createScoringEngine, type ScoringEngine } from '../scoring/index.js';
 import { createAllAgents, type BaseAgent } from '../agents/index.js';
 import { runMarketplaceCycle } from './cycle-runner.js';
+import { createTrustOracle, type TrustOracle } from '../api/trust-oracle.js';
 import { createLogger } from '../utils/logger.js';
 
 const log = createLogger('orchestrator');
@@ -24,6 +25,7 @@ export function createOrchestrator(configOverrides?: Partial<TrustMeshConfig>): 
   const marketplace = createMarketplace(config.marketplace, contractClient);
   const scoringEngine: ScoringEngine = createScoringEngine(config.scoring, okxClient, contractClient);
   const agents: BaseAgent[] = createAllAgents(okxClient, contractClient, marketplace);
+  const oracle: TrustOracle = createTrustOracle(contractClient);
 
   let intervalId: ReturnType<typeof setInterval> | null = null;
   let cycleCount = 0;
@@ -44,6 +46,9 @@ export function createOrchestrator(configOverrides?: Partial<TrustMeshConfig>): 
         await agent.listService();
       }
 
+      const oraclePort = Number(process.env.ORACLE_PORT ?? '3000');
+      oracle.start(oraclePort);
+
       intervalId = setInterval(async () => {
         cycleCount++;
         await runMarketplaceCycle(agents, scoringEngine, cycleCount);
@@ -56,6 +61,7 @@ export function createOrchestrator(configOverrides?: Partial<TrustMeshConfig>): 
 
     stop(): void {
       if (intervalId) clearInterval(intervalId);
+      oracle.stop();
       agents.forEach(a => a.stop());
       log.info('Engine stopped', { totalCycles: cycleCount });
     },

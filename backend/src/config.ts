@@ -7,10 +7,11 @@ import type {
 } from './types.js';
 
 export const DEFAULT_SCORING_WEIGHTS: ScoringWeights = {
-  tradePerformance: 3000,
-  securityHygiene: 2500,
-  peerRating: 2500,
-  uptime: 2000,
+  tradePerformance: 2500,
+  securityHygiene: 2000,
+  peerRating: 2000,
+  uptime: 1000,
+  diversity: 1500,
 };
 
 export const DEFAULT_SCORING_CONFIG: ScoringConfig = {
