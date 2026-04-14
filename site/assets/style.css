@@ -61,7 +61,7 @@ a{color:inherit;text-decoration:none}
 /* 2. Problem */
 .statement{font-family:var(--syne);font-size:clamp(24px,4vw,36px);font-weight:600;color:var(--t0);line-height:1.2;margin-bottom:48px;letter-spacing:-.02em;overflow-wrap:break-word}
 .problem-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b)}
-.p-col{background:var(--bg-2);padding:32px;transition:background .2s}
+.p-col{background:var(--bg-2);padding:32px;transition:background .2s;min-width:0}
 .p-col:hover{background:var(--bg-3)}
 .p-col:hover h3{color:var(--ac)}
 .p-col h3{font-family:var(--syne);font-size:18px;font-weight:500;color:var(--t0);margin-bottom:8px;transition:color .2s}
@@ -81,6 +81,7 @@ a{color:inherit;text-decoration:none}
 /* 4. Breakthroughs */
 .bt{display:grid;grid-template-columns:3fr 2fr;gap:48px;align-items:center;padding:48px;background:var(--bg-1);border:1px solid var(--b);margin-bottom:1px;transition:border-color .2s;min-width:0}
 .bt:hover{border-color:var(--bh)}
+.bt-left,.bt-right{min-width:0}
 .bt-tag{font-family:var(--mono);font-size:12px;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:var(--ac);display:inline-block;margin-bottom:16px}
 .bt-tag-green{color:var(--green)}.bt-tag-cyan{color:var(--ac)}
 .bt-left h3{font-family:var(--syne);font-size:clamp(18px,2.5vw,24px);font-weight:600;color:var(--t0);margin-bottom:16px;line-height:1.25;overflow-wrap:break-word;word-break:break-word}
@@ -135,7 +136,7 @@ a{color:inherit;text-decoration:none}
 
 /* 7. Agents */
 .agents-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--b)}
-.ag{background:var(--bg-2);padding:24px;transition:background .2s}
+.ag{background:var(--bg-2);padding:24px;transition:background .2s;min-width:0}
 .ag:hover{background:var(--bg-3)}
 .ag h4{font-family:var(--syne);font-size:16px;font-weight:500;color:var(--t0);margin-bottom:4px}
 .ag p{font-size:13px;font-weight:300;color:var(--t2);margin-bottom:8px}
