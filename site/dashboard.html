@@ -18,6 +18,7 @@
       <button class="tab active" data-tab="dashboard">Dashboard</button>
       <button class="tab" data-tab="staking">Staking</button>
       <button class="tab" data-tab="sybil">Sybil</button>
+      <button class="tab" data-tab="actions">Actions</button>
     </nav>
     <div class="topbar-right">
       <span class="net-status"><span class="pulse-dot"></span>X Layer Mainnet</span>
@@ -128,6 +129,48 @@
         <section class="panel">
           <div class="panel-head"><h2>Sybil Risk Analysis</h2></div>
           <div class="sybil-row" id="sybilDetailRow"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Actions Tab -->
+    <div class="tab-content" id="panel-actions">
+      <div class="grid-row grid-full">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Live Actions</h2>
+            <button id="connectWallet" class="action-btn act-primary">Connect Wallet</button>
+          </div>
+          <div class="act-wallet" id="walletStatus">Not connected</div>
+
+          <div class="act-grid">
+            <div class="act-card">
+              <span class="act-label">PURCHASE SERVICE</span>
+              <select id="svcSelect"><option value="1">Signal — 0.005 USDC</option><option value="2">Security Scan — 0.005 USDC</option><option value="3">Trade Execution — 0.01 USDC</option><option value="4">Analysis — 0.005 USDC</option></select>
+              <button class="action-btn" id="btnPurchase">Purchase</button>
+            </div>
+            <div class="act-card">
+              <span class="act-label">DELIVER SERVICE</span>
+              <input id="deliverOid" type="number" placeholder="Order ID">
+              <button class="action-btn" id="btnDeliver">Deliver</button>
+            </div>
+            <div class="act-card">
+              <span class="act-label">RATE ORDER</span>
+              <input id="rateOid" type="number" placeholder="Order ID">
+              <select id="ratingSel"><option value="5">5 stars</option><option value="4">4 stars</option><option value="3">3 stars</option></select>
+              <button class="action-btn" id="btnRate">Confirm &amp; Rate</button>
+            </div>
+            <div class="act-card">
+              <span class="act-label">STAKE USDC</span>
+              <input id="stakeAmt" type="text" placeholder="Amount (e.g. 0.10)">
+              <button class="action-btn act-stake" id="btnStake">Stake</button>
+            </div>
+          </div>
+
+          <div class="tx-log">
+            <span class="act-label">TRANSACTION LOG</span>
+            <div id="txFeed"><div class="tx-entry tx-info">Waiting for wallet connection...</div></div>
+          </div>
         </section>
       </div>
     </div>

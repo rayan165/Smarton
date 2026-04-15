@@ -283,3 +283,117 @@ function renderSybil(containerId) {
     container.appendChild(div);
   });
 }
+
+// ═══ LIVE ACTIONS ═══
+
+var SR_ABI = [
+  'function purchaseService(uint256 serviceId) external returns (uint256)',
+  'function deliverService(uint256 orderId, string deliveryHash) external',
+  'function confirmAndRate(uint256 orderId, uint8 rating) external'
+];
+var STK_ABI = ['function stake(uint256 amount) external'];
+var ERC_ABI = [
+  'function approve(address spender, uint256 amount) external returns (bool)',
+  'function balanceOf(address owner) external view returns (uint256)'
+];
+var CC = {
+  sr: '0xCEDEAFa7122f41855Af4F52cace2064fF3332a95',
+  stk: '0xF45B532F5aB039a72093c7Ece6d64aC39cb4B1AC',
+  usdc: '0x74b7f16337b8972027f6196a17a631ac6de26d22'
+};
+var w3p = null, w3s = null;
+
+function txLog(cls, msg) {
+  var f = document.getElementById('txFeed'); if(!f) return;
+  var d = document.createElement('div');
+  d.className = 'tx-entry ' + cls;
+  d.innerHTML = '<span class="tx-time">' + new Date().toLocaleTimeString() + '</span> ' + msg;
+  f.insertBefore(d, f.firstChild);
+  while(f.children.length > 20) f.removeChild(f.lastChild);
+}
+function txLink(hash) {
+  var f = document.getElementById('txFeed'); if(!f) return;
+  var d = document.createElement('div');
+  d.className = 'tx-entry tx-link';
+  d.innerHTML = '  \u21B3 <a href="https://www.okx.com/explorer/xlayer/tx/' + hash + '" target="_blank" class="tx-link-a">View on Explorer \u2197</a>';
+  f.insertBefore(d, f.children[1]);
+}
+
+(function initActions() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var cb = document.getElementById('connectWallet'); if(cb) cb.onclick = connectW;
+    var bp = document.getElementById('btnPurchase'); if(bp) bp.onclick = doPurchase;
+    var bd = document.getElementById('btnDeliver'); if(bd) bd.onclick = doDeliver;
+    var br = document.getElementById('btnRate'); if(br) br.onclick = doRate;
+    var bs = document.getElementById('btnStake'); if(bs) bs.onclick = doStake;
+  });
+})();
+
+async function connectW() {
+  try {
+    if(!window.ethereum) { txLog('tx-err', 'No wallet detected'); return; }
+    w3p = new ethers.providers.Web3Provider(window.ethereum);
+    await w3p.send('eth_requestAccounts', []);
+    try { await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xc4' }] }); }
+    catch(e) { if(e.code===4902) await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{ chainId:'0xc4', chainName:'X Layer Mainnet', nativeCurrency:{name:'OKB',symbol:'OKB',decimals:18}, rpcUrls:['https://rpc.xlayer.tech'], blockExplorerUrls:['https://www.okx.com/explorer/xlayer'] }] }); }
+    w3s = w3p.getSigner();
+    var addr = await w3s.getAddress();
+    var ws = document.getElementById('walletStatus');
+    if(ws) { ws.textContent = addr.slice(0,6)+'...'+addr.slice(-4)+' (X Layer)'; ws.style.color='var(--hi)'; }
+    var cb = document.getElementById('connectWallet'); if(cb) { cb.textContent='Connected'; cb.disabled=true; }
+    txLog('tx-ok', 'Wallet connected: '+addr.slice(0,10)+'...');
+    var usdc = new ethers.Contract(CC.usdc, ERC_ABI, w3p);
+    var bal = await usdc.balanceOf(addr);
+    txLog('tx-info', 'USDC balance: '+ethers.utils.formatUnits(bal,6));
+  } catch(e) { txLog('tx-err', 'Failed: '+e.message); }
+}
+
+async function doPurchase() {
+  if(!w3s){txLog('tx-err','Connect wallet first');return;}
+  var sid=document.getElementById('svcSelect').value;
+  var pr={'1':'5000','2':'5000','3':'10000','4':'5000'};
+  var nm={'1':'Signal','2':'Security Scan','3':'Trade Execution','4':'Analysis'};
+  try {
+    txLog('tx-wait','Approving USDC...');
+    var u=new ethers.Contract(CC.usdc,ERC_ABI,w3s); var at=await u.approve(CC.sr,pr[sid]); await at.wait();
+    txLog('tx-ok','Approved');
+    txLog('tx-wait','Purchasing '+nm[sid]+'...');
+    var sr=new ethers.Contract(CC.sr,SR_ABI,w3s); var pt=await sr.purchaseService(sid); var r=await pt.wait();
+    txLog('tx-ok','Purchased '+nm[sid]+' \u2714'); txLink(r.transactionHash);
+  } catch(e){txLog('tx-err','Failed: '+(e.reason||e.message).slice(0,60));}
+}
+
+async function doDeliver() {
+  if(!w3s){txLog('tx-err','Connect wallet first');return;}
+  var oid=document.getElementById('deliverOid').value; if(!oid){txLog('tx-err','Enter order ID');return;}
+  try {
+    txLog('tx-wait','Delivering #'+oid+'...');
+    var sr=new ethers.Contract(CC.sr,SR_ABI,w3s); var tx=await sr.deliverService(oid,'SmartDemoDelivery_'+Date.now()); var r=await tx.wait();
+    txLog('tx-ok','Delivered #'+oid+' \u2714'); txLink(r.transactionHash);
+  } catch(e){txLog('tx-err','Failed: '+(e.reason||e.message).slice(0,60));}
+}
+
+async function doRate() {
+  if(!w3s){txLog('tx-err','Connect wallet first');return;}
+  var oid=document.getElementById('rateOid').value; var rat=document.getElementById('ratingSel').value;
+  if(!oid){txLog('tx-err','Enter order ID');return;}
+  try {
+    txLog('tx-wait','Rating #'+oid+'...');
+    var sr=new ethers.Contract(CC.sr,SR_ABI,w3s); var tx=await sr.confirmAndRate(oid,rat); var r=await tx.wait();
+    txLog('tx-ok','Rated #'+oid+' '+'\u2605'.repeat(parseInt(rat))+' \u2714'); txLink(r.transactionHash);
+  } catch(e){txLog('tx-err','Failed: '+(e.reason||e.message).slice(0,60));}
+}
+
+async function doStake() {
+  if(!w3s){txLog('tx-err','Connect wallet first');return;}
+  var amt=document.getElementById('stakeAmt').value; if(!amt){txLog('tx-err','Enter amount');return;}
+  var wei=ethers.utils.parseUnits(amt,6);
+  try {
+    txLog('tx-wait','Approving USDC...');
+    var u=new ethers.Contract(CC.usdc,ERC_ABI,w3s); var at=await u.approve(CC.stk,wei); await at.wait();
+    txLog('tx-ok','Approved');
+    txLog('tx-wait','Staking '+amt+' USDC...');
+    var stk=new ethers.Contract(CC.stk,STK_ABI,w3s); var tx=await stk.stake(wei); var r=await tx.wait();
+    txLog('tx-ok','Staked '+amt+' USDC \u2714'); txLink(r.transactionHash);
+  } catch(e){txLog('tx-err','Failed: '+(e.reason||e.message).slice(0,60));}
+}

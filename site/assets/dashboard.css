@@ -130,6 +130,30 @@ a{color:var(--ac);text-decoration:none}
 /* Footer */
 .dash-footer{display:flex;justify-content:center;gap:20px;padding:16px 24px;font-size:11px;color:var(--t4);border-top:1px solid var(--b0)}
 
+/* Actions panel */
+.act-wallet{font-family:var(--mono);font-size:13px;color:var(--t4);padding:0 18px 16px;border-bottom:1px solid var(--b0)}
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 18px}
+.act-card{background:var(--bg1);border:1px solid var(--b0);padding:16px;display:flex;flex-direction:column;gap:8px;transition:border-color .2s}
+.act-card:hover{border-color:var(--b2)}
+.act-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--t4);text-transform:uppercase}
+.action-btn{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--b1);background:transparent;color:var(--t1);cursor:pointer;transition:all .2s}
+.action-btn:hover{border-color:var(--ac);color:var(--ac)}
+.act-primary{background:var(--ac);color:var(--bg1);border-color:var(--ac)}
+.act-primary:hover{opacity:.85}
+.act-primary:disabled{opacity:.4;cursor:not-allowed}
+.act-stake{border-color:var(--stk);color:var(--stk)}
+.act-stake:hover{background:rgba(167,139,250,.1)}
+.act-card select,.act-card input{font-family:var(--mono);font-size:13px;padding:7px 10px;background:var(--bg1);border:1px solid var(--b0);color:var(--t1);outline:none}
+.act-card select:focus,.act-card input:focus{border-color:var(--ac)}
+.tx-log{border-top:1px solid var(--b0);padding:16px 18px}
+#txFeed{max-height:280px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--b1) transparent}
+.tx-entry{font-family:var(--mono);font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.02);color:var(--t2)}
+.tx-entry.tx-ok{color:var(--hi)}.tx-entry.tx-err{color:var(--lo)}.tx-entry.tx-wait{color:var(--mid)}.tx-entry.tx-info{color:var(--t3)}
+.tx-entry.tx-link{padding-left:18px}
+.tx-time{color:var(--t4);margin-right:6px}
+.tx-link-a{color:var(--ac);text-decoration:none}
+.tx-link-a:hover{text-decoration:underline}
+
 /* Responsive */
 @media(max-width:1024px){
   .grid-60-40{grid-template-columns:1fr}
