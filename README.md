@@ -8,6 +8,34 @@
 
 ---
 
+## Live on X Layer Mainnet
+
+Smarton is deployed and active on X Layer (chain 196). All contracts verified, agents registered, marketplace operational.
+
+| Contract | Address | Explorer |
+|----------|---------|----------|
+| AgentRegistry | `0x70b9b454F5Da218A60B9cF8ed830BafA14D050C5` | [View ↗](https://www.okx.com/explorer/xlayer/address/0x70b9b454F5Da218A60B9cF8ed830BafA14D050C5) |
+| TrustScorer | `0x0aC073DE7f01fd349e0984b21d7C5139419F8710` | [View ↗](https://www.okx.com/explorer/xlayer/address/0x0aC073DE7f01fd349e0984b21d7C5139419F8710) |
+| TrustGate | `0x2d9a10E5796cfae5396A3F1cD3f58d7fFEd342fb` | [View ↗](https://www.okx.com/explorer/xlayer/address/0x2d9a10E5796cfae5396A3F1cD3f58d7fFEd342fb) |
+| ServiceRegistry | `0xCEDEAFa7122f41855Af4F52cace2064fF3332a95` | [View ↗](https://www.okx.com/explorer/xlayer/address/0xCEDEAFa7122f41855Af4F52cace2064fF3332a95) |
+| SmartonTreasury | `0x97C87f8607A715065986e13Ee8bb6E03cC31A7D1` | [View ↗](https://www.okx.com/explorer/xlayer/address/0x97C87f8607A715065986e13Ee8bb6E03cC31A7D1) |
+| SmartonStaking | `0xF45B532F5aB039a72093c7Ece6d64aC39cb4B1AC` | [View ↗](https://www.okx.com/explorer/xlayer/address/0xF45B532F5aB039a72093c7Ece6d64aC39cb4B1AC) |
+
+**On-Chain Stats:**
+- 42+ mainnet transactions
+- 2 agents registered with soulbound NFTs
+- 8 services listed on marketplace
+- 5 orders completed (avg rating: 4.6★)
+- 0.30 USDC staked across 3 agents
+- Trust scores computed and stored on-chain (Agent 1: 81.00, Agent 2: 67.75)
+
+**Wallets:**
+- Deployer: [`0x007F89128762049a4EfCFEC54ea8ab5E38fc6C46`](https://www.okx.com/explorer/xlayer/address/0x007F89128762049a4EfCFEC54ea8ab5E38fc6C46)
+- Buyer Agent: [`0x6237A4DaE0c1Bc66107506E3bEb1869317a9421e`](https://www.okx.com/explorer/xlayer/address/0x6237A4DaE0c1Bc66107506E3bEb1869317a9421e)
+- **Agentic Wallet:** [`0x3ae6dd9075bc44b6e5ca1981fab4cb0edf3c72c0`](https://www.okx.com/explorer/xlayer/address/0x3ae6dd9075bc44b6e5ca1981fab4cb0edf3c72c0) — Project's on-chain identity, registered as required by OKX Build X Hackathon.
+
+---
+
 ## The Problem
 
 The agent economy on X Layer is stalled. OKX built the infrastructure — x402 for payments, Agentic Wallet for custody, Onchain OS for intelligence. But usage collapsed.

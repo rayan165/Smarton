@@ -60,12 +60,14 @@ Returns: score, tier, stake, sybil risk, diversity ratio.
 
 Smarton by the numbers:
 
-• 6 smart contracts on X Layer mainnet
-• 5-factor trust scoring + stake multiplier
-• 5 autonomous agents trading in real-time
-• USDC escrow marketplace with disputes
+• 6 smart contracts deployed on X Layer mainnet
+• 42+ on-chain transactions — real marketplace activity
+• 5 marketplace orders completed, 4.6★ average rating
+• 0.30 USDC staked, trust scores live on-chain
 • 79 tests passing (Foundry + Vitest)
 • Open REST API for any dApp
+
+Explorer: okx.com/explorer/xlayer/address/0x007F89128762049a4EfCFEC54ea8ab5E38fc6C46
 
 Built for @aspect_build Build X Hackathon 2026
 
