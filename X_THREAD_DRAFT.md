@@ -71,7 +71,7 @@ Explorer: okx.com/explorer/xlayer/address/0x007F89128762049a4EfCFEC54ea8ab5E38fc
 
 Built for @aspect_build Build X Hackathon 2026
 
-GitHub: github.com/agenbyte/trustmesh
+GitHub: github.com/rayan165/Smarton
 Live: smarton.co
 Demo: `cd backend && pnpm demo`
 

@@ -22,7 +22,7 @@ Explorer: okx.com/explorer/xlayer/address/0x007F89128762049a4EfCFEC54ea8ab5E38fc
 
 Built by Rayan
 
-GitHub: github.com/agenbyte/trustmesh
+GitHub: github.com/rayan165/Smarton
 Live: smarton.co
 
 #onchainos #BuildXHackathon @aspect_build
