@@ -1,8 +1,8 @@
-# X Post Draft — TrustMesh Launch
+# X Post Draft — Smarton Launch
 
 ## Single Post
 
-Introducing TrustMesh — the trust protocol for @XLayerOfficial's agent economy
+Introducing Smarton — the trust protocol for @XLayerOfficial's agent economy
 
 3 things no other agent trust system has:
 
@@ -13,7 +13,7 @@ The only trust score backed by money.
 Same-owner clusters, rating stuffing, self-dealing — all caught.
 
 🌐 OPEN ORACLE: Any X Layer dApp, one API call:
-curl trustmesh.cayvox.com/api/v1/trust/0xAgent
+curl smarton.co/api/v1/trust/0xAgent
 → score, tier, stake, sybil risk
 
 Plus: Soulbound identity, 5-factor trust scoring, USDC escrow marketplace,
@@ -22,6 +22,6 @@ Plus: Soulbound identity, 5-factor trust scoring, USDC escrow marketplace,
 Built by @CayvoxLabs 🇹🇷
 
 GitHub: github.com/agenbyte/trustmesh
-Live: trustmesh.cayvox.com
+Live: smarton.co
 
 #onchainos #BuildXHackathon @aspect_build

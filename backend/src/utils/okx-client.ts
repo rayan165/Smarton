@@ -11,7 +11,7 @@ import type {
   OKXCandleData,
   OKXTokenRanking,
   CacheEntry,
-  TrustMeshError,
+  SmartonError,
 } from '../types.js';
 import { createLogger } from './logger.js';
 
@@ -96,7 +96,7 @@ export function createOKXClient(config: OKXConfig): OKXClient {
     };
   }
 
-  function mapOKXError(code: string, msg: string): TrustMeshError {
+  function mapOKXError(code: string, msg: string): SmartonError {
     return {
       code: `OKX_${code}`,
       message: msg || `OKX API error: ${code}`,
@@ -145,7 +145,7 @@ export function createOKXClient(config: OKXConfig): OKXClient {
         throw mapOKXError(json.code, json.msg);
       } catch (err) {
         lastError = err;
-        if ((err as TrustMeshError).code?.startsWith('OKX_')) throw err;
+        if ((err as SmartonError).code?.startsWith('OKX_')) throw err;
         if (attempt < retries - 1) {
           await new Promise((r) => setTimeout(r, 1000));
         }

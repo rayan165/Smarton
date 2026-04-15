@@ -1,4 +1,4 @@
-// TrustMesh Dashboard
+// Smarton Dashboard
 
 var AGENTS = [
   { id:1, name:'SignalPro', mono:'SP', tier:3, overall:87.00, trade:92, security:85, peer:88, uptime:78, diversity:85, orders:87, staked:10.00, mult:'1.2x', boost:'+17.4', since:'Apr 2', status:'Active', risk:'low', patterns:[] },

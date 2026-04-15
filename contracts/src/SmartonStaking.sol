@@ -4,9 +4,9 @@ pragma solidity ^0.8.24;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IAgentRegistry} from "./interfaces/IAgentRegistry.sol";
-import {ITrustMeshStaking} from "./interfaces/ITrustMeshStaking.sol";
+import {ISmartonStaking} from "./interfaces/ISmartonStaking.sol";
 
-contract TrustMeshStaking is Ownable, ITrustMeshStaking {
+contract SmartonStaking is Ownable, ISmartonStaking {
     struct StakeInfo {
         uint256 amount;
         uint16 multiplier;

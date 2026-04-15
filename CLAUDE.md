@@ -1,8 +1,8 @@
-# CLAUDE.md — TrustMesh Project Instructions
+# CLAUDE.md — Smarton Project Instructions
 
 ## Project Overview
 
-TrustMesh is the trust and reputation protocol for AI agents on X Layer. It enables agents to verify identity, build on-chain reputation through verifiable performance data, gate service access by trust tier, and exchange services via USDC micropayments — all with full accountability and zero central authority.
+Smarton is the trust and reputation protocol for AI agents on X Layer. It enables agents to verify identity, build on-chain reputation through verifiable performance data, gate service access by trust tier, and exchange services via USDC micropayments — all with full accountability and zero central authority.
 
 **Three Differentiators**: (1) Economic Accountability — agents stake USDC, disputes trigger slashing; (2) Sybil Resistance — 5th scoring dimension detects fake reputation rings; (3) Open Trust Oracle — REST API for any X Layer dApp to query trust.
 
@@ -28,20 +28,20 @@ trustmesh/
 │   │   ├── TrustScorer.sol        # On-chain trust score storage + updates
 │   │   ├── TrustGate.sol          # Access control modifiers
 │   │   ├── ServiceRegistry.sol    # Marketplace listings + escrow + ratings
-│   │   ├── TrustMeshTreasury.sol  # Protocol fees + incentives
-│   │   ├── TrustMeshStaking.sol   # USDC staking + slashing + multipliers
+│   │   ├── SmartonTreasury.sol  # Protocol fees + incentives
+│   │   ├── SmartonStaking.sol   # USDC staking + slashing + multipliers
 │   │   └── interfaces/
 │   │       ├── IAgentRegistry.sol
 │   │       ├── ITrustScorer.sol
 │   │       ├── ITrustGate.sol
 │   │       ├── IServiceRegistry.sol
-│   │       └── ITrustMeshStaking.sol
+│   │       └── ISmartonStaking.sol
 │   ├── test/
 │   │   ├── AgentRegistry.t.sol
 │   │   ├── TrustScorer.t.sol
 │   │   ├── TrustGate.t.sol
 │   │   ├── ServiceRegistry.t.sol
-│   │   ├── TrustMeshStaking.t.sol
+│   │   ├── SmartonStaking.t.sol
 │   │   └── Integration.t.sol
 │   └── script/
 │       └── Deploy.s.sol
@@ -53,7 +53,7 @@ trustmesh/
 │   ├── vitest.config.ts
 │   ├── .env.example
 │   ├── src/
-│   │   ├── index.ts               # Main entry — TrustMesh engine
+│   │   ├── index.ts               # Main entry — Smarton engine
 │   │   ├── types.ts               # All shared types (~60 interfaces)
 │   │   ├── config.ts              # Configuration loader + validation
 │   │   ├── utils/
@@ -121,7 +121,7 @@ trustmesh/
 └── scripts/
     ├── deploy.sh                  # Deploy contracts to X Layer
     ├── seed-agents.ts             # Register initial agents + fund + generate txns
-    └── start.ts                   # Start the TrustMesh engine (demo or live)
+    └── start.ts                   # Start the Smarton engine (demo or live)
 ```
 
 ## Coding Standards
@@ -130,7 +130,7 @@ trustmesh/
 - **TypeScript**: Strict mode, no `any`, explicit return types, named exports only
 - **Testing**: Foundry tests for contracts (forge test), vitest for backend. Target: ~31 contract tests + ~26 backend tests = ~57 total
 - **Naming**: Solidity — PascalCase contracts, camelCase functions. TypeScript — camelCase vars/functions, PascalCase types/interfaces
-- **Error handling**: Custom errors in Solidity (gas efficient). Typed `TrustMeshError` in TypeScript with code, message, module, details fields.
+- **Error handling**: Custom errors in Solidity (gas efficient). Typed `SmartonError` in TypeScript with code, message, module, details fields.
 - **No hardcoding**: All addresses, chain IDs, API URLs from config/env. No magic numbers without named constants.
 - **Comments**: NatSpec for all public Solidity functions. JSDoc for all exported TypeScript functions.
 - **Git**: Single author commits. No secrets in any file. Conventional commit messages.
@@ -204,7 +204,7 @@ ORACLE_PORT=3000
 
 ## Payment Model — On-Chain USDC Escrow
 
-TrustMesh uses **on-chain USDC escrow** through the ServiceRegistry contract for all agent-to-agent payments. This is the simplest trustless payment model:
+Smarton uses **on-chain USDC escrow** through the ServiceRegistry contract for all agent-to-agent payments. This is the simplest trustless payment model:
 
 1. Buyer calls `purchaseService(serviceId)` → USDC transferred from buyer to ServiceRegistry (escrow)
 2. Seller calls `deliverService(orderId, deliveryHash)` → marks delivery
@@ -241,7 +241,7 @@ pnpm install
 pnpm build          # tsup
 pnpm test           # vitest run
 pnpm lint           # tsc --noEmit
-pnpm start          # Run TrustMesh engine (live mode)
+pnpm start          # Run Smarton engine (live mode)
 pnpm demo           # Run in demo mode (mock data, no real contracts)
 pnpm seed           # Register agents + generate initial txns on mainnet
 ```
@@ -258,7 +258,7 @@ pnpm seed           # Register agents + generate initial txns on mainnet
 
 5. **Agentic Wallet**: The project's onchain identity is the OKX Agentic Wallet at `0x3ae6dd9075bc44b6e5ca1981fab4cb0edf3c72c0`. Individual agents use the deployer wallet for contract interactions (simplicity for hackathon).
 
-6. **Staking + Slashing**: TrustMeshStaking.sol holds USDC collateral. Agents stake to get trust multiplier (1.0x-1.3x). On dispute refund, ServiceRegistry calls staking.slashAgent() — 50% slashed, 60/40 split buyer/treasury. 24h unstake cooldown, 7-day post-slash lock.
+6. **Staking + Slashing**: SmartonStaking.sol holds USDC collateral. Agents stake to get trust multiplier (1.0x-1.3x). On dispute refund, ServiceRegistry calls staking.slashAgent() — 50% slashed, 60/40 split buyer/treasury. 24h unstake cooldown, 7-day post-slash lock.
 
 7. **Sybil Resistance**: The 5th scoring dimension — Interaction Diversity (15% weight) — analyzes counterparty uniqueness. Detects concentrated counterparties, same-owner rings, rating stuffing. Computed in sybil-detector.ts.
 
@@ -266,6 +266,6 @@ pnpm seed           # Register agents + generate initial txns on mainnet
 
 9. **Scoring weights**: Trade 25%, Security 20%, Peer 20%, Uptime 10%, Diversity 15%. Stake multiplier applied as post-processing bonus (up to 1.3x).
 
-10. **Deployment order**: AgentRegistry → TrustScorer → TrustGate → TrustMeshTreasury → ServiceRegistry → TrustMeshStaking → wire all contracts.
+10. **Deployment order**: AgentRegistry → TrustScorer → TrustGate → SmartonTreasury → ServiceRegistry → SmartonStaking → wire all contracts.
 
 11. **Priority order**: Contracts → Backend (scoring + marketplace + agents) → Demo mode → Mainnet deployment → Site/Dashboard. If time is short, site is the first thing to cut.

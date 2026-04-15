@@ -11,7 +11,7 @@ contract AgentRegistry is ERC721, Ownable, IAgentRegistry {
     mapping(address => uint256) private _walletToAgent;
     address public trustScorer;
 
-    constructor() ERC721("TrustMesh Agent", "TMA") Ownable(msg.sender) {}
+    constructor() ERC721("Smarton Agent", "SMAR") Ownable(msg.sender) {}
 
     function registerAgent(string calldata agentURI) external returns (uint256 agentId) {
         if (bytes(agentURI).length == 0) revert InvalidAgentURI();

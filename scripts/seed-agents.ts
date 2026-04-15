@@ -10,8 +10,8 @@ async function main(): Promise<void> {
     }
   }
 
-  const { createTrustMesh } = await import('../backend/src/index.js');
-  const engine = createTrustMesh();
+  const { createSmarton } = await import('../backend/src/index.js');
+  const engine = createSmarton();
   await engine.start();
 
   // Run a few cycles to generate transactions

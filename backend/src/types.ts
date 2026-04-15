@@ -2,7 +2,7 @@
 // CONFIGURATION
 // ═══════════════════════════════════════════════════════════════
 
-export interface TrustMeshConfig {
+export interface SmartonConfig {
   readonly okx: OKXConfig;
   readonly xlayer: XLayerConfig;
   readonly contracts: ContractAddresses;
@@ -367,7 +367,7 @@ export interface DemoConfig {
 // ERROR
 // ═══════════════════════════════════════════════════════════════
 
-export interface TrustMeshError {
+export interface SmartonError {
   readonly code: string;
   readonly message: string;
   readonly module: string;

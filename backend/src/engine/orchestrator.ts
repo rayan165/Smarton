@@ -1,4 +1,4 @@
-import type { TrustMeshConfig, EngineState, MarketplaceStats } from '../types.js';
+import type { SmartonConfig, EngineState, MarketplaceStats } from '../types.js';
 import { createConfig } from '../config.js';
 import { createOKXClient } from '../utils/okx-client.js';
 import { createContractClient } from '../utils/contract-client.js';
@@ -18,7 +18,7 @@ export interface Orchestrator {
   runOneCycle: () => Promise<void>;
 }
 
-export function createOrchestrator(configOverrides?: Partial<TrustMeshConfig>): Orchestrator {
+export function createOrchestrator(configOverrides?: Partial<SmartonConfig>): Orchestrator {
   const config = createConfig(configOverrides);
   const okxClient = createOKXClient(config.okx);
   const contractClient = createContractClient(config.xlayer, config.contracts, process.env.DEPLOYER_PRIVATE_KEY as `0x${string}` ?? '0x01');
@@ -38,7 +38,7 @@ export function createOrchestrator(configOverrides?: Partial<TrustMeshConfig>): 
 
   return {
     async start(): Promise<void> {
-      log.info('Starting TrustMesh engine');
+      log.info('Starting Smarton engine');
       startedAt = Date.now();
 
       for (const agent of agents) {

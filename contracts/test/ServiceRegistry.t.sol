@@ -5,7 +5,7 @@ import {Test} from "forge-std/Test.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {TrustScorer} from "../src/TrustScorer.sol";
 import {TrustGate} from "../src/TrustGate.sol";
-import {TrustMeshTreasury} from "../src/TrustMeshTreasury.sol";
+import {SmartonTreasury} from "../src/SmartonTreasury.sol";
 import {ServiceRegistry} from "../src/ServiceRegistry.sol";
 import {IServiceRegistry, ServiceOrder, ServiceStatus} from "../src/interfaces/IServiceRegistry.sol";
 import {ITrustGate} from "../src/interfaces/ITrustGate.sol";
@@ -15,7 +15,7 @@ contract ServiceRegistryTest is Test {
     AgentRegistry public registry;
     TrustScorer public scorer;
     TrustGate public gate;
-    TrustMeshTreasury public treasury;
+    SmartonTreasury public treasury;
     ServiceRegistry public sr;
     MockUSDC public usdc;
 
@@ -30,7 +30,7 @@ contract ServiceRegistryTest is Test {
         registry = new AgentRegistry();
         scorer = new TrustScorer(registry);
         gate = new TrustGate(registry);
-        treasury = new TrustMeshTreasury(usdc);
+        treasury = new SmartonTreasury(usdc);
         sr = new ServiceRegistry(registry, gate, treasury, usdc);
 
         registry.setTrustScorer(address(scorer));

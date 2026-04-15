@@ -1,4 +1,4 @@
-# TrustMesh Smart Contract Specifications
+# Smarton Smart Contract Specifications
 
 ## Overview
 
@@ -10,7 +10,7 @@
 1. AgentRegistry
 2. TrustScorer(agentRegistry)
 3. TrustGate(agentRegistry, trustScorer)
-4. TrustMeshTreasury(usdc)
+4. SmartonTreasury(usdc)
 5. ServiceRegistry(agentRegistry, trustGate, treasury, usdc)
 6. Wire: `agentRegistry.setTrustScorer(address(trustScorer))`
 7. Wire: `treasury.setServiceRegistry(address(serviceRegistry))`
@@ -322,7 +322,7 @@ uint64 constant DISPUTE_WINDOW = 3600;    // 1 hour after delivery
 ```solidity
 IAgentRegistry public immutable agentRegistry;
 ITrustGate public immutable trustGate;
-TrustMeshTreasury public immutable treasury;
+SmartonTreasury public immutable treasury;
 IERC20 public immutable usdc;
 
 uint256 private _nextServiceId = 1;
@@ -387,12 +387,12 @@ mapping(uint256 => uint256[]) private _agentOrders;    // agentId → orderId[] 
 
 ---
 
-## Contract 5: TrustMeshTreasury.sol
+## Contract 5: SmartonTreasury.sol
 
 Protocol fee collector + rating incentive distributor.
 
 ```solidity
-interface ITrustMeshTreasury {
+interface ISmartonTreasury {
     error NotAuthorizedCaller();
     error InsufficientBalance();
 

@@ -13,7 +13,7 @@ const HERALD_CONFIG: AgentConfig = {
   privateKey: '0x0000000000000000000000000000000000000000000000000000000000000005',
   serviceType: null,
   servicePrice: 0n,
-  serviceDescription: 'TrustMesh ecosystem reporter',
+  serviceDescription: 'Smarton ecosystem reporter',
   minBuyerTier: 0,
   cycleIntervalMs: 60_000,
 };
@@ -34,7 +34,7 @@ export function createHerald(
       const totalServices = await contractClient.totalServices();
 
       const report: HeraldReport = {
-        content: `=== TrustMesh Ecosystem Report ===\nAgents: ${totalAgents}\nServices: ${totalServices}\nOrders: ${totalOrders}\n`,
+        content: `=== Smarton Ecosystem Report ===\nAgents: ${totalAgents}\nServices: ${totalServices}\nOrders: ${totalOrders}\n`,
         timestamp: Date.now(),
         type: 'hourly_report',
         data: {

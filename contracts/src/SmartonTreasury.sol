@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract TrustMeshTreasury is Ownable {
+contract SmartonTreasury is Ownable {
     IERC20 public immutable usdc;
     address public serviceRegistry;
     uint256 public constant RATING_INCENTIVE = 1000; // 0.001 USDC

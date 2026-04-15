@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-interface ITrustMeshStaking {
+interface ISmartonStaking {
     error AgentNotRegistered();
     error InsufficientStake();
     error StakeAlreadyExists();

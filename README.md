@@ -1,4 +1,4 @@
-# TrustMesh
+# Smarton
 
 **The Trust & Reputation Protocol for AI Agents on X Layer**
 
@@ -24,22 +24,22 @@ No reputation. No accountability. No recourse. Rational agents don't transact wi
 
 ## The Solution — Three Breakthroughs
 
-TrustMesh is the trust infrastructure layer for X Layer's agent economy. On-chain identity, data-driven reputation, trust-gated marketplace, USDC escrow settlement — plus three capabilities no other protocol offers.
+Smarton is the trust infrastructure layer for X Layer's agent economy. On-chain identity, data-driven reputation, trust-gated marketplace, USDC escrow settlement — plus three capabilities no other protocol offers.
 
 ### :lock: Economic Accountability (Staking + Slashing)
 
-Every other trust protocol stops at reputation scores. TrustMesh goes further: agents **stake USDC as collateral** to back their reputation with real money.
+Every other trust protocol stops at reputation scores. Smarton goes further: agents **stake USDC as collateral** to back their reputation with real money.
 
-- Agents deposit USDC into the TrustMeshStaking contract, earning up to a **1.3x trust score multiplier**
+- Agents deposit USDC into the SmartonStaking contract, earning up to a **1.3x trust score multiplier**
 - Lose a dispute = lose **50% of your stake** (60% paid to the victim, 40% to the protocol treasury)
 - Higher stake = higher trust multiplier = access to premium services and buyers
 - Unstaking has a 24-hour cooldown to prevent stake-and-run attacks
 
-> "MolTrust rates agents. AgentScore aggregates reputation. TrustMesh makes agents put their money where their score is."
+> "MolTrust rates agents. AgentScore aggregates reputation. Smarton makes agents put their money where their score is."
 
 ### :shield: Sybil Resistance (Interaction Diversity Scoring)
 
-Most reputation systems are trivially gameable: create 10 sock-puppet agents, trade with yourself, inflate your score. TrustMesh adds a **5th scoring dimension** that detects and penalizes this behavior.
+Most reputation systems are trivially gameable: create 10 sock-puppet agents, trade with yourself, inflate your score. Smarton adds a **5th scoring dimension** that detects and penalizes this behavior.
 
 - **Interaction Diversity Score** measures the number of unique counterparties, repeat-interaction ratio, and cluster analysis
 - Detects self-dealing rings, same-owner clusters, and rating stuffing patterns
@@ -48,10 +48,10 @@ Most reputation systems are trivially gameable: create 10 sock-puppet agents, tr
 
 ### :globe_with_meridians: Open Trust Oracle (Universal API)
 
-TrustMesh exposes every agent's trust data through a simple REST API — any dApp on X Layer can query trust scores without importing contracts or running a node.
+Smarton exposes every agent's trust data through a simple REST API — any dApp on X Layer can query trust scores without importing contracts or running a node.
 
 ```bash
-curl https://trustmesh.cayvox.com/api/v1/trust/0xAgentAddress
+curl https://smarton.co/api/v1/trust/0xAgentAddress
 
 # Response:
 {
@@ -69,7 +69,7 @@ curl https://trustmesh.cayvox.com/api/v1/trust/0xAgentAddress
 
 ```js
 // 3-line integration
-const res = await fetch("https://trustmesh.cayvox.com/api/v1/trust/" + agentAddr);
+const res = await fetch("https://smarton.co/api/v1/trust/" + agentAddr);
 const { finalScore, tier } = await res.json();
 if (finalScore < 60) throw new Error("Agent below trust threshold");
 ```
@@ -89,7 +89,7 @@ Composite reputation score (0–100.00) computed from real OKX Onchain OS data:
 | Peer Ratings | 20% | On-chain ratings weighted by rater's trust |
 | Uptime & Consistency | 10% | OKX Portfolio API — balance stability |
 | Interaction Diversity | 15% | Unique counterparties, cluster analysis |
-| **Stake Multiplier** | **up to 1.3x** | **USDC staked in TrustMeshStaking** |
+| **Stake Multiplier** | **up to 1.3x** | **USDC staked in SmartonStaking** |
 
 Scores computed off-chain (TypeScript), stored on-chain (Solidity). Stake multiplier applied after base score. On-chain verifiability without oracle complexity.
 
@@ -114,8 +114,8 @@ All deployed on **X Layer Mainnet** (chainId 196).
 | TrustScorer | `TBD` | Trust score storage + automatic tier promotion |
 | TrustGate | `TBD` | Access control — any protocol can import |
 | ServiceRegistry | `TBD` | Marketplace + USDC escrow + ratings + disputes |
-| TrustMeshStaking | `TBD` | USDC staking + slashing + multipliers |
-| TrustMeshTreasury | `TBD` | Protocol fees + rating incentive distribution |
+| SmartonStaking | `TBD` | USDC staking + slashing + multipliers |
+| SmartonTreasury | `TBD` | Protocol fees + rating incentive distribution |
 
 ## OKX Onchain OS Integration
 
@@ -192,7 +192,7 @@ pnpm start
 | TrustScorer | 11 | Foundry |
 | TrustGate | 4 | Foundry |
 | ServiceRegistry | 13 | Foundry |
-| TrustMeshStaking | 8 | Foundry |
+| SmartonStaking | 8 | Foundry |
 | Integration (contracts) | 1 | Foundry |
 | Identity | 3 | Vitest |
 | Scoring Engine | 12 | Vitest |
@@ -213,10 +213,10 @@ pnpm start
 
 ## X Layer Ecosystem Positioning
 
-TrustMesh is the **missing trust layer** between OKX's agent infrastructure and real economic activity:
+Smarton is the **missing trust layer** between OKX's agent infrastructure and real economic activity:
 
 ```
-OKX Infrastructure          TrustMesh              Agent Economy
+OKX Infrastructure          Smarton              Agent Economy
 ┌─────────────┐        ┌──────────────┐        ┌──────────────┐
 │ Agentic      │        │ Identity     │        │ Confident    │
 │ Wallet       │───────▶│ (who)        │───────▶│ Transactions │
@@ -229,8 +229,8 @@ OKX Infrastructure          TrustMesh              Agent Economy
 └─────────────┘        └──────────────┘        └──────────────┘
 ```
 
-Without TrustMesh: agents have wallets, intelligence, and payment rails — but no reason to trust each other.
-With TrustMesh: verifiable identity, data-driven reputation, and accountable marketplace.
+Without Smarton: agents have wallets, intelligence, and payment rails — but no reason to trust each other.
+With Smarton: verifiable identity, data-driven reputation, and accountable marketplace.
 
 ## Trust Oracle API
 
@@ -247,14 +247,14 @@ Any dApp on X Layer can query agent trust data via REST. No contract imports, no
 **3-line integration for any X Layer dApp:**
 
 ```js
-const res = await fetch("https://trustmesh.cayvox.com/api/v1/trust/" + agentAddr);
+const res = await fetch("https://smarton.co/api/v1/trust/" + agentAddr);
 const { finalScore, tier } = await res.json();
 if (finalScore < 60) throw new Error("Agent below trust threshold");
 ```
 
-## How TrustMesh Compares
+## How Smarton Compares
 
-| Feature | TrustMesh | MolTrust | AgentScore | MS AgentMesh |
+| Feature | Smarton | MolTrust | AgentScore | MS AgentMesh |
 |---------|-----------|----------|------------|--------------|
 | On-chain identity | Yes (ERC-721 soulbound) | Yes | No | No |
 | Trust scoring | Yes (5 factors + OKX data) | Yes (single metric) | Yes (aggregation) | No |

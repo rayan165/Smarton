@@ -1,14 +1,14 @@
-# TrustMesh Backend Type Definitions
+# Smarton Backend Type Definitions
 
 All TypeScript types used across the backend. Authoritative reference for implementation.
-Every type is `readonly` — TrustMesh uses immutable data patterns throughout.
+Every type is `readonly` — Smarton uses immutable data patterns throughout.
 
 ```typescript
 // ═══════════════════════════════════════════════════════════════
 // CONFIGURATION
 // ═══════════════════════════════════════════════════════════════
 
-export interface TrustMeshConfig {
+export interface SmartonConfig {
   readonly okx: OKXConfig;
   readonly xlayer: XLayerConfig;
   readonly contracts: ContractAddresses;
@@ -69,7 +69,7 @@ export type AgentTier = 0 | 1 | 2 | 3;
 export interface AgentInfo {
   readonly agentId: bigint;
   readonly owner: `0x${string}`;
-  readonly wallet: `0x${string}`;        // same as owner for TrustMesh agents
+  readonly wallet: `0x${string}`;        // same as owner for Smarton agents
   readonly tier: AgentTier;
   readonly registeredAt: number;          // unix timestamp
   readonly lastActive: number;
@@ -316,7 +316,7 @@ export interface DemoConfig {
 // ERROR
 // ═══════════════════════════════════════════════════════════════
 
-export interface TrustMeshError {
+export interface SmartonError {
   readonly code: string;                  // e.g. "OKX_50011", "CONTRACT_REVERT", "CONFIG_MISSING"
   readonly message: string;
   readonly module: string;                // e.g. "okx-client", "scoring", "marketplace"

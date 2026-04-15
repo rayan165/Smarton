@@ -6,9 +6,9 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {TrustScorer} from "../src/TrustScorer.sol";
 import {TrustGate} from "../src/TrustGate.sol";
-import {TrustMeshTreasury} from "../src/TrustMeshTreasury.sol";
+import {SmartonTreasury} from "../src/SmartonTreasury.sol";
 import {ServiceRegistry} from "../src/ServiceRegistry.sol";
-import {TrustMeshStaking} from "../src/TrustMeshStaking.sol";
+import {SmartonStaking} from "../src/SmartonStaking.sol";
 
 contract Deploy is Script {
     function run() external {
@@ -20,14 +20,14 @@ contract Deploy is Script {
         AgentRegistry agentRegistry = new AgentRegistry();
         TrustScorer trustScorer = new TrustScorer(agentRegistry);
         TrustGate trustGate = new TrustGate(agentRegistry);
-        TrustMeshTreasury treasury = new TrustMeshTreasury(IERC20(usdc));
+        SmartonTreasury treasury = new SmartonTreasury(IERC20(usdc));
         ServiceRegistry serviceRegistry = new ServiceRegistry(
             agentRegistry,
             trustGate,
             treasury,
             IERC20(usdc)
         );
-        TrustMeshStaking staking = new TrustMeshStaking(
+        SmartonStaking staking = new SmartonStaking(
             agentRegistry,
             IERC20(usdc),
             address(treasury)
@@ -43,8 +43,8 @@ contract Deploy is Script {
         console.log("AgentRegistry:", address(agentRegistry));
         console.log("TrustScorer:", address(trustScorer));
         console.log("TrustGate:", address(trustGate));
-        console.log("TrustMeshTreasury:", address(treasury));
+        console.log("SmartonTreasury:", address(treasury));
         console.log("ServiceRegistry:", address(serviceRegistry));
-        console.log("TrustMeshStaking:", address(staking));
+        console.log("SmartonStaking:", address(staking));
     }
 }

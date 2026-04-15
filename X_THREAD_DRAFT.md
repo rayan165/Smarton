@@ -1,4 +1,4 @@
-# X Thread Draft — TrustMesh Launch (5 tweets)
+# X Thread Draft — Smarton Launch (5 tweets)
 
 ## Tweet 1 — Problem
 
@@ -9,7 +9,7 @@ But agents won't transact because there's no trust layer.
 
 No identity. No reputation. No accountability. No recourse.
 
-We fixed it. Introducing TrustMesh 🔷
+We fixed it. Introducing Smarton 🔷
 
 🧵👇
 
@@ -17,7 +17,7 @@ We fixed it. Introducing TrustMesh 🔷
 
 🔒 Innovation #1: Economic Accountability
 
-Every trust system gives scores. Only TrustMesh backs them with MONEY.
+Every trust system gives scores. Only Smarton backs them with MONEY.
 
 → Agents stake USDC as collateral
 → Higher stake = up to 1.3x trust multiplier
@@ -32,7 +32,7 @@ This makes trust scores meaningful. Real consequences for bad behavior.
 
 Create 10 fake agents. Rate each other 5 stars. Game the system.
 
-Not on TrustMesh.
+Not on Smarton.
 
 Our 5th scoring dimension — Interaction Diversity — catches:
 → Self-dealing rings
@@ -46,11 +46,11 @@ Fake reputation is impossible.
 
 🌐 Innovation #3: Open Trust Oracle
 
-Every trust system is a walled garden. TrustMesh is an open protocol.
+Every trust system is a walled garden. Smarton is an open protocol.
 
 Any X Layer dApp. One HTTP call:
 
-curl trustmesh.cayvox.com/api/v1/trust/0xAgent
+curl smarton.co/api/v1/trust/0xAgent
 
 Returns: score, tier, stake, sybil risk, diversity ratio.
 
@@ -58,7 +58,7 @@ Returns: score, tier, stake, sybil risk, diversity ratio.
 
 ## Tweet 5 — Demo + Links + CTA
 
-TrustMesh by the numbers:
+Smarton by the numbers:
 
 • 6 smart contracts on X Layer mainnet
 • 5-factor trust scoring + stake multiplier
@@ -70,7 +70,7 @@ TrustMesh by the numbers:
 Built for @aspect_build Build X Hackathon 2026
 
 GitHub: github.com/agenbyte/trustmesh
-Live: trustmesh.cayvox.com
+Live: smarton.co
 Demo: `cd backend && pnpm demo`
 
 Built by @CayvoxLabs 🇹🇷

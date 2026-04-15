@@ -1,7 +1,7 @@
 {
-  "name": "trustmesh-backend",
+  "name": "smarton-backend",
   "version": "0.1.0",
-  "description": "TrustMesh — Agent Trust Protocol Backend",
+  "description": "Smarton — Agent Trust Protocol Backend",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

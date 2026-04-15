@@ -1,13 +1,13 @@
 # Changelog
 
-## v0.1.0 — TrustMesh Launch (2026-04-15)
+## v0.1.0 — Smarton Launch (2026-04-15)
 
 ### Smart Contracts
 - AgentRegistry: ERC-721 soulbound identity with 4-tier system
 - TrustScorer: Composite trust scoring with auto tier management
 - TrustGate: Lightweight access control
 - ServiceRegistry: Marketplace with USDC escrow, ratings, disputes
-- TrustMeshTreasury: Protocol fee collection + rating incentives
+- SmartonTreasury: Protocol fee collection + rating incentives
 
 ### Backend
 - OKX Onchain OS integration (9 capabilities)

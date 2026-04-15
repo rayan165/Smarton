@@ -5,19 +5,19 @@ import {Test} from "forge-std/Test.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {TrustScorer} from "../src/TrustScorer.sol";
 import {TrustGate} from "../src/TrustGate.sol";
-import {TrustMeshTreasury} from "../src/TrustMeshTreasury.sol";
+import {SmartonTreasury} from "../src/SmartonTreasury.sol";
 import {ServiceRegistry} from "../src/ServiceRegistry.sol";
-import {TrustMeshStaking} from "../src/TrustMeshStaking.sol";
-import {ITrustMeshStaking} from "../src/interfaces/ITrustMeshStaking.sol";
+import {SmartonStaking} from "../src/SmartonStaking.sol";
+import {ISmartonStaking} from "../src/interfaces/ISmartonStaking.sol";
 import {MockUSDC} from "./MockUSDC.sol";
 
-contract TrustMeshStakingTest is Test {
+contract SmartonStakingTest is Test {
     AgentRegistry public registry;
     TrustScorer public scorer;
     TrustGate public gate;
-    TrustMeshTreasury public treasury;
+    SmartonTreasury public treasury;
     ServiceRegistry public sr;
-    TrustMeshStaking public staking;
+    SmartonStaking public staking;
     MockUSDC public usdc;
 
     address public seller = makeAddr("seller");
@@ -31,9 +31,9 @@ contract TrustMeshStakingTest is Test {
         registry = new AgentRegistry();
         scorer = new TrustScorer(registry);
         gate = new TrustGate(registry);
-        treasury = new TrustMeshTreasury(usdc);
+        treasury = new SmartonTreasury(usdc);
         sr = new ServiceRegistry(registry, gate, treasury, usdc);
-        staking = new TrustMeshStaking(registry, usdc, address(treasury));
+        staking = new SmartonStaking(registry, usdc, address(treasury));
 
         registry.setTrustScorer(address(scorer));
         scorer.setOracle(oracle);
@@ -113,7 +113,7 @@ contract TrustMeshStakingTest is Test {
         staking.stake(10 * ONE_USDC);
 
         vm.prank(seller);
-        vm.expectRevert(ITrustMeshStaking.CooldownNotElapsed.selector);
+        vm.expectRevert(ISmartonStaking.CooldownNotElapsed.selector);
         staking.unstake(5 * ONE_USDC);
     }
 
@@ -169,7 +169,7 @@ contract TrustMeshStakingTest is Test {
         // Try to unstake within 7 days of slash — should fail
         vm.warp(block.timestamp + 86401); // past normal cooldown but within post-slash lock
         vm.prank(seller);
-        vm.expectRevert(ITrustMeshStaking.CooldownNotElapsed.selector);
+        vm.expectRevert(ISmartonStaking.CooldownNotElapsed.selector);
         staking.unstake(1 * ONE_USDC);
     }
 
@@ -179,7 +179,7 @@ contract TrustMeshStakingTest is Test {
 
         uint256 agentId = registry.getAgentByAddress(seller);
         vm.prank(buyer);
-        vm.expectRevert(ITrustMeshStaking.NotAuthorizedSlasher.selector);
+        vm.expectRevert(ISmartonStaking.NotAuthorizedSlasher.selector);
         staking.slashAgent(agentId, buyer, "unauthorized");
     }
 

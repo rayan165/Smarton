@@ -1,4 +1,4 @@
-# OKX Onchain OS API Reference for TrustMesh
+# OKX Onchain OS API Reference for Smarton
 
 ## Authentication
 
@@ -50,7 +50,7 @@ All OKX API responses follow this structure:
 - `data` is always an array (even for single results)
 - Empty `data: []` means no results found (not an error)
 
-## Endpoints Used by TrustMesh (9 capabilities)
+## Endpoints Used by Smarton (9 capabilities)
 
 ### 1. Smart Money / Signal API — Trust Scoring (Trade Performance)
 
@@ -78,7 +78,7 @@ GET /api/v5/dex/signal/smart-money?chainIndex={chainId}&tokenContractAddress={to
 - May return empty array for wallets with no tracked activity
 - Use `chainIndex=196` for X Layer
 
-**TrustMesh usage**: Query top traded tokens on X Layer, cross-reference agent wallet activity to derive trade performance score.
+**Smarton usage**: Query top traded tokens on X Layer, cross-reference agent wallet activity to derive trade performance score.
 
 ---
 
@@ -109,7 +109,7 @@ GET /api/v5/dex/security/token?chainIndex={chainId}&tokenContractAddress={tokenA
 - `isHoneypot: true` is the strongest red flag
 - Some fields may be missing for unverified tokens — treat missing as "unknown" (risky)
 
-**TrustMesh usage**: For each token in agent's trade history, check security. `safeRatio = safeTokens / totalTokens`. Any honeypot interaction caps score at 5000.
+**Smarton usage**: For each token in agent's trade history, check security. `safeRatio = safeTokens / totalTokens`. Any honeypot interaction caps score at 5000.
 
 ---
 
@@ -190,7 +190,7 @@ GET /api/v5/dex/aggregator/swap?chainIndex={chainId}&fromTokenAddress={from}&toT
 - `slippage` is decimal (0.03 = 3%)
 - `userWalletAddress` is the wallet executing the swap
 - The `tx` object can be signed and broadcast directly
-- For TrustMesh trade executor: get the quote data, don't actually execute (the buyer's wallet would need to sign)
+- For Smarton trade executor: get the quote data, don't actually execute (the buyer's wallet would need to sign)
 
 ---
 
@@ -218,7 +218,7 @@ GET /api/v5/dex/balance/token-balances?address={walletAddress}&chainIndex={chain
 - `balanceUsd` is USD equivalent as string
 - Empty array if wallet has no holdings
 
-**TrustMesh usage**: Snapshot balance periodically, compute volatility. Sudden drops = rug pattern = low uptime score.
+**Smarton usage**: Snapshot balance periodically, compute volatility. Sudden drops = rug pattern = low uptime score.
 
 ---
 
@@ -276,7 +276,7 @@ GET /api/v5/dex/market/token/ranking?chainIndex={chainId}&sortBy=volume24h&limit
 
 x402 is not a separate API endpoint — it's OKX's gas sponsorship protocol for USDC transfers on X Layer. When agents send USDC on X Layer, x402 subsidizes gas costs, making transfers effectively free.
 
-**For TrustMesh**: The marketplace uses standard ERC-20 `transferFrom` for escrow. x402 makes these transfers gas-free in practice. No special API integration needed — just deploy on X Layer and use USDC.
+**For Smarton**: The marketplace uses standard ERC-20 `transferFrom` for escrow. x402 makes these transfers gas-free in practice. No special API integration needed — just deploy on X Layer and use USDC.
 
 ---
 
@@ -359,9 +359,9 @@ class RateLimiter {
 | `82000` | Token not found | Return null/default, don't retry |
 | `82100` | Chain not supported | Skip, log warning |
 
-**Map all to TrustMeshError**:
+**Map all to SmartonError**:
 ```typescript
-function mapOKXError(code: string, msg: string): TrustMeshError {
+function mapOKXError(code: string, msg: string): SmartonError {
   return {
     code: `OKX_${code}`,
     message: msg || `OKX API error: ${code}`,
@@ -376,4 +376,4 @@ function mapOKXError(code: string, msg: string): TrustMeshError {
 - Auth errors (50001, 50013): don't retry, throw immediately
 - Not found (82000): don't retry, return null
 - Network errors: retry once after 1s
-- All other errors: don't retry, throw with mapped TrustMeshError
+- All other errors: don't retry, throw with mapped SmartonError

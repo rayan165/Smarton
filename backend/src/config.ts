@@ -1,9 +1,9 @@
 import type {
-  TrustMeshConfig,
+  SmartonConfig,
   ScoringWeights,
   ScoringConfig,
   MarketplaceConfig,
-  TrustMeshError,
+  SmartonError,
 } from './types.js';
 
 export const DEFAULT_SCORING_WEIGHTS: ScoringWeights = {
@@ -32,7 +32,7 @@ export const DEFAULT_MARKETPLACE_CONFIG: MarketplaceConfig = {
 
 const ZERO_ADDRESS: `0x${string}` = '0x0000000000000000000000000000000000000000';
 
-export function createConfig(overrides?: Partial<TrustMeshConfig>): TrustMeshConfig {
+export function createConfig(overrides?: Partial<SmartonConfig>): SmartonConfig {
   const demoMode = process.env.DEMO_MODE === 'true';
 
   const apiKey = process.env.OKX_API_KEY ?? '';
@@ -40,7 +40,7 @@ export function createConfig(overrides?: Partial<TrustMeshConfig>): TrustMeshCon
   const passphrase = process.env.OKX_PASSPHRASE ?? '';
 
   if (!demoMode && (!apiKey || !secretKey || !passphrase)) {
-    const err: TrustMeshError = {
+    const err: SmartonError = {
       code: 'CONFIG_MISSING',
       message: 'OKX API credentials are required in live mode',
       module: 'config',
@@ -48,7 +48,7 @@ export function createConfig(overrides?: Partial<TrustMeshConfig>): TrustMeshCon
     throw err;
   }
 
-  const config: TrustMeshConfig = {
+  const config: SmartonConfig = {
     okx: {
       apiKey,
       secretKey,

@@ -6,9 +6,9 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IAgentRegistry} from "./interfaces/IAgentRegistry.sol";
 import {ITrustGate} from "./interfaces/ITrustGate.sol";
-import {TrustMeshTreasury} from "./TrustMeshTreasury.sol";
+import {SmartonTreasury} from "./SmartonTreasury.sol";
 import {IServiceRegistry, ServiceListing, ServiceOrder, ServiceStatus} from "./interfaces/IServiceRegistry.sol";
-import {ITrustMeshStaking} from "./interfaces/ITrustMeshStaking.sol";
+import {ISmartonStaking} from "./interfaces/ISmartonStaking.sol";
 
 contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
     uint256 public constant PROTOCOL_FEE_BPS = 200;
@@ -16,10 +16,10 @@ contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
 
     IAgentRegistry public immutable agentRegistry;
     ITrustGate public immutable trustGate;
-    TrustMeshTreasury public immutable treasury;
+    SmartonTreasury public immutable treasury;
     IERC20 public immutable usdc;
 
-    ITrustMeshStaking public staking;
+    ISmartonStaking public staking;
 
     uint256 private _nextServiceId = 1;
     uint256 private _nextOrderId = 1;
@@ -31,7 +31,7 @@ contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
     constructor(
         IAgentRegistry _agentRegistry,
         ITrustGate _trustGate,
-        TrustMeshTreasury _treasury,
+        SmartonTreasury _treasury,
         IERC20 _usdc
     ) Ownable(msg.sender) {
         agentRegistry = _agentRegistry;
@@ -40,7 +40,7 @@ contract ServiceRegistry is Ownable, ReentrancyGuard, IServiceRegistry {
         usdc = _usdc;
     }
 
-    function setStaking(ITrustMeshStaking _staking) external onlyOwner {
+    function setStaking(ISmartonStaking _staking) external onlyOwner {
         staking = _staking;
     }
 
