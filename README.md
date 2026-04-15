@@ -11,6 +11,12 @@ On-chain identity · Data-driven reputation · Economic accountability · Open t
 [![Contracts](https://img.shields.io/badge/Contracts-6%20deployed-a78bfa)]()
 [![License](https://img.shields.io/badge/License-MIT-white)]()
 
+### Demo Video
+
+[![Smarton Demo](https://img.youtube.com/vi/oy8EnJuCCTE/maxresdefault.jpg)](https://youtu.be/oy8EnJuCCTE)
+
+▶ [Watch the full demo on YouTube](https://youtu.be/oy8EnJuCCTE)
+
 ---
 
 ## Live Deployment
