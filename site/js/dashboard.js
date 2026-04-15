@@ -332,10 +332,15 @@ function txLink(hash) {
 async function connectW() {
   try {
     if(!window.ethereum) { txLog('tx-err', 'No wallet detected'); return; }
-    w3p = new ethers.providers.Web3Provider(window.ethereum);
+    var eth = window.ethereum;
+    if(eth.providers) {
+      var mm = eth.providers.find(function(p){ return p.isMetaMask && !p.isOKExWallet; });
+      if(mm) eth = mm;
+    }
+    w3p = new ethers.providers.Web3Provider(eth);
     await w3p.send('eth_requestAccounts', []);
-    try { await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xc4' }] }); }
-    catch(e) { if(e.code===4902) await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{ chainId:'0xc4', chainName:'X Layer Mainnet', nativeCurrency:{name:'OKB',symbol:'OKB',decimals:18}, rpcUrls:['https://rpc.xlayer.tech'], blockExplorerUrls:['https://www.okx.com/explorer/xlayer'] }] }); }
+    try { await eth.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xc4' }] }); }
+    catch(e) { if(e.code===4902) await eth.request({ method: 'wallet_addEthereumChain', params: [{ chainId:'0xc4', chainName:'X Layer Mainnet', nativeCurrency:{name:'OKB',symbol:'OKB',decimals:18}, rpcUrls:['https://rpc.xlayer.tech'], blockExplorerUrls:['https://www.okx.com/explorer/xlayer'] }] }); }
     w3s = w3p.getSigner();
     var addr = await w3s.getAddress();
     var ws = document.getElementById('walletStatus');
