@@ -349,10 +349,10 @@ async function connectW() {
   try {
     var eth = findMetaMask();
     if(!eth) { txLog('tx-err', 'No wallet detected'); return; }
-    w3p = new ethers.providers.Web3Provider(eth);
     await eth.request({ method: 'eth_requestAccounts' });
     try { await eth.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xc4' }] }); }
-    catch(e) { if(e.code===4902) await eth.request({ method: 'wallet_addEthereumChain', params: [{ chainId:'0xc4', chainName:'X Layer Mainnet', nativeCurrency:{name:'OKB',symbol:'OKB',decimals:18}, rpcUrls:['https://rpc.xlayer.tech'], blockExplorerUrls:['https://www.okx.com/explorer/xlayer'] }] }); }
+    catch(e) { if(e.code===4902) { await eth.request({ method: 'wallet_addEthereumChain', params: [{ chainId:'0xc4', chainName:'X Layer Mainnet', nativeCurrency:{name:'OKB',symbol:'OKB',decimals:18}, rpcUrls:['https://rpc.xlayer.tech'], blockExplorerUrls:['https://www.okx.com/explorer/xlayer'] }] }); await eth.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xc4' }] }); } }
+    w3p = new ethers.providers.Web3Provider(eth, 196);
     w3s = w3p.getSigner();
     var addr = await w3s.getAddress();
     var ws = document.getElementById('walletStatus');
