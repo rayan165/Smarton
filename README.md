@@ -295,17 +295,13 @@ if (finalScore < 60) throw new Error("Agent below trust threshold");
 
 ## Team
 
-**Cayvox Labs** — Istanbul, Turkey
-
-| Name | Role | Track Record |
-|------|------|-------------|
-| **Anıl Karaçay** | Architecture & Smart Contracts | Canton Catalyst winner, AgentHedge 3rd at Build X |
-| **Sude Ceren Şahin** | Lead Engineer | TronMPP: 556 tests, 12 packages, 43K+ LOC |
-| **Yusuf Şimşek** | Growth & Design | Bloomberg-aesthetic dashboards |
+| Name | Role |
+|------|------|
+| **Rayan** | CEO & Full Stack Developer |
 
 ## License
 
-MIT — Cayvox Labs 2026
+MIT — 2026
 
 ---
 

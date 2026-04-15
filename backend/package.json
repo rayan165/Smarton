@@ -14,7 +14,7 @@
     "seed": "npx tsx scripts/seed-agents.ts"
   },
   "keywords": [],
-  "author": "Cayvox Labs",
+  "author": "Rayan",
   "license": "MIT",
   "dependencies": {
     "viem": "^2.47.17"

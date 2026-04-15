@@ -75,6 +75,6 @@ GitHub: github.com/agenbyte/trustmesh
 Live: smarton.co
 Demo: `cd backend && pnpm demo`
 
-Built by @CayvoxLabs 🇹🇷
+Built by Rayan
 
 #onchainos #BuildXHackathon @XLayerOfficial
