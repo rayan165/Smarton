@@ -4,28 +4,29 @@ var AGENTS = [
   { id:1, name:'SignalPro', mono:'SP', tier:3, overall:87.00, trade:92, security:85, peer:88, uptime:78, diversity:85, orders:87, staked:10.00, mult:'1.2x', boost:'+17.4', since:'Apr 2', status:'Active', risk:'low', patterns:[] },
   { id:2, name:'SecurityBot', mono:'SB', tier:2, overall:72.00, trade:68, security:95, peer:70, uptime:55, diversity:72, orders:63, staked:5.00, mult:'1.1x', boost:'+7.2', since:'Apr 5', status:'Active', risk:'low', patterns:[] },
   { id:3, name:'TradeExec', mono:'TE', tier:2, overall:65.00, trade:75, security:60, peer:62, uptime:63, diversity:60, orders:45, staked:1.00, mult:'1.1x', boost:'+6.5', since:'Apr 8', status:'Active', risk:'low', patterns:[] },
-  { id:4, name:'AnalystX', mono:'AX', tier:1, overall:45.00, trade:50, security:40, peer:45, uptime:45, diversity:40, orders:12, staked:0, mult:'1.0x', boost:'+0.0', since:'-', status:'-', risk:'medium', patterns:['concentrated counterparty'] },
-  { id:5, name:'Herald', mono:'HR', tier:1, overall:50.00, trade:50, security:50, peer:50, uptime:50, diversity:null, orders:0, staked:0, mult:'1.0x', boost:'+0.0', since:'-', status:'-', risk:'low', patterns:[] }
+  { id:4, name:'Herald', mono:'HR', tier:1, overall:50.00, trade:50, security:50, peer:50, uptime:50, diversity:null, orders:0, staked:0, mult:'1.0x', boost:'+0.0', since:'-', status:'-', risk:'low', patterns:[] },
+  { id:5, name:'AnalystX', mono:'AX', tier:1, overall:45.00, trade:50, security:40, peer:45, uptime:45, diversity:40, orders:12, staked:0, mult:'1.0x', boost:'+0.0', since:'-', status:'-', risk:'medium', patterns:['concentrated counterparty'] },
+  { id:6, name:'ShadowAgent', mono:'SH', tier:1, overall:22.00, trade:30, security:15, peer:20, uptime:25, diversity:12, orders:8, staked:0, mult:'1.0x', boost:'+0.0', since:'-', status:'Slashed', risk:'high', patterns:['same-owner ring', 'rating stuffing'] }
 ];
 
 var ACTIVITY = [
-  { dot:'d-green', text:'<strong>SignalPro</strong> delivered signal #87 \u2014 0.01 USDC', time:'2m' },
-  { dot:'d-amber', text:'<strong>AnalystX</strong> purchased security-scan from <strong>SecurityBot</strong>', time:'4m' },
-  { dot:'d-green', text:'<strong>SecurityBot</strong> completed scan #63 \u2014 0.02 USDC', time:'5m' },
-  { dot:'d-blue', text:'<strong>SignalPro</strong> rated <strong>TradeExec</strong> 4.5\u2605', time:'8m' },
-  { dot:'d-green', text:'<strong>TradeExec</strong> delivered execution #45 \u2014 0.05 USDC', time:'11m' },
-  { dot:'d-amber', text:'<strong>TradeExec</strong> purchased signal from <strong>SignalPro</strong>', time:'14m' },
-  { dot:'d-blue', text:'<strong>SignalPro</strong> upgraded to Tier 3', time:'18m' },
-  { dot:'d-green', text:'<strong>SecurityBot</strong> completed scan #62 \u2014 0.02 USDC', time:'22m' },
-  { dot:'d-blue', text:'<strong>SecurityBot</strong> rated <strong>SignalPro</strong> 4.8\u2605', time:'25m' },
-  { dot:'d-amber', text:'<strong>Herald</strong> registered as agent #5', time:'1h' }
+  { dot:'d-green', text:'<strong>SignalPro</strong> delivered signal #87 \u2014 0.005 USDC', time:'2m' },
+  { dot:'d-blue', text:'<strong>TradeExec</strong> rated <strong>SecurityBot</strong> 5\u2605', time:'3m' },
+  { dot:'d-amber', text:'<strong>AnalystX</strong> purchased security-scan from <strong>SecurityBot</strong>', time:'5m' },
+  { dot:'d-blue', text:'<strong>SignalPro</strong> staked 10.00 USDC (1.2x multiplier)', time:'8m' },
+  { dot:'d-red', text:'<strong>ShadowAgent</strong> slashed 50% \u2014 dispute lost to TradeExec', time:'12m' },
+  { dot:'d-blue', text:'<strong>SecurityBot</strong> promoted to Tier 2 (Proven)', time:'15m' },
+  { dot:'d-green', text:'<strong>TradeExec</strong> delivered execution #45 \u2014 0.01 USDC', time:'18m' },
+  { dot:'d-blue', text:'Trust scores updated \u2014 SignalPro leads at 87.00', time:'20m' },
+  { dot:'d-red', text:'Sybil alert: <strong>ShadowAgent</strong> same-owner ring detected', time:'25m' },
+  { dot:'d-amber', text:'<strong>SecurityBot</strong> purchased signal from <strong>SignalPro</strong>', time:'30m' }
 ];
 
 var selected = 0;
 var updateCounter = 0;
 
-// --- Init ---
 document.addEventListener('DOMContentLoaded', function() {
+  updateStats();
   renderLeaderboard();
   renderRadar(AGENTS[0]);
   renderStaking();
@@ -38,7 +39,15 @@ document.addEventListener('DOMContentLoaded', function() {
   startTimer();
 });
 
-// --- Tabs ---
+function updateStats() {
+  var el;
+  el = document.getElementById('sAgents'); if(el) el.textContent = '6';
+  el = document.getElementById('sServices'); if(el) el.textContent = '8';
+  el = document.getElementById('sOrders'); if(el) el.textContent = '47';
+  el = document.getElementById('sVolume'); if(el) el.textContent = '$8.42';
+  el = document.getElementById('sStaked'); if(el) el.textContent = '$16.30';
+}
+
 function initTabs() {
   document.querySelectorAll('.tab').forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -51,7 +60,6 @@ function initTabs() {
   });
 }
 
-// --- Timer ---
 function startTimer() {
   setInterval(function() {
     updateCounter++;
@@ -60,7 +68,6 @@ function startTimer() {
   }, 1000);
 }
 
-// --- Leaderboard ---
 function renderLeaderboard() {
   var tbody = document.getElementById('lbBody');
   if(!tbody) return;
@@ -101,7 +108,6 @@ function renderLeaderboard() {
   });
 }
 
-// --- Radar ---
 function renderRadar(agent) {
   var nameEl = document.getElementById('radarName');
   var scoreEl = document.getElementById('radarScore');
@@ -116,10 +122,9 @@ function renderRadar(agent) {
   ctx.clearRect(0,0,w,h);
 
   var labels = ['Trade','Security','Peer','Uptime','Diversity'];
-  var values = [agent.trade, agent.security, agent.peer, agent.uptime, agent.diversity || 50];
+  var values = [agent.trade, agent.security, agent.peer, agent.uptime, agent.diversity || 0];
   var n = labels.length;
 
-  // Grid rings
   for(var ring = 1; ring <= 4; ring++) {
     var rr = r * ring / 4;
     ctx.beginPath();
@@ -135,7 +140,6 @@ function renderRadar(agent) {
     ctx.stroke();
   }
 
-  // Axis lines
   for(var j = 0; j < n; j++) {
     var angle = (Math.PI * 2 * j / n) - Math.PI/2;
     ctx.beginPath();
@@ -145,7 +149,6 @@ function renderRadar(agent) {
     ctx.stroke();
   }
 
-  // Data polygon
   ctx.beginPath();
   for(var j = 0; j < n; j++) {
     var angle = (Math.PI * 2 * j / n) - Math.PI/2;
@@ -155,13 +158,15 @@ function renderRadar(agent) {
     if(j===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
   }
   ctx.closePath();
-  ctx.fillStyle = 'rgba(34,211,238,.1)';
+  var fillColor = agent.risk === 'high' ? 'rgba(248,113,113,.12)' : 'rgba(34,211,238,.1)';
+  var strokeColor = agent.risk === 'high' ? 'rgba(248,113,113,.8)' : 'rgba(34,211,238,.8)';
+  var dotColor = agent.risk === 'high' ? '#f87171' : '#22d3ee';
+  ctx.fillStyle = fillColor;
   ctx.fill();
-  ctx.strokeStyle = 'rgba(34,211,238,.8)';
+  ctx.strokeStyle = strokeColor;
   ctx.lineWidth = 1.5;
   ctx.stroke();
 
-  // Data points
   for(var j = 0; j < n; j++) {
     var angle = (Math.PI * 2 * j / n) - Math.PI/2;
     var val = values[j] / 100;
@@ -169,11 +174,10 @@ function renderRadar(agent) {
     var py = cy + r * val * Math.sin(angle);
     ctx.beginPath();
     ctx.arc(px,py,3,0,Math.PI*2);
-    ctx.fillStyle = '#22d3ee';
+    ctx.fillStyle = dotColor;
     ctx.fill();
   }
 
-  // Labels
   ctx.font = '300 10px Outfit, sans-serif';
   ctx.fillStyle = '#8888a0';
   ctx.textAlign = 'center';
@@ -186,7 +190,6 @@ function renderRadar(agent) {
   }
 }
 
-// --- Staking ---
 function renderStaking() {
   var tbody = document.getElementById('stakeBody');
   var tfoot = document.getElementById('stakeFoot');
@@ -233,7 +236,7 @@ function renderStakeDetail() {
     var tr = document.createElement('tr');
     var stakedText = a.staked > 0 ? '$' + a.staked.toFixed(2) : '\u2014';
     var stakedCls = a.staked > 0 ? 'col-staked' : 'col-nostake';
-    var statusColor = a.status === 'Active' ? 'var(--hi)' : 'var(--t4)';
+    var statusColor = a.status === 'Active' ? 'var(--hi)' : a.status === 'Slashed' ? 'var(--lo)' : 'var(--t4)';
     tr.innerHTML =
       '<td class="col-agent"><span class="mono-tag">' + a.mono + '</span>' + a.name + '</td>' +
       '<td class="' + stakedCls + '">' + stakedText + '</td>' +
@@ -245,7 +248,6 @@ function renderStakeDetail() {
   });
 }
 
-// --- Activity ---
 function renderActivity() {
   var container = document.getElementById('activityFeed');
   if(!container) return;
@@ -258,7 +260,6 @@ function renderActivity() {
   });
 }
 
-// --- Sybil ---
 function renderSybil(containerId) {
   var container = document.getElementById(containerId);
   if(!container) return;
