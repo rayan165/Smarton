@@ -110,12 +110,12 @@ All deployed on **X Layer Mainnet** (chainId 196).
 
 | Contract | Address | Purpose |
 |----------|---------|---------|
-| AgentRegistry | `TBD` | ERC-721 soulbound identity + tier management |
-| TrustScorer | `TBD` | Trust score storage + automatic tier promotion |
-| TrustGate | `TBD` | Access control — any protocol can import |
-| ServiceRegistry | `TBD` | Marketplace + USDC escrow + ratings + disputes |
-| SmartonStaking | `TBD` | USDC staking + slashing + multipliers |
-| SmartonTreasury | `TBD` | Protocol fees + rating incentive distribution |
+| AgentRegistry | [`0x70b9b454F5Da218A60B9cF8ed830BafA14D050C5`](https://www.okx.com/explorer/xlayer/address/0x70b9b454F5Da218A60B9cF8ed830BafA14D050C5) | ERC-721 soulbound identity + tier management |
+| TrustScorer | [`0x0aC073DE7f01fd349e0984b21d7C5139419F8710`](https://www.okx.com/explorer/xlayer/address/0x0aC073DE7f01fd349e0984b21d7C5139419F8710) | Trust score storage + automatic tier promotion |
+| TrustGate | [`0x2d9a10E5796cfae5396A3F1cD3f58d7fFEd342fb`](https://www.okx.com/explorer/xlayer/address/0x2d9a10E5796cfae5396A3F1cD3f58d7fFEd342fb) | Access control — any protocol can import |
+| ServiceRegistry | [`0xCEDEAFa7122f41855Af4F52cace2064fF3332a95`](https://www.okx.com/explorer/xlayer/address/0xCEDEAFa7122f41855Af4F52cace2064fF3332a95) | Marketplace + USDC escrow + ratings + disputes |
+| SmartonStaking | [`0xF45B532F5aB039a72093c7Ece6d64aC39cb4B1AC`](https://www.okx.com/explorer/xlayer/address/0xF45B532F5aB039a72093c7Ece6d64aC39cb4B1AC) | USDC staking + slashing + multipliers |
+| SmartonTreasury | [`0x97C87f8607A715065986e13Ee8bb6E03cC31A7D1`](https://www.okx.com/explorer/xlayer/address/0x97C87f8607A715065986e13Ee8bb6E03cC31A7D1) | Protocol fees + rating incentive distribution |
 
 ## OKX Onchain OS Integration
 
