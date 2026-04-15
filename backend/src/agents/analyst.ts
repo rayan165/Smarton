@@ -9,7 +9,7 @@ const ANALYST_CONFIG: AgentConfig = {
   wallet: '0x0000000000000000000000000000000000000004',
   privateKey: '0x0000000000000000000000000000000000000000000000000000000000000004',
   serviceType: 'analysis',
-  servicePrice: 30_000n,
+  servicePrice: 5_000n,
   serviceDescription: 'Comprehensive token analysis reports',
   minBuyerTier: 1,
   cycleIntervalMs: 60_000,

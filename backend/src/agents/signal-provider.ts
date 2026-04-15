@@ -9,7 +9,7 @@ const SIGNAL_CONFIG: AgentConfig = {
   wallet: '0x0000000000000000000000000000000000000001',
   privateKey: '0x0000000000000000000000000000000000000000000000000000000000000001',
   serviceType: 'signal',
-  servicePrice: 10_000n,
+  servicePrice: 5_000n,
   serviceDescription: 'Alpha trading signals for X Layer tokens',
   minBuyerTier: 1,
   cycleIntervalMs: 60_000,

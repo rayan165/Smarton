@@ -9,7 +9,7 @@ const SCANNER_CONFIG: AgentConfig = {
   wallet: '0x0000000000000000000000000000000000000002',
   privateKey: '0x0000000000000000000000000000000000000000000000000000000000000002',
   serviceType: 'security-scan',
-  servicePrice: 20_000n,
+  servicePrice: 5_000n,
   serviceDescription: 'Token security analysis and risk reports',
   minBuyerTier: 1,
   cycleIntervalMs: 60_000,

@@ -9,9 +9,9 @@ const EXECUTOR_CONFIG: AgentConfig = {
   wallet: '0x0000000000000000000000000000000000000003',
   privateKey: '0x0000000000000000000000000000000000000000000000000000000000000003',
   serviceType: 'execution',
-  servicePrice: 50_000n,
+  servicePrice: 10_000n,
   serviceDescription: 'DEX swap execution service',
-  minBuyerTier: 2,
+  minBuyerTier: 1,
   cycleIntervalMs: 60_000,
 };
 
