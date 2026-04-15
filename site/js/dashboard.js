@@ -322,6 +322,7 @@ function txLink(hash) {
 (function initActions() {
   document.addEventListener('DOMContentLoaded', function() {
     var cb = document.getElementById('connectWallet'); if(cb) cb.onclick = connectW;
+    var db = document.getElementById('disconnectWallet'); if(db) { db.onclick = disconnectW; db.style.display='none'; }
     var bp = document.getElementById('btnPurchase'); if(bp) bp.onclick = doPurchase;
     var bd = document.getElementById('btnDeliver'); if(bd) bd.onclick = doDeliver;
     var br = document.getElementById('btnRate'); if(br) br.onclick = doRate;
@@ -329,28 +330,49 @@ function txLink(hash) {
   });
 })();
 
+function findMetaMask() {
+  if(!window.ethereum) return null;
+  // Multiple providers injected
+  if(window.ethereum.providers && window.ethereum.providers.length) {
+    for(var i=0;i<window.ethereum.providers.length;i++) {
+      var p = window.ethereum.providers[i];
+      if(p.isMetaMask && !p.isOKExWallet && !p.isOkxWallet && !p.isBraveWallet) return p;
+    }
+  }
+  // Single provider — check it's actually MetaMask
+  if(window.ethereum.isMetaMask && !window.ethereum.isOKExWallet && !window.ethereum.isOkxWallet) return window.ethereum;
+  // Fallback: just use whatever is there
+  return window.ethereum;
+}
+
 async function connectW() {
   try {
-    if(!window.ethereum) { txLog('tx-err', 'No wallet detected'); return; }
-    var eth = window.ethereum;
-    if(eth.providers) {
-      var mm = eth.providers.find(function(p){ return p.isMetaMask && !p.isOKExWallet; });
-      if(mm) eth = mm;
-    }
+    var eth = findMetaMask();
+    if(!eth) { txLog('tx-err', 'No wallet detected'); return; }
     w3p = new ethers.providers.Web3Provider(eth);
-    await w3p.send('eth_requestAccounts', []);
+    await eth.request({ method: 'eth_requestAccounts' });
     try { await eth.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xc4' }] }); }
     catch(e) { if(e.code===4902) await eth.request({ method: 'wallet_addEthereumChain', params: [{ chainId:'0xc4', chainName:'X Layer Mainnet', nativeCurrency:{name:'OKB',symbol:'OKB',decimals:18}, rpcUrls:['https://rpc.xlayer.tech'], blockExplorerUrls:['https://www.okx.com/explorer/xlayer'] }] }); }
     w3s = w3p.getSigner();
     var addr = await w3s.getAddress();
     var ws = document.getElementById('walletStatus');
     if(ws) { ws.textContent = addr.slice(0,6)+'...'+addr.slice(-4)+' (X Layer)'; ws.style.color='var(--hi)'; }
-    var cb = document.getElementById('connectWallet'); if(cb) { cb.textContent='Connected'; cb.disabled=true; }
+    var cb = document.getElementById('connectWallet'); if(cb) { cb.textContent='Connected'; cb.style.display='none'; }
+    var db = document.getElementById('disconnectWallet'); if(db) db.style.display='inline-block';
     txLog('tx-ok', 'Wallet connected: '+addr.slice(0,10)+'...');
     var usdc = new ethers.Contract(CC.usdc, ERC_ABI, w3p);
     var bal = await usdc.balanceOf(addr);
     txLog('tx-info', 'USDC balance: '+ethers.utils.formatUnits(bal,6));
   } catch(e) { txLog('tx-err', 'Failed: '+e.message); }
+}
+
+function disconnectW() {
+  w3p = null; w3s = null;
+  var ws = document.getElementById('walletStatus');
+  if(ws) { ws.textContent = 'Not connected'; ws.style.color = 'var(--t4)'; }
+  var cb = document.getElementById('connectWallet'); if(cb) { cb.textContent='Connect Wallet'; cb.style.display='inline-block'; cb.disabled=false; }
+  var db = document.getElementById('disconnectWallet'); if(db) db.style.display='none';
+  txLog('tx-info', 'Wallet disconnected');
 }
 
 async function doPurchase() {
